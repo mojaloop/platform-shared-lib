@@ -9,15 +9,10 @@
     "url": "https://github.com/mojaloop/platform-shared-lib/issues#readme"
   },
   "contributors": [
-    "Miguel de Barros <miguel.debarros@modusbox.com>"
-  ],
-  "pre-commit": [
-    "dep:check",
-    "build",
-    "lint",
-    "test:unit"
+    "Pedro Sousa Barreto <pedrosousabarreto@gmail.com>"
   ],
   "scripts": {
+    "prepare": "husky install",
     "start": "lerna run --no-progress --stream  start",
     "start:logging-svc": "lerna run build --no-progress --stream --scope='@mojaloop/logging-bc-logging-svc' && lerna run --no-progress --stream --scope='@mojaloop/logging-bc-logging-svc' start",
     "build": "lerna run --stream build",
@@ -43,10 +38,10 @@
     "lerna": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.16.0",
-    "pre-commit": "^1.2.2"
+    "husky": "^7.0.4"
   },
   "workspaces": [
     "modules/*"
-  ]
+  ],
+  "packageManager": "yarn@3.1.0"
 }

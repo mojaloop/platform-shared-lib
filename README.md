@@ -1,21 +1,19 @@
 # logging-bc
 
-**EXPERIMENTAL** vNext Logging Bounded Context Mono Repository
+**EXPERIMENTAL** vNext Platform Shared Lib Bounded Context Mono Repository
 
 {{DESCRIPTION}}
 
 ## Modules
 
-### logging-svc
+### platform-shared-lib
 
 {{DESCRIPTION}}
-
-[README](modules/nodejs-kafka-client-lib/README.md)
 
 #### Run
 
 ```bash
-yarn start:logging-svc
+TBD
 ```
 
 ## Usage
