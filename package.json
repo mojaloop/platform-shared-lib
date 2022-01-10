@@ -1,12 +1,12 @@
 {
-  "name": "@mojaloop/logging-bc",
+  "name": "@mojaloop/platform-shared-lib",
   "version": "0.0.1",
-  "description": "mojaloop logging bounded context.",
+  "description": "mojaloop platform-shared-lib",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/mojaloop/logging-bc",
+  "homepage": "https://github.com/mojaloop/platform-shared-lib",
   "private": true,
   "bugs": {
-    "url": "https://github.com/mojaloop/logging-bc/issues#readme"
+    "url": "https://github.com/mojaloop/platform-shared-lib/issues#readme"
   },
   "contributors": [
     "Miguel de Barros <miguel.debarros@modusbox.com>"
@@ -25,8 +25,6 @@
     "clean": "yarn run clean:dist && yarn run clean:npm",
     "clean:npm": "lerna clean",
     "clean:dist": "lerna run clean",
-    "postinstall": "yarn run bootstrap",
-    "bootstrap": "lerna bootstrap",
     "pretest": "echo 'FIX ME'",
     "standard": "yarn run --no-progress --stream lint'",
     "lint": "lerna run --no-progress --stream lint",
@@ -45,9 +43,10 @@
     "lerna": "^4.0.0"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.16.0",
     "pre-commit": "^1.2.2"
   },
   "workspaces": [
     "modules/*"
- ]  
+  ]
 }

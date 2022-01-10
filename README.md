@@ -10,7 +10,7 @@
 
 {{DESCRIPTION}}
 
-[README](./modules/logging-svc/README.md)
+[README](modules/nodejs-kafka-client-lib/README.md)
 
 #### Run
 
