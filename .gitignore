@@ -71,7 +71,7 @@ typings/
 =======
 # Yarn
 .pnp.*
-.yarn/*
+.yarn/
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -123,3 +123,13 @@ devspace*
 
 
 /.idea/
+
+# non-added js, js.map and d.ts files in src directories
+**/src/**/*.js
+**/src/**/*.js.map
+**/src/**/*.d.ts
+
+# non-added js, js.map and d.ts files in test directories
+**/test/**/*.js
+**/test/**/*.js.map
+**/test/**/*.d.ts

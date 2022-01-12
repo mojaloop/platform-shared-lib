@@ -1,60 +1,61 @@
 "use strict"
 
-import {MLKafkaConsumer, MLKafkaConsumerOptions, MLKafkaConsumerOutputType} from "../../src/rdkafka_consumer";
-import * as RDKafka from "node-rdkafka";
 import {ConsoleLogger} from "@mojaloop/logging-bc-logging-client-lib";
-import {IMessage} from "@mojaloop/platform-shared-lib-messaging-types-lib/dist/index";
+import { MLKafkaProducer, MLKafkaProducerOptions } from '../../src/rdkafka_producer'
 
-jest.setTimeout(300000); // change this to suite the test
+jest.setTimeout(300); // change this to suit the test
 
+const logger: ConsoleLogger = new ConsoleLogger()
+let client: MLKafkaProducer
+let options: MLKafkaProducerOptions
 
-const topicNames = ["TestTopic"]
-
-describe('example test', () => {
-
-  let logger: ConsoleLogger = new ConsoleLogger();
-  let client: MLKafkaConsumer;
-  let globalConfs: RDKafka.ConsumerGlobalConfig;
-  let topicConfs: RDKafka.ConsumerTopicConfig;
-  let consumerOptions:MLKafkaConsumerOptions;
+describe('nodejs-rdkafka-producer', () => {
 
   beforeAll(async () => {
-    globalConfs = {
-      //'debug': 'all',
-      "metadata.broker.list": "localhost:9092",
-      "group.id": "unitTests_1"+Date.now().toLocaleString(),
-    }
-    topicConfs = {}
-    consumerOptions = {
-      useSyncCommit: false,
-      outputType: MLKafkaConsumerOutputType.Raw
+    options = {
+      kafkaBrokerList: 'localhost:9092',
+      producerClientId: 'test_producer'
     }
 
-    client = new MLKafkaConsumer(globalConfs, topicConfs, logger, consumerOptions)
+    client = new MLKafkaProducer(options, logger)
   })
 
   afterAll(async () => {
     // Cleanup
   })
 
-  test('should goes here', async () => {
+  test('produce and received delivery reports', async () => {
+    const messageCount = 1;
+    let receivedMessages = 0;
 
-    function handler(message: IMessage) : Promise<void>{
-      logger.debug(`Got message in handler: ${JSON.stringify(message, null, 2)}`);
-      return Promise.resolve();
-    }
-
-    client.setCallbackFn(handler)
-    client.setTopics(topicNames)
+    client.on('deliveryReport', (topic: string, partition: number|null, offset: number|null) => {
+      console.log(`delivery report event - topic: ${topic}, partition: ${partition}, offset: ${offset}`);
+      receivedMessages++;
+      if(receivedMessages >= messageCount){
+        console.log('Received all delivery reports, finishing test');
+        return Promise.resolve();
+      }
+      return;
+    })
 
     await client.connect()
-    console.log("connect done");
 
-    await client.start()
-    console.log("start done");
+    const msgs = []
+    for (let i = 0; i < messageCount; i++) {
+      msgs.push({
+        topic: 'TestTopic',
+        value: { testProp: i },
+        key: null,
+        headers: [
+          { key1: Buffer.from('testStr') }
+        ]
+      })
+    }
 
-    setInterval(() => {
-      console.log("complete");
-    }, 1 << 30);
+    await client.send(msgs)
+
+    console.log('done sending')
+    await client.disconnect()
+
   })
 })
