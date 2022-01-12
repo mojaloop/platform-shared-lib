@@ -121,6 +121,35 @@ jobs:
           name: Publish package
           command: yarn publish
 
+  release:
+    executor: default-docker
+    steps:
+      - run:
+          name: Install general dependencies
+          command: *defaults_Dependencies
+      - checkout
+      - restore_cache:
+          keys:
+          - dependency-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Configure git
+          command: |
+            git config user.email ${GIT_CI_EMAIL}
+            git config user.name ${GIT_CI_USER}
+            git checkout ${CIRCLE_BRANCH}
+      - run:
+          name: Configure ssh
+          command: |
+            mkdir -p ~/.ssh
+            ssh-keyscan -p 443 ssh.github.com >> ~/.ssh/known_hosts
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Generate changelog and bump package version
+          command: npm run release
+      - run:
+          name: Push the release
+          command: git push --follow-tags origin ${CIRCLE_BRANCH}
+
   github-release:
     executor: default-machine
     steps:
@@ -159,7 +188,7 @@ jobs:
 
 workflows:
   version: 2
-  test-deploy:
+  build:
     jobs:
       - pr-tools/pr-title-check:
           context: org-global
