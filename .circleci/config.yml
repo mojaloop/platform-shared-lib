@@ -75,7 +75,7 @@ jobs:
       #     keys:
       #     - dependency-cache-{{ .Environment.CIRCLE_SHA1 }}
 
-      - run: npm install
+      - run: yarn install
 
       - save_cache:
           paths:
