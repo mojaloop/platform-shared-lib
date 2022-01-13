@@ -75,7 +75,7 @@ jobs:
       #     keys:
       #     - dependency-cache-{{ .Environment.CIRCLE_SHA1 }}
 
-      - run: yarn install
+      - run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
 
       - save_cache:
           paths:
