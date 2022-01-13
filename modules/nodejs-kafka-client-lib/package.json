@@ -49,8 +49,8 @@
     "node-rdkafka": "^2.12.0"
   },
   "devDependencies": {
-    "@mojaloop/messaging-types-lib": "^0.0.1",
     "@mojaloop/logging-bc-logging-client-lib": "^0.0.1",
+    "@mojaloop/platform-shared-lib-messaging-types-lib": "^0.0.1",
     "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "eslint": "^8.2.0",
