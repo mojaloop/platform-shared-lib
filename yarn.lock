@@ -1479,7 +1479,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mojaloop/platform-shared-lib-messaging-types-lib@workspace:modules/messaging-types-lib":
+"@mojaloop/platform-shared-lib-messaging-types-lib@^0.0.1, @mojaloop/platform-shared-lib-messaging-types-lib@workspace:modules/messaging-types-lib":
   version: 0.0.0-use.local
   resolution: "@mojaloop/platform-shared-lib-messaging-types-lib@workspace:modules/messaging-types-lib"
   dependencies:
@@ -1512,6 +1512,7 @@ __metadata:
   resolution: "@mojaloop/platform-shared-lib-nodejs-kafka-client-lib@workspace:modules/nodejs-kafka-client-lib"
   dependencies:
     "@mojaloop/logging-bc-logging-client-lib": ^0.0.1
+    "@mojaloop/platform-shared-lib-messaging-types-lib": ^0.0.1
     "@types/dotenv": ^8.2.0
     "@types/jest": ^27.0.3
     "@types/node-cache": ^4.2.5

@@ -253,7 +253,10 @@ export class MLKafkaConsumer implements IMessageConsumer {
     async disconnect (): Promise<void> {
       return await new Promise((resolve, reject) => {
         this._logger?.isInfoEnabled() && this._logger.info('MLKafkaConsumer - disconnect called...')
-
+        if(!this._client.isConnected()){
+          this._logger?.isWarnEnabled() && this._logger.warn('MLKafkaConsumer - disconnect called but consumer is not connected')
+          return resolve()
+        }
         this._client.disconnect((err: any, _data: RDKafka.ClientMetrics) => {
           if (err) {
             this._logger?.isErrorEnabled() && this._logger.error('MLKafkaConsumer - disconnect failed', err)
