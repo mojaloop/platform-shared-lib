@@ -53,7 +53,7 @@ defaults_license_scanner: &defaults_license_scanner
 ##
 executors:
   default-docker:
-    working_directory: /home/circleci/project
+    working_directory: &workingDirVar /home/circleci/project
     docker:
       - image: node:16.13.0-alpine
 
@@ -83,14 +83,14 @@ jobs:
           key: dependency-cache-{{ .Environment.CIRCLE_SHA1 }}
 
       - persist_to_workspace:
-          root: ${CIRCLE_WORKING_DIRECTORY}
+          root: *workingDirVar
           paths:
             - .
   test-unit:
     executor: default-docker
     steps:
       - attach_workspace:
-          at: ${CIRCLE_WORKING_DIRECTORY}
+          at: *workingDirVar
       - run:
           name: Execute unit tests
           command: yarn test:unit-report # > ./test/results/tape.xml
