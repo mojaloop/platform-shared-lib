@@ -102,22 +102,15 @@ jobs:
   publish:
     executor: default-docker
     steps:
-      # - attach_workspace:
-        # at: ${CIRCLE_WORKING_DIRECTORY}
+      - attach_workspace:
+          at: *workingDirVar
       - checkout
       - run:
           name: Install general dependencies
           command: *defaults_Dependencies
-
-      - restore_cache:
-          keys:
-          - dependency-cache-{{ .Environment.CIRCLE_SHA1 }}
-
-      - run: npm install
-
-      # - run:
-      #     name: Authenticate with registry
-      #     command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > .npmrc
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > .npmrc
       - run:
           name: Publish package
           command: yarn publish
