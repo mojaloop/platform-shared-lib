@@ -10,7 +10,7 @@ describe('example test', () => {
     // Cleanup
   })
 
-  test('should goes here', async () => {
+  test('Messaging types module only, no tests', async () => {
     await expect(true)
   })
 })

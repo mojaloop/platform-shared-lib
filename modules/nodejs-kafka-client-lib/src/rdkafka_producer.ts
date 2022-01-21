@@ -67,13 +67,12 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
       this._options = options
       this._logger = logger
 
-
       // parse options and apply defaults
       this._parseOptionsAndApplyDefault()
 
-      this._topicConfig.partitioner_cb = () => {
-        console.log(arguments)
-      }
+      // this._topicConfig.partitioner_cb = () => {
+      //   console.log(arguments)
+      // }
 
       this._client = new RDKafka.HighLevelProducer(this._globalConfig, this._topicConfig)
 
@@ -237,7 +236,11 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
     async disconnect (): Promise<void> {
       return await new Promise((resolve, reject) => {
         this._logger?.isInfoEnabled() && this._logger.info('MLKafkaProducer - disconnect called...')
-        this._client.disconnect((err: any, _data: RDKafka.ClientMetrics) => {
+          if(!this._client.isConnected()){
+              this._logger?.isWarnEnabled() && this._logger.warn('MLKafkaProducer - disconnect called but producer is not connected')
+              return resolve()
+          }
+          this._client.disconnect((err: any, _data: RDKafka.ClientMetrics) => {
           if (err) {
             this._logger?.isErrorEnabled() && this._logger.error('MLKafkaProducer - disconnect failed', err)
             return reject(err)

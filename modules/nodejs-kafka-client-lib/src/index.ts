@@ -1,4 +1,3 @@
 'use strict'
 
-const message: string = 'Hello, World!'
-console.log(message) // eslint-disable-line no-console
+const message: string = 'Hello, World! Nothing to see here'
