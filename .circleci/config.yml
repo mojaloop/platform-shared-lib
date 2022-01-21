@@ -91,6 +91,9 @@ jobs:
     steps:
       - attach_workspace:
           at: *workingDirVar
+      - restore_cache:
+          keys:
+          - dependency-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: Execute unit tests
           command: yarn test:unit-report # > ./test/results/tape.xml
