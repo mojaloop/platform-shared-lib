@@ -23,7 +23,6 @@
     "pretest": "echo 'FIX ME'",
     "standard": "yarn run --no-progress --stream lint'",
     "lint": "lerna run --no-progress --stream lint",
-    "lint:logging-svc": "lerna run --no-progress --stream lint --scope='@mojaloop-poc/logging-bc-logging-svc'",
     "lint:fix": "lerna run --no-progress --stream lint:fix",
     "test:unit": "lerna run --no-progress --stream test:unit",
     "test:coverage": "lerna run --no-progress --stream test:coverage",

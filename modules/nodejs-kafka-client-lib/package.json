@@ -8,7 +8,7 @@
     "url": "https://github.com/mojaloop/platform-shared-lib/issues#readme"
   },
   "contributors": [
-    "Miguel de Barros <miguel.debarros@modusbox.com>"
+    "Pedro Sousa Barreto <pedrosousabarreto@gmail.com>"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
