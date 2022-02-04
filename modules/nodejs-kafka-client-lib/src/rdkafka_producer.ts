@@ -25,13 +25,11 @@
  * Crosslake
  - Pedro Sousa Barreto <pedrob@crosslaketech.com>
 
- * ModusBox
- - Miguel de Barros <miguel.debarros@modusbox.com>
- - Roman Pietrzak <roman.pietrzak@modusbox.com>
-
  --------------
  ******/
+
 'use strict'
+
 import { EventEmitter } from 'events'
 import * as RDKafka from 'node-rdkafka'
 import { ILogger } from '@mojaloop/logging-bc-logging-client-lib'
@@ -44,13 +42,12 @@ export class MLKafkaProducerOptions {
     skipAcknowledgements?: boolean
 }
 
-
 interface MLKafkaProducerEventListenerMap {
-    'deliveryReport': (topic: string, partition: number | null, offset: number | null) => void,
-    'testEvent': (testEventArg: number) => void
+  'deliveryReport': (topic: string, partition: number | null, offset: number | null) => void,
+  'testEvent': (testEventArg: number) => void
 }
 
-export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
+export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
     private readonly _logger: ILogger | null
     private readonly _client!: RDKafka.HighLevelProducer;
     private _globalConfig: RDKafka.ProducerGlobalConfig
@@ -58,9 +55,9 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
     private readonly _options: MLKafkaProducerOptions
 
     // synthetic sugar for type events
-    public on<K extends keyof MLKafkaProducerEventListenerMap>(e: K, listener: MLKafkaProducerEventListenerMap[K]): this { return super.on(e, listener); }
-    public once<K extends keyof MLKafkaProducerEventListenerMap>(e: K, listener: MLKafkaProducerEventListenerMap[K]): this { return super.once(e, listener); }
-    public emit<K extends keyof MLKafkaProducerEventListenerMap>(event: K, ...args: Parameters<MLKafkaProducerEventListenerMap[K]>): boolean {return super.emit(event, ...args)}
+    public on<K extends keyof MLKafkaProducerEventListenerMap>(e: K, listener: MLKafkaProducerEventListenerMap[K]): this { return super.on(e, listener) }
+    public once<K extends keyof MLKafkaProducerEventListenerMap>(e: K, listener: MLKafkaProducerEventListenerMap[K]): this { return super.once(e, listener) }
+    public emit<K extends keyof MLKafkaProducerEventListenerMap>(event: K, ...args: Parameters<MLKafkaProducerEventListenerMap[K]>): boolean { return super.emit(event, ...args) }
 
     constructor (options: MLKafkaProducerOptions, logger: ILogger | null = null) {
       super()
@@ -88,8 +85,6 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
       this._logger?.isInfoEnabled() && this._logger.info(`MLKafkaProducer - features: ${RDKafka.features}`)
     }
 
-
-
     private _parseOptionsAndApplyDefault () {
       // global client options
       this._globalConfig = {
@@ -108,12 +103,12 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
       this._globalConfig.dr_cb = true
     }
 
-    private _onReady (info: RDKafka.ReadyInfo, metadata: RDKafka.Metadata) {
+    private _onReady (info: RDKafka.ReadyInfo, metadata: RDKafka.Metadata): void {
       this._logger?.isInfoEnabled() && this._logger.info(`MLKafkaProducer - event.ready - info: ${JSON.stringify(info, null, 2)}`)
       this._logger?.isDebugEnabled() && this._logger.debug(`MLKafkaProducer - event.ready - metadata: ${JSON.stringify(metadata, null, 2)}`)
     }
 
-    private _onError (error: RDKafka.LibrdKafkaError) {
+    private _onError (error: RDKafka.LibrdKafkaError): void {
       this._logger?.isErrorEnabled() && this._logger.error(`MLKafkaProducer - event.error - ${JSON.stringify(error, null, 2)}`)
     }
 
@@ -121,15 +116,15 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
       this._logger?.isWarnEnabled() && this._logger.warn(`MLKafkaProducer - event.throttle - ${JSON.stringify(eventData, null, 2)}`)
     }
 
-    private _onLog (eventData: any) {
+    private _onLog (eventData: any): void {
       this._logger?.isDebugEnabled() && this._logger.debug(`MLKafkaProducer - event.log - ${JSON.stringify(eventData, null, 2)}`)
     }
 
-    private _onStats (eventData: any) {
+    private _onStats (eventData: any): void {
       this._logger?.isDebugEnabled() && this._logger.debug(`MLKafkaProducer - event.stats - ${eventData.message}`)
     }
 
-    private _onDisconnect (metrics: RDKafka.ClientMetrics) {
+    private _onDisconnect (metrics: RDKafka.ClientMetrics): void {
       if (metrics?.connectionOpened) {
         this._logger?.isInfoEnabled() && this._logger.info(`MLKafkaProducer - event.disconnected - connected for ${(Date.now() - metrics.connectionOpened) / 1000} secs`)
       } else {
@@ -137,12 +132,12 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
       }
     }
 
-    private _onDeliveryReport(err: RDKafka.LibrdKafkaError, eventData: RDKafka.DeliveryReport) {
-        if (err) {
-            this._logger?.isErrorEnabled() && this._logger.error(err, 'MLKafkaProducer - delivery-report error')
-        } else {
-            this._logger?.isDebugEnabled() && this._logger.debug(`MLKafkaProducer - delivery-report - ${JSON.stringify(eventData, null, 2)}`)
-        }
+    private _onDeliveryReport (err: RDKafka.LibrdKafkaError, eventData: RDKafka.DeliveryReport): void {
+      if (err) {
+        this._logger?.isErrorEnabled() && this._logger.error(err, 'MLKafkaProducer - delivery-report error')
+      } else {
+        this._logger?.isDebugEnabled() && this._logger.debug(`MLKafkaProducer - delivery-report - ${JSON.stringify(eventData, null, 2)}`)
+      }
     }
 
     private _toRDKafkaProduceParams (msg: IMessage): { topic: string, partition: NumberNullUndefined, message: Buffer, key: Buffer, timestamp: NumberNullUndefined, headers: MessageHeader[] } {
@@ -203,7 +198,7 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
             const produceParams = this._toRDKafkaProduceParams(msg)
             this._client.produce(
               produceParams.topic,
-              produceParams.partition as NumberNullUndefined,
+              produceParams.partition,
               produceParams.message,
               produceParams.key || undefined,
               produceParams.timestamp || undefined,
@@ -236,11 +231,11 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer{
     async disconnect (): Promise<void> {
       return await new Promise((resolve, reject) => {
         this._logger?.isInfoEnabled() && this._logger.info('MLKafkaProducer - disconnect called...')
-          if(!this._client.isConnected()){
-              this._logger?.isWarnEnabled() && this._logger.warn('MLKafkaProducer - disconnect called but producer is not connected')
-              return resolve()
-          }
-          this._client.disconnect((err: any, _data: RDKafka.ClientMetrics) => {
+        if (!this._client.isConnected()) {
+          this._logger?.isWarnEnabled() && this._logger.warn('MLKafkaProducer - disconnect called but producer is not connected')
+          return resolve()
+        }
+        this._client.disconnect((err: any, _data: RDKafka.ClientMetrics) => {
           if (err) {
             this._logger?.isErrorEnabled() && this._logger.error('MLKafkaProducer - disconnect failed', err)
             return reject(err)

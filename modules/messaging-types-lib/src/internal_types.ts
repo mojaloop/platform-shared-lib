@@ -28,6 +28,8 @@
  --------------
  ******/
 
+'use strict'
+
 export interface IMessageHeader {
   [key: string]: string | Buffer
 }

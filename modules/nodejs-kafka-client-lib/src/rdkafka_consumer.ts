@@ -25,12 +25,9 @@
  * Crosslake
  - Pedro Sousa Barreto <pedrob@crosslaketech.com>
 
- * ModusBox
- - Miguel de Barros <miguel.debarros@modusbox.com>
- - Roman Pietrzak <roman.pietrzak@modusbox.com>
-
  --------------
  ******/
+
 'use strict'
 
 import * as RDKafka from 'node-rdkafka'
@@ -83,10 +80,10 @@ export class MLKafkaConsumer implements IMessageConsumer {
       this._client.on('data', this._onData.bind(this))
 
       this._logger?.isInfoEnabled() && this._logger.info('MLKafkaConsumer - instance created')
-      this._logger?.isInfoEnabled() && this._logger.info(`MLKafkaConsumer - features: ${RDKafka.features}`)
+      this._logger?.isInfoEnabled() && this._logger.info(`MLKafkaConsumer - features: ${RDKafka.features.toString()}`)
     }
 
-    private _parseOptionsAndApplyDefault () {
+    private _parseOptionsAndApplyDefault (): void {
       if (this._options.useSyncCommit === undefined) {
         this._options.useSyncCommit = defaultOptions.useSyncCommit
       }
@@ -103,28 +100,28 @@ export class MLKafkaConsumer implements IMessageConsumer {
       }
     }
 
-    private _onReady (info: RDKafka.ReadyInfo, metadata: RDKafka.Metadata) {
+    private _onReady (info: RDKafka.ReadyInfo, metadata: RDKafka.Metadata): void {
       this._logger?.isInfoEnabled() && this._logger.info(`MLKafkaConsumer - event.ready - info: ${JSON.stringify(info, null, 2)}`)
       this._logger?.isDebugEnabled() && this._logger.debug(`MLKafkaConsumer - event.ready - metadata: ${JSON.stringify(metadata, null, 2)}`)
     }
 
-    private _onError (error: RDKafka.LibrdKafkaError) {
+    private _onError (error: RDKafka.LibrdKafkaError): void {
       this._logger?.isErrorEnabled() && this._logger.error(`MLKafkaConsumer - event.error - ${JSON.stringify(error, null, 2)}`)
     }
 
-    private _onThrottle (eventData: any) {
+    private _onThrottle (eventData: any): void {
       this._logger?.isWarnEnabled() && this._logger.warn(`MLKafkaConsumer - event.throttle - ${JSON.stringify(eventData, null, 2)}`)
     }
 
-    private _onLog (eventData: any) {
+    private _onLog (eventData: any): void {
       this._logger?.isDebugEnabled() && this._logger.debug(`MLKafkaConsumer - event.log - ${JSON.stringify(eventData, null, 2)}`)
     }
 
-    private _onStats (eventData: any) {
+    private _onStats (eventData: any): void {
       this._logger?.isDebugEnabled() && this._logger.debug(`MLKafkaConsumer - event.stats - ${eventData.message}`)
     }
 
-    private _onDisconnect (metrics: RDKafka.ClientMetrics) {
+    private _onDisconnect (metrics: RDKafka.ClientMetrics): void {
       if (metrics?.connectionOpened) {
         this._logger?.isInfoEnabled() && this._logger.info(`MLKafkaConsumer - event.disconnected - connected for ${(Date.now() - metrics.connectionOpened) / 1000} secs`)
       } else {
@@ -132,7 +129,7 @@ export class MLKafkaConsumer implements IMessageConsumer {
       }
     }
 
-    private async _onData (kafkaMessage: RDKafka.Message) {
+    private async _onData (kafkaMessage: RDKafka.Message): Promise<void> {
       if (!kafkaMessage) {
         this._logger?.isErrorEnabled() && this._logger.error('MLKafkaConsumer - Received null message')
         return
@@ -141,7 +138,7 @@ export class MLKafkaConsumer implements IMessageConsumer {
       const msg = this._toIMessage(kafkaMessage)
       if (this._filterFn && !this._filterFn(msg)) {
         this._logger?.isDebugEnabled() && this._logger.debug('MLKafkaConsumer - ignoring message filtered out by filterFunction')
-        if (this._globalConfig['enable.auto.commit'] != true) {
+        if (this._globalConfig['enable.auto.commit'] !== true) {
           // We are ignoring this message, but if we don't commit it and there will be no more messages that we can commit,
           // then all the ignored messages will appear "stuck". Everything reports lag.
           this._commitMsg(kafkaMessage)
@@ -159,7 +156,7 @@ export class MLKafkaConsumer implements IMessageConsumer {
         topic: kafkaMsg.topic,
         key: null,
         value: null,
-        timestamp: kafkaMsg.timestamp || null,
+        timestamp: kafkaMsg.timestamp ?? null,
         headers: null
       }
 
@@ -208,8 +205,8 @@ export class MLKafkaConsumer implements IMessageConsumer {
       return msg
     }
 
-    private _commitMsg (kafkaMessage: RDKafka.Message) {
-      if (this._globalConfig['enable.auto.commit'] != true) {
+    private _commitMsg (kafkaMessage: RDKafka.Message): void {
+      if (this._globalConfig['enable.auto.commit'] !== true) {
         if (this._options.useSyncCommit) {
           this._client.commitMessageSync(kafkaMessage)
         } else {
@@ -253,7 +250,7 @@ export class MLKafkaConsumer implements IMessageConsumer {
     async disconnect (): Promise<void> {
       return await new Promise((resolve, reject) => {
         this._logger?.isInfoEnabled() && this._logger.info('MLKafkaConsumer - disconnect called...')
-        if(!this._client.isConnected()){
+        if (!this._client.isConnected()) {
           this._logger?.isWarnEnabled() && this._logger.warn('MLKafkaConsumer - disconnect called but consumer is not connected')
           return resolve()
         }

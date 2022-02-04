@@ -25,11 +25,8 @@
  * Crosslake
  - Pedro Sousa Barreto <pedrob@crosslaketech.com>
 
- * ModusBox
- - Miguel de Barros <miguel.debarros@modusbox.com>
-
  --------------
-******/
+ ******/
 
 'use strict'
 
