@@ -95,6 +95,9 @@ jobs:
           keys:
           - dependency-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run:
+          name: Relink modules
+          command: yarn
+      - run:
           name: Execute unit tests
           command: yarn test:unit-report # > ./test/results/tape.xml
       # - store_artifacts:
@@ -210,30 +213,30 @@ workflows:
                 - /feature*/
                 - /bugfix*/
       # New commits to master release automatically
-      - release:
-          context: org-global
-          requires:
-            - pr-tools/pr-title-check
-            - test-unit
-            # - test-coverage
-            # - vulnerability-check
-            # - audit-licenses
-            # - license-scan
-            # - image-scan
-          filters:
-            branches:
-              only:
-                - master
-                - /release\/v.*/
-      - github-release:
-          context: org-global
-          requires:
-            - release
-          filters:
-            branches:
-              only:
-                - master
-                - /release\/v.*/
+      # - release:
+      #     context: org-global
+      #     requires:
+      #       - pr-tools/pr-title-check
+      #       - test-unit
+      #       # - test-coverage
+      #       # - vulnerability-check
+      #       # - audit-licenses
+      #       # - license-scan
+      #       # - image-scan
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      #           - /release\/v.*/
+      # - github-release:
+      #     context: org-global
+      #     requires:
+      #       - release
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      #           - /release\/v.*/
       - publish:
           context: org-global
           # requires:
