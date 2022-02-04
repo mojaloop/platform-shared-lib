@@ -24,14 +24,16 @@
     "standard": "yarn run --no-progress --stream lint'",
     "lint": "lerna run --no-progress --stream lint",
     "lint:fix": "lerna run --no-progress --stream lint:fix",
-    "test:unit": "lerna run --no-progress --stream test:unit",
+    "test:unit": "lerna run --progress --stream test:unit",
+    "test:unit-report": "lerna run --progress --stream test:unit-report",
     "test:coverage": "lerna run --no-progress --stream test:coverage",
     "test:coverage-check": "lerna run --no-progress --stream test:coverage-check",
     "test:integration": "lerna run --no-progress --stream test:integration",
     "audit:resolve": "lerna run --no-progress --stream audit:resolve",
     "audit:check": "lerna run --no-progress --stream audit:check",
     "dep:check": "lerna run --no-progress --stream dep:check",
-    "dep:update": "lerna run --no-progress --stream dep:update"
+    "dep:update": "lerna run --no-progress --stream dep:update",
+    "publish": "lerna run --no-progress --stream publish"
   },
   "dependencies": {
     "lerna": "^4.0.0"

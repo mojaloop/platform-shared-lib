@@ -1,4 +1,4 @@
-# logging-bc
+# platform-shared-lib
 
 **EXPERIMENTAL** vNext Platform Shared Lib Bounded Context Mono Repository
 
@@ -6,7 +6,17 @@
 
 ## Modules
 
-### platform-shared-lib
+### messaging-types-lib
+
+{{DESCRIPTION}}
+
+#### Run
+
+```bash
+TBD
+```
+
+### nodejs-kafka-client-lib
 
 {{DESCRIPTION}}
 
@@ -56,4 +66,3 @@ yarn start
 ```bash
 yarn test:unit
 ```
-

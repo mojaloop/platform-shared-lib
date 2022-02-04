@@ -32,12 +32,14 @@
     "lint": "yarn run build && npx eslint ./src",
     "lint:fix": "yarn run build && npx eslint ./src --fix",
     "test:unit": "jest --passWithNoTests --testMatch '**/test/unit/**/*.test.ts'",
+    "test:unit-report": "jest --passWithNoTests --testMatch '**/test/unit/**/*.test.ts'",
     "test:coverage": "jest --passWithNoTests --coverage --coverageThreshold='{}' --testMatch '**/test/unit/**/*.test.ts'",
     "test:coverage-check": "jest --coverage --testMatch '**/test/unit/**/*.test.ts'",
     "audit:resolve": "SHELL=sh resolve-audit",
     "audit:check": "SHELL=sh check-audit",
     "dep:check": "yarn run ncu -e 2",
-    "dep:update": "yarn run ncu -u"
+    "dep:update": "yarn run ncu -u",
+    "publish": "yarn npm publish --access public"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
