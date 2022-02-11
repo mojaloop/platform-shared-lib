@@ -50,20 +50,21 @@ export class MLKafkaConsumerOptions {
     kafkaGroupId?: string
     useSyncCommit?: boolean
     outputType?: MLKafkaConsumerOutputType
+    autoOffsetReset?: "earliest" | "latest" | "error" // default is latest
 }
 
 export class MLKafkaConsumer implements IMessageConsumer {
     private readonly _logger: ILogger | null
     private _options: MLKafkaConsumerOptions
     private _globalConfig: RDKafka.ConsumerGlobalConfig
-    private readonly _topicConfig: RDKafka.ConsumerTopicConfig
+    private _topicConfig: RDKafka.ConsumerTopicConfig
     private _topics: string[]
     private readonly _client: RDKafka.KafkaConsumer
     private _handlerCallback: (message: IMessage) => Promise<void>
     private _filterFn: (message: IMessage) => boolean
 
     constructor (options: MLKafkaConsumerOptions, logger: ILogger | null = null) {
-      this._options = options || defaultOptions
+      this._options = options ?? defaultOptions
       this._logger = logger
 
       // parse options and apply defaults
@@ -84,20 +85,28 @@ export class MLKafkaConsumer implements IMessageConsumer {
     }
 
     private _parseOptionsAndApplyDefault (): void {
-      if (this._options.useSyncCommit === undefined) {
-        this._options.useSyncCommit = defaultOptions.useSyncCommit
-      }
-      if (this._options.outputType === undefined) {
-        this._options.outputType = defaultOptions.outputType
-      }
+        this._globalConfig = {}
+        this._topicConfig = {}
 
-      // global client options
-      this._globalConfig = {
-        'metadata.broker.list': this._options.kafkaBrokerList
-      }
-      if (this._options.kafkaGroupId) {
-        this._globalConfig['group.id'] = this._options.kafkaGroupId
-      }
+        if (this._options.useSyncCommit===undefined) {
+            this._options.useSyncCommit = defaultOptions.useSyncCommit
+        }
+        if (this._options.outputType===undefined) {
+            this._options.outputType = defaultOptions.outputType
+        }
+        if (this._options.autoOffsetReset===undefined) {
+            this._options.autoOffsetReset = "latest"
+        }
+
+        // topic configs
+        this._topicConfig['auto.offset.reset'] = this._options.autoOffsetReset
+
+        // global client options
+        this._globalConfig ['metadata.broker.list'] = this._options.kafkaBrokerList
+
+        if (this._options.kafkaGroupId) {
+            this._globalConfig['group.id'] = this._options.kafkaGroupId
+        }
     }
 
     private _onReady (info: RDKafka.ReadyInfo, metadata: RDKafka.Metadata): void {

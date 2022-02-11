@@ -35,7 +35,7 @@ import { IMessage } from '@mojaloop/platform-shared-lib-messaging-types-lib'
 import { MLKafkaProducer, MLKafkaProducerOptions } from '../../src/rdkafka_producer'
 import { MLKafkaConsumer, MLKafkaConsumerOptions, MLKafkaConsumerOutputType } from '../../src/rdkafka_consumer'
 
-//jest.setTimeout(30000); // change this to suit the test (ms)
+jest.setTimeout(10000); // 10 secs - change this to suit the test (ms)
 
 const logger: ConsoleLogger = new ConsoleLogger()
 let kafkaProducer: MLKafkaProducer
@@ -57,7 +57,7 @@ describe('nodejs-rdkafka-producer', () => {
 
     consumerOptions = {
       kafkaBrokerList: 'localhost:9092',
-      kafkaGroupId: 'test_consumer_group',
+      kafkaGroupId: 'test_consumer_group_'+Date.now(),
       outputType: MLKafkaConsumerOutputType.Json
     }
 
@@ -104,27 +104,56 @@ describe('nodejs-rdkafka-producer', () => {
 
   test('produce and consume json', async () => {
 
-    async function handler (message: IMessage): Promise<void> {
-      logger.debug(`Got message in handler: ${JSON.stringify(message, null, 2)}`)
-      return await Promise.resolve()
-    }
+    return new Promise<void>(async resolve => {
+      const msgTopic = TOPIC_NAME
+      const msgValue = {testProp: Date.now()}
+      const msgHeader = {key1: Buffer.from('testStr')};
 
-    kafkaConsumer.setCallbackFn(handler)
-    kafkaConsumer.setTopics([TOPIC_NAME])
-    await kafkaConsumer.connect()
+      async function handler(message: IMessage): Promise<void> {
+        logger.debug(`Got message in handler: ${JSON.stringify(message, null, 2)}`)
 
-    await kafkaProducer.connect()
+        //expect(message.topic).not.toEqual(msgTopic)
 
-    await kafkaProducer.send({
-      topic: TOPIC_NAME,
-      value: { testProp: 0 },
-      key: null,
-      headers: [
-        { key1: Buffer.from('testStr') }
-      ]
+        expect(message.topic).toEqual(msgTopic)
+
+        expect(message.value).not.toBeNull()
+        expect(message.value).toBeInstanceOf(Object)
+        expect(message.value).toHaveProperty('testProp')
+
+        const msgValObj:{testProp: number} = message.value as {testProp: number}
+
+        expect(msgValObj.testProp).toEqual(msgValue.testProp)
+//        expect(msgValObj.testProp).toEqual(0) // uncomment to test that the test is testing ;)
+
+        expect(message.headers).not.toBeNull()
+        expect(message.headers).toBeInstanceOf(Array)
+        const headerObj:{key1: Buffer}[] = message.headers as {key1: Buffer}[]
+
+        expect(headerObj[0]).not.toBeNull()
+        expect(headerObj[0].key1).toEqual(msgHeader.key1.toString()) // for raw consumer compare with buffer
+
+        logger.info("Got correct message")
+        return resolve();
+      }
+
+      kafkaConsumer.setCallbackFn(handler)
+      kafkaConsumer.setTopics([msgTopic])
+      await kafkaConsumer.connect()
+      await kafkaConsumer.start()
+
+      await kafkaProducer.connect()
+
+      await kafkaProducer.send({
+        topic: msgTopic,
+        value: msgValue,
+        key: null,
+        headers: [
+        msgHeader
+        ]
+      })
+
     })
 
-    //console.log('done sending')
   })
 
 })
