@@ -1479,7 +1479,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mojaloop/platform-shared-lib-messaging-types-lib@^0.0.1, @mojaloop/platform-shared-lib-messaging-types-lib@workspace:modules/messaging-types-lib":
+"@mojaloop/platform-shared-lib-messaging-types-lib@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "@mojaloop/platform-shared-lib-messaging-types-lib@npm:0.0.1"
+  checksum: 844cad7a9a76e5aa5c76228ecd61415ecf0c37717bf46c8d6489a8e0b66b5f8716aa1d260d09612a2960fbdc133322105f002ad6021116f4be8e584ba585f3c9
+  languageName: node
+  linkType: hard
+
+"@mojaloop/platform-shared-lib-messaging-types-lib@workspace:modules/messaging-types-lib":
   version: 0.0.0-use.local
   resolution: "@mojaloop/platform-shared-lib-messaging-types-lib@workspace:modules/messaging-types-lib"
   dependencies:
@@ -1517,8 +1524,6 @@ __metadata:
     "@types/jest": ^27.0.3
     "@types/node-cache": ^4.2.5
     "@typescript-eslint/eslint-plugin": ^5.4.0
-    commander: ^8.3.0
-    dotenv: ^10.0.0
     eslint: ^8.2.0
     eslint-config-prettier: ^8.3.0
     eslint-config-standard-with-typescript: ^21.0.1
