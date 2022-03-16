@@ -145,7 +145,7 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
       const partition = -1 // use default from rdkafka
       const timestamp = msg.timestamp
 
-      let message: Buffer = new Buffer(0) // default
+      let message: Buffer = Buffer.alloc(0) // default
       if (typeof (msg.value) === 'string') {
         message = Buffer.from(msg.value, 'utf-8')
       } else if (typeof (msg.value) === 'object') {
@@ -156,7 +156,7 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
         }
       }
 
-      let key: Buffer = new Buffer(0) // default
+      let key: Buffer = Buffer.alloc(0) // default
       if (typeof (msg.key) === 'string') {
         key = Buffer.from(msg.key, 'utf-8')
       } else if (typeof (msg.key) === 'object') {

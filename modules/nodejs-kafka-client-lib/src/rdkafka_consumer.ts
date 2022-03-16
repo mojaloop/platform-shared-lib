@@ -275,7 +275,7 @@ export class MLKafkaConsumer implements IMessageConsumer {
     }
 
     async start (): Promise<void> {
-      return await new Promise((resolve, reject) => {
+      return await new Promise(async (resolve, reject) => {
         if (!this._client.isConnected()) {
           const err = new Error('MLKafkaConsumer - Client is not connected, cannot start()')
           this._logger?.isErrorEnabled() && this._logger.error(err)
@@ -290,6 +290,8 @@ export class MLKafkaConsumer implements IMessageConsumer {
         this._client.consume()
         this._logger?.isInfoEnabled() && this._logger.info('MLKafkaConsumer - started')
 
+        // need to allow the event loop to process
+        await new Promise(f=> setTimeout(f, 100))
         resolve()
       })
     }
