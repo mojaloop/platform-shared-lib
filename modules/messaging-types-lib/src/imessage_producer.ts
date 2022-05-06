@@ -28,9 +28,9 @@
  --------------
  ******/
 
-'use strict'
+"use strict"
 
-import { IMessage } from './internal_types'
+import { IMessage } from "./internal_types";
 
 export declare interface IMessageProducer{
   destroy: () => Promise<void>

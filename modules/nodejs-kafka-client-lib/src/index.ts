@@ -28,7 +28,7 @@
  --------------
  ******/
 
-'use strict'
+"use strict"
 
-export * from './rdkafka_consumer'
-export * from './rdkafka_producer'
+export * from "./rdkafka_consumer";
+export * from "./rdkafka_producer";

@@ -1,0 +1,3 @@
+undecided:
+  - "@mojaloop/platform-shared-lib"
+  - "@mojaloop/platform-shared-lib-nodejs-kafka-client-lib"

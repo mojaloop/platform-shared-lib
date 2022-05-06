@@ -13,30 +13,26 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "start": "lerna run --no-progress --stream  start",
-    "start:logging-svc": "lerna run build --no-progress --stream --scope='@mojaloop/logging-bc-logging-svc' && lerna run --no-progress --stream --scope='@mojaloop/logging-bc-logging-svc' start",
-    "build": "lerna run --stream build",
-    "watch": "lerna run --no-progress --stream --parallel watch",
+    "start": "yarn workspaces foreach --parallel -v run start",
+    "build": "yarn workspaces foreach -v run build",
+    "watch": "yarn workspaces foreach --parallel -v run watch",
     "clean": "yarn run clean:dist && yarn run clean:npm",
-    "clean:npm": "lerna clean",
-    "clean:dist": "lerna run clean",
+    "clean:npm": "yarn workspaces foreach -v run clean:npm",
+    "clean:dist": "yarn workspaces foreach -v run clean:dist",
     "pretest": "echo 'FIX ME'",
     "standard": "yarn run --no-progress --stream lint'",
-    "lint": "lerna run --no-progress --stream lint",
-    "lint:fix": "lerna run --no-progress --stream lint:fix",
-    "test:unit": "lerna run --progress --stream test:unit",
-    "test:unit-report": "lerna run --progress --stream test:unit-report",
-    "test:coverage": "lerna run --no-progress --stream test:coverage",
-    "test:coverage-check": "lerna run --no-progress --stream test:coverage-check",
-    "test:integration": "lerna run --no-progress --stream test:integration",
-    "audit:resolve": "lerna run --no-progress --stream audit:resolve",
-    "audit:check": "lerna run --no-progress --stream audit:check",
-    "dep:check": "lerna run --no-progress --stream dep:check",
-    "dep:update": "lerna run --no-progress --stream dep:update",
-    "publish": "lerna run --no-progress --stream publish"
-  },
-  "dependencies": {
-    "lerna": "^4.0.0"
+    "lint": "yarn workspaces foreach -v run lint",
+    "lint:fix": "yarn workspaces foreach -v run lint:fix",
+    "test:unit": "yarn workspaces foreach -v run test:unit",
+    "test:coverage": "yarn workspaces foreach --parallel -v run test:coverage",
+    "test:coverage-check": "yarn workspaces foreach --parallel -v run test:coverage-check",
+    "test:integration": "yarn workspaces foreach --parallel -v run test:integration",
+    "audit:resolve": "yarn workspaces foreach --parallel -v run audit:resolve",
+    "audit:check": "yarn workspaces foreach --parallel -v run audit:check",
+    "dep:check": "yarn workspaces foreach --parallel -v run dep:check",
+    "dep:update": "yarn workspaces foreach --parallel -v run dep:update",
+    "publish:messaging-types-lib": "yarn workspace @mojaloop/platform-shared-lib-messaging-types-lib run publish",
+    "publish:nodejs-kafka-client-lib": "yarn workspace @mojaloop/platform-shared-lib-nodejs-kafka-client-lib run publish"
   },
   "devDependencies": {
     "husky": "^7.0.4"
@@ -44,5 +40,8 @@
   "workspaces": [
     "modules/*"
   ],
-  "packageManager": "yarn@3.1.0"
+  "packageManager": "yarn@3.2.0",
+  "engines": {
+    "yarn": "3.2.0"
+  }
 }
