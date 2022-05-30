@@ -29,12 +29,11 @@
  ******/
 
 'use strict'
-import {ConsoleLogger} from "@mojaloop/logging-bc-logging-client-lib";
+import {ConsoleLogger} from "@mojaloop/logging-bc-public-types-lib";
 import {IMessage} from '@mojaloop/platform-shared-lib-messaging-types-lib'
 
 import {MLKafkaProducer, MLKafkaProducerOptions} from '../../src/rdkafka_producer'
 import {MLKafkaConsumer, MLKafkaConsumerOptions, MLKafkaConsumerOutputType} from '../../src/rdkafka_consumer'
-import {resolveAliasedSymbol} from "typedoc/dist/lib/converter/utils/symbols";
 
 jest.setTimeout(10000); // 10 secs - change this to suit the test (ms)
 
@@ -44,14 +43,14 @@ let producerOptions: MLKafkaProducerOptions
 let kafkaConsumer: MLKafkaConsumer
 let consumerOptions: MLKafkaConsumerOptions
 
-const TOPIC_NAME = 'nodejs-rdkafka-producer-unit-test-topic'
+const TOPIC_NAME = "nodejs-rdkafka-producer-unit-test-topic";
 
 describe('nodejs-rdkafka-producer', () => {
 
     beforeAll(async () => {
         producerOptions = {
             kafkaBrokerList: 'localhost:9092',
-            producerClientId: 'test_producer'
+            producerClientId: 'test_producer_'+ Date.now()
         }
 
         kafkaProducer = new MLKafkaProducer(producerOptions, logger)
@@ -110,54 +109,54 @@ describe('nodejs-rdkafka-producer', () => {
         const msgValue = {testProp: Date.now()}
         const msgHeader = {key1: Buffer.from('testStr')};
 
-        async function handler(message: IMessage): Promise<void> {
-            logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
-            receivedMessageCount++;
-            receivedMessage = message;
-            //resolve();
-            return;
-        }
+        return new Promise<void>(async (resolve)=>{
+            async function handler(message: IMessage): Promise<void> {
+                logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
+                receivedMessageCount++;
+                receivedMessage = message;
+                //resolve();
+                //return;
 
-        kafkaConsumer.setCallbackFn(handler);
-        kafkaConsumer.setTopics([msgTopic]);
-        await kafkaConsumer.connect();
-        await kafkaConsumer.start();
 
-        await kafkaProducer.connect();
+                expect(receivedMessage.topic).toEqual(msgTopic);
+                expect(receivedMessage.value).not.toBeNull();
+                expect(receivedMessage.value).toBeInstanceOf(Object);
+                expect(receivedMessage.value).toHaveProperty('testProp');
 
-        await kafkaProducer.send({
-            topic: msgTopic,
-            value: msgValue,
-            key: null,
-            headers: [
-                msgHeader
-            ]
+                const msgValObj: { testProp: number } = receivedMessage.value as { testProp: number };
+                expect(msgValObj.testProp).toEqual(msgValue.testProp);
+                // expect(msgValObj.testProp).toEqual(0); // uncomment to test that the test is testing ;)
+
+                expect(receivedMessage.headers).not.toBeNull();
+                expect(receivedMessage.headers).toBeInstanceOf(Array);
+                const headerObj: { key1: Buffer }[] = receivedMessage.headers as { key1: Buffer }[];
+
+                expect(headerObj[0]).not.toBeNull();
+                expect(headerObj[0].key1).toEqual(msgHeader.key1.toString()); // for raw consumer compare with buffer
+
+                logger.info("Got correct receivedMessage");
+                resolve();
+            }
+
+            kafkaConsumer.setCallbackFn(handler);
+            kafkaConsumer.setTopics([msgTopic]);
+            await kafkaConsumer.connect();
+            await kafkaConsumer.start();
+
+            await kafkaProducer.connect();
+
+            await kafkaProducer.send({
+                topic: msgTopic,
+                value: msgValue,
+                key: null,
+                headers: [
+                    msgHeader
+                ]
+            });
+
+
         });
 
-        // pause to let the consumer consume
-        await new Promise(f => setTimeout(f, 1000));
 
-        // expect(receivedMessageCount).toEqual(0); // just to check
-        expect(receivedMessageCount).toEqual(1)
-
-        expect(receivedMessage.topic).toEqual(msgTopic);
-        expect(receivedMessage.value).not.toBeNull();
-        expect(receivedMessage.value).toBeInstanceOf(Object);
-        expect(receivedMessage.value).toHaveProperty('testProp');
-
-        const msgValObj: { testProp: number } = receivedMessage.value as { testProp: number };
-        expect(msgValObj.testProp).toEqual(msgValue.testProp);
-        // expect(msgValObj.testProp).toEqual(0); // uncomment to test that the test is testing ;)
-
-        expect(receivedMessage.headers).not.toBeNull();
-        expect(receivedMessage.headers).toBeInstanceOf(Array);
-        const headerObj: { key1: Buffer }[] = receivedMessage.headers as { key1: Buffer }[];
-
-        expect(headerObj[0]).not.toBeNull();
-        expect(headerObj[0].key1).toEqual(msgHeader.key1.toString()); // for raw consumer compare with buffer
-
-        logger.info("Got correct receivedMessage");
-
-        return;
     })
 })

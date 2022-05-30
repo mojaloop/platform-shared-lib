@@ -35,7 +35,17 @@
     "publish:nodejs-kafka-client-lib": "yarn workspace @mojaloop/platform-shared-lib-nodejs-kafka-client-lib run publish"
   },
   "devDependencies": {
-    "husky": "^7.0.4"
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.9",
+    "@types/node-cache": "^4.2.5",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^8.14.0",
+    "husky": "^8.0.0",
+    "jest": "^27.3.1",
+    "npm-check-updates": "^12.5.11",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.6.4"
   },
   "workspaces": [
     "modules/*"
