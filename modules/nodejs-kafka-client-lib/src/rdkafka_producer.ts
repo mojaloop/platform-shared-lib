@@ -33,8 +33,8 @@
 import { EventEmitter } from "events";
 import * as RDKafka from "node-rdkafka";
 import { ILogger } from "@mojaloop/logging-bc-public-types-lib";
-import { IMessage, IMessageProducer } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { MessageHeader, NumberNullUndefined } from "node-rdkafka/index";
+import { IMessage, IMessageProducer, IMessageHeader } from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import { NumberNullUndefined } from "node-rdkafka/index";
 
 export class MLKafkaProducerOptions {
     kafkaBrokerList: string
@@ -140,7 +140,7 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
       }
     }
 
-    private _toRDKafkaProduceParams (msg: IMessage): { topic: string, partition: NumberNullUndefined, message: Buffer, key: Buffer, timestamp: NumberNullUndefined, headers: MessageHeader[] } {
+    private _toRDKafkaProduceParams (msg: IMessage): { topic: string, partition: NumberNullUndefined, message: Buffer, key: Buffer, timestamp: NumberNullUndefined, headers: IMessageHeader[] } {
       const topic: string = msg.topic;
       const partition = -1; // use default from rdkafka
       const timestamp = msg.timestamp;
@@ -167,7 +167,7 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
         }
       }
 
-      const headers: MessageHeader[] = [];
+      const headers: IMessageHeader[] = [];
       msg.headers?.forEach((header) => {
         // NOTE: kafka headers are key/value pairs, only one pair will ever exist per header rec
         for (const key in header) {

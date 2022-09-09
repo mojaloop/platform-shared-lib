@@ -45,18 +45,20 @@ let consumerOptions: MLKafkaConsumerOptions
 
 const TOPIC_NAME = "nodejs-rdkafka-producer-unit-test-topic";
 
+const KAFKA_URL = process.env["KAFKA_URL"] || "localhost:9092";
+
 describe('nodejs-rdkafka-producer', () => {
 
     beforeAll(async () => {
         producerOptions = {
-            kafkaBrokerList: 'localhost:9092',
-            producerClientId: 'test_producer_'+ Date.now()
+            kafkaBrokerList: KAFKA_URL,
+            producerClientId: 'test_producer_' + Date.now()
         }
 
         kafkaProducer = new MLKafkaProducer(producerOptions, logger)
 
         consumerOptions = {
-            kafkaBrokerList: 'localhost:9092',
+            kafkaBrokerList: KAFKA_URL,
             kafkaGroupId: 'test_consumer_group_' + Date.now(),
             outputType: MLKafkaConsumerOutputType.Json
         }
@@ -109,7 +111,7 @@ describe('nodejs-rdkafka-producer', () => {
         const msgValue = {testProp: Date.now()}
         const msgHeader = {key1: Buffer.from('testStr')};
 
-        return new Promise<void>(async (resolve)=>{
+        return new Promise<void>(async (resolve) => {
             async function handler(message: IMessage): Promise<void> {
                 logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
                 receivedMessageCount++;
@@ -145,14 +147,18 @@ describe('nodejs-rdkafka-producer', () => {
 
             await kafkaProducer.connect();
 
-            await kafkaProducer.send({
-                topic: msgTopic,
-                value: msgValue,
-                key: null,
-                headers: [
-                    msgHeader
-                ]
-            });
+            // need to wait a bit as a consequence of the connects() and start() being called in sequence
+            // which only occurs in a test scenario
+            setTimeout(async () => {
+                await kafkaProducer.send({
+                    topic: msgTopic,
+                    value: msgValue,
+                    key: null,
+                    headers: [
+                        msgHeader
+                    ]
+                });
+            }, 100);
 
 
         });
