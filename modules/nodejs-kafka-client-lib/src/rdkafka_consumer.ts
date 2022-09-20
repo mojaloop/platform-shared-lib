@@ -199,7 +199,8 @@ export class MLKafkaConsumer implements IMessageConsumer {
         kafkaMsg.headers.forEach((kafkaHeader: RDKafka.MessageHeader) => {
           // NOTE: kafka headers are key/value pairs, only one pair will ever exist per header rec
           for (const key in kafkaHeader) {
-            if (!kafkaHeader.hasOwnProperty(key)) continue;
+            if (! Object.prototype.hasOwnProperty.call(kafkaHeader, key)) continue;
+            //if (! kafkaHeader.hasOwnProperty(key)) continue;
 
             if (this._options.outputType === MLKafkaConsumerOutputType.Json || this._options.outputType === MLKafkaConsumerOutputType.String) {
               msg.headers!.push({ [key]: kafkaHeader[key].toString() });
@@ -242,7 +243,7 @@ export class MLKafkaConsumer implements IMessageConsumer {
     }
 
     async connect (): Promise<void> {
-      return await new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         this._client.connect({ topic: this._topics[0], allTopics: false }, (err: RDKafka.LibrdKafkaError, metadata: RDKafka.Metadata) => {
           if (err) {
             this._logger?.isErrorEnabled() && this._logger.error(err, "MLKafkaConsumer - error connecting to cluster");
@@ -257,7 +258,7 @@ export class MLKafkaConsumer implements IMessageConsumer {
     }
 
     async disconnect (): Promise<void> {
-      return await new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         this._logger?.isInfoEnabled() && this._logger.info("MLKafkaConsumer - disconnect called...");
         if (!this._client.isConnected()) {
           this._logger?.isWarnEnabled() && this._logger.warn("MLKafkaConsumer - disconnect called but consumer is not connected");
@@ -274,8 +275,8 @@ export class MLKafkaConsumer implements IMessageConsumer {
       })
     }
 
-    async start (): Promise<void> {
-      return await new Promise(async (resolve, reject) => {
+    start (): Promise<void> {
+      return new Promise((resolve, reject) => {
         if (!this._client.isConnected()) {
           const err = new Error("MLKafkaConsumer - Client is not connected, cannot start()");
           this._logger?.isErrorEnabled() && this._logger.error(err);
@@ -291,8 +292,11 @@ export class MLKafkaConsumer implements IMessageConsumer {
         this._logger?.isInfoEnabled() && this._logger.info("MLKafkaConsumer - started");
 
         // need to allow the event loop to process
-        await new Promise(f=> setTimeout(f, 100));
-        resolve();
+        //await new Promise(f=> setTimeout(f, 100));
+        // setTimeout(()=>{
+            resolve();
+        // }, 100);
+
       })
     }
 

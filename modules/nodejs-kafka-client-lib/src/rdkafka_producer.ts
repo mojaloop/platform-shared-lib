@@ -171,7 +171,7 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
       msg.headers?.forEach((header) => {
         // NOTE: kafka headers are key/value pairs, only one pair will ever exist per header rec
         for (const key in header) {
-          if (!header.hasOwnProperty(key)) continue;
+          if (!Object.prototype.hasOwnProperty.call(header, key)) continue;
           headers.push({ [key]: header[key] });
         }
       });
@@ -187,8 +187,8 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
     }
 
     async send (message: IMessage | IMessage[] | any): Promise<void> {
-      return await new Promise((resolve, reject) => {
-        const messages: IMessage[] = !Array.isArray(arguments[0]) ? [arguments[0]] as IMessage[] : arguments[0];
+      return new Promise((resolve, reject) => {
+        const messages: IMessage[] = Array.isArray(message) ? message : [message] as IMessage[];
 
         let rejected = false;
         let acksRemaining: number = messages.length;
@@ -229,7 +229,7 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
     }
 
     async disconnect (): Promise<void> {
-      return await new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         this._logger?.isInfoEnabled() && this._logger.info("MLKafkaProducer - disconnect called...");
         if (!this._client.isConnected()) {
           this._logger?.isWarnEnabled() && this._logger.warn("MLKafkaProducer - disconnect called but producer is not connected");
@@ -242,12 +242,12 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
           }
           this._logger?.isInfoEnabled() && this._logger.info("MLKafkaProducer - disconnected.");
           resolve();
-        })
+        });
       });
     }
 
     async connect (): Promise<void> {
-      return await new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         this._client.connect(undefined, (err: RDKafka.LibrdKafkaError, metadata: RDKafka.Metadata) => {
           if (err) {
             this._logger?.isErrorEnabled() && this._logger.error(err, "MLKafkaProducer - error connecting to cluster");
@@ -257,7 +257,7 @@ export class MLKafkaProducer extends EventEmitter implements IMessageProducer {
           this._logger?.isDebugEnabled() && this._logger.debug(`MLKafkaProducer::event.ready - metadata: ${JSON.stringify(metadata, null, 2)}`);
           this._logger?.isInfoEnabled() && this._logger.info("MLKafkaProducer - connected!");
           resolve();
-        })
+        });
       });
     }
 
