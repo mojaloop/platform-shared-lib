@@ -13,31 +13,30 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "start": "yarn workspaces foreach --parallel -v run start",
-    "build": "yarn workspaces foreach -v run build",
-    "watch": "yarn workspaces foreach --parallel -v run watch",
-    "clean": "yarn run clean:dist && yarn run clean:npm",
-    "clean:npm": "yarn workspaces foreach -v run clean:npm",
-    "clean:dist": "yarn workspaces foreach -v run clean:dist",
+    "start": "npm -ws run start",
+    "build": "npm -ws run build",
+    "watch": "npm -ws --parallel run watch",
+    "clean": "npm run clean:dist && npm run clean:npm",
+    "clean:npm": "npm -ws --parallel run clean:npm",
+    "clean:dist": "npm -ws --parallel run clean:dist",
     "pretest": "echo 'FIX ME'",
-    "standard": "yarn run --no-progress --stream lint'",
-    "lint": "yarn workspaces foreach -v run lint",
-    "lint:fix": "yarn workspaces foreach -v run lint:fix",
-    "test:unit": "yarn workspaces foreach -v run test:unit",
-    "test:coverage": "yarn workspaces foreach --parallel -v run test:coverage",
-    "test:coverage-check": "yarn workspaces foreach --parallel -v run test:coverage-check",
-    "test:integration": "yarn workspaces foreach --parallel -v run test:integration",
-    "audit:resolve": "yarn workspaces foreach --parallel -v run audit:resolve",
-    "audit:check": "yarn workspaces foreach --parallel -v run audit:check",
-    "dep:check": "yarn workspaces foreach --parallel -v run dep:check",
-    "dep:update": "yarn workspaces foreach --parallel -v run dep:update",
-    "publish:messaging-types-lib": "yarn workspace @mojaloop/platform-shared-lib-messaging-types-lib run publish",
-    "publish:nodejs-kafka-client-lib": "yarn workspace @mojaloop/platform-shared-lib-nodejs-kafka-client-lib run publish"
+    "standard": "npm -ws --parallel --no-progress --stream lint'",
+    "lint": "npm -ws --parallel run lint",
+    "lint:fix": "npm -ws --parallel run lint:fix",
+    "test:unit": "npm -ws --parallel run test:unit",
+    "test:coverage": "npm -ws --parallel run test:coverage",
+    "test:coverage-check": "npm -ws --parallel run test:coverage-check",
+    "test:integration": "npm -ws --parallel run test:integration",
+    "audit:resolve": "npm audit fix",
+    "audit:check": "npm audit",
+    "dep:check": "npm -ws --parallel run dep:check",
+    "dep:update": "npm -ws --parallel run dep:update",
+    "publish:messaging-types-lib": "npm -w @mojaloop/platform-shared-lib-messaging-types-lib run npm_publish",
+    "publish:nodejs-kafka-client-lib": "npm -w @mojaloop/platform-shared-lib-nodejs-kafka-client-lib run npm_publish"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.9",
-    "@types/node-cache": "^4.2.5",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
     "eslint": "^8.14.0",
@@ -48,10 +47,7 @@
     "typescript": "^4.6.4"
   },
   "workspaces": [
+    "modules/messaging-types-lib",
     "modules/*"
-  ],
-  "packageManager": "yarn@3.2.0",
-  "engines": {
-    "yarn": "3.2.0"
-  }
+  ]
 }
