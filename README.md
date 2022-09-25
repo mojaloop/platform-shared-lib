@@ -1,32 +1,15 @@
-# platform-shared-lib
+# Mojaloop vNext - Platform Shared Libraries
 
 **EXPERIMENTAL** vNext Platform Shared Lib Bounded Context Mono Repository
 
-{{DESCRIPTION}}
+## Packages / Libraries included
 
-## Modules
-
-### messaging-types-lib
-
-{{DESCRIPTION}}
-
-#### Run
-
-```bash
-TBD
-```
-
-### nodejs-kafka-client-lib
-
-{{DESCRIPTION}}
-
-#### Run
-
-```bash
-TBD
-```
+- [messaging-types-lib](https://github.com/mojaloop/platform-shared-lib/tree/main/modules/messaging-types-lib) - Generic Messaging Types Library for the vNext Mojaloop platform.
+- [nodejs-kafka-client-lib](https://github.com/mojaloop/platform-shared-lib/tree/main/modules/nodejs-kafka-client-lib) - Kafka library implementation of the general messaging consumer and publisher interfaces.
 
 ## Usage
+
+See per package documentation above
 
 ### Install Node version
 
@@ -37,32 +20,26 @@ nvm install
 nvm use
 ```
 
-### Install Yarn
-
-```bash
-npm -g yarn
-```
-
 ### Install Dependencies
 
 ```bash
-yarn
+npm install
 ```
 
 ## Build
 
 ```bash
-yarn build
-```
-
-## Run
-
-```bash
-yarn start
+npm run build
 ```
 
 ## Unit Tests
 
 ```bash
 yarn test:unit
+```
+
+## Integration Tests
+
+```bash
+yarn test:integration
 ```

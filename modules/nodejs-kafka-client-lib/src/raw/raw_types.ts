@@ -30,14 +30,38 @@
 
 "use strict"
 
-export interface IMessageHeader {
-  [key: string]: string | Buffer
+export interface IRawMessageHeader {
+  [key: string]: string | Buffer;
 }
 
-export interface IMessage {
-  value: Buffer | string | object | null
-  topic: string
-  key: Buffer | string | null
-  timestamp: number | null
-  headers: IMessageHeader[] | null
+export interface IRawMessage {
+  value: Buffer | string | object | null;
+  topic: string;
+  key: Buffer | string | null;
+  timestamp: number | null;
+  headers: IRawMessageHeader[] | null;
+
+  partition: number | null;
+  offset: number | null;
+}
+
+export interface IRawMessageConsumer {
+  setCallbackFn: (handlerCallback: (message: IRawMessage) => Promise<void>) => void;
+  setTopics: (topics: string[]) => void;
+
+  destroy: (force: boolean) => Promise<void>;
+
+  connect: () => Promise<void>;
+  disconnect: (force: boolean) => Promise<void>;
+  start: () => Promise<void>;
+  stop: () => Promise<void>;
+}
+
+export declare interface IRawMessageProducer {
+  destroy: () => Promise<void>;
+
+  connect: () => Promise<void>;
+  disconnect: () => Promise<void>;
+
+  send: (message: IRawMessage | IRawMessage[] | any) => Promise<void>;
 }
