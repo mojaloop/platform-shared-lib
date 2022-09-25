@@ -35,11 +35,11 @@ npm run build
 ## Unit Tests
 
 ```bash
-yarn test:unit
+npm run test:unit
 ```
 
 ## Integration Tests
 
 ```bash
-yarn test:integration
+npm run test:integration
 ```
