@@ -29,8 +29,8 @@
     "test:integration": "npm -ws --parallel --if-present run test:integration",
     "audit:resolve": "npm audit fix",
     "audit:check": "npm audit",
-    "dep:check": "ncu -e 2 && npm -ws --parallel run dep:check",
-    "dep:update": "ncu -e 2 -u && npm -ws --parallel run dep:update",
+    "dep:check": "npm exec ncu -e 2 && npm -ws --parallel run dep:check",
+    "dep:update": "npm exec ncu -e 2 -u && npm -ws --parallel run dep:update",
     "publish:messaging-types-lib": "npm -w @mojaloop/platform-shared-lib-messaging-types-lib run npm_publish",
     "publish:nodejs-kafka-client-lib": "npm -w @mojaloop/platform-shared-lib-nodejs-kafka-client-lib run npm_publish"
   },
