@@ -31,6 +31,7 @@
     "audit:check": "npm audit",
     "dep:check": "npm exec ncu -e 2 && npm -ws --parallel run dep:check",
     "dep:update": "npm exec ncu -e 2 -u && npm -ws --parallel run dep:update",
+    "publish:public-messages-lib": "npm -w @mojaloop/platform-shared-lib-public-messages-lib run npm_publish",
     "publish:messaging-types-lib": "npm -w @mojaloop/platform-shared-lib-messaging-types-lib run npm_publish",
     "publish:nodejs-kafka-client-lib": "npm -w @mojaloop/platform-shared-lib-nodejs-kafka-client-lib run npm_publish"
   },

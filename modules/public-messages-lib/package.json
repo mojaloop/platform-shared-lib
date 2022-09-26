@@ -1,9 +1,9 @@
 {
-  "name": "@mojaloop/platform-shared-lib-messaging-types-lib",
-  "version": "0.2.0",
-  "description": "mojaloop vnext platform shared libraries - generic messaging types lib",
+  "name": "@mojaloop/platform-shared-lib-public-messages-lib",
+  "version": "0.1.0",
+  "description": "mojaloop vnext platform shared libraries - public messages lib",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/mojaloop/platform-shared-lib/tree/main/modules/messaging-types-lib",
+  "homepage": "https://github.com/mojaloop/platform-shared-lib/tree/main/modules/public-messages-lib",
   "bugs": {
     "url": "https://github.com/mojaloop/platform-shared-lib/issues#readme"
   },
@@ -32,6 +32,9 @@
     "dep:check": "npm exec ncu -e 2",
     "dep:update": "npm exec ncu -e 2 -u",
     "npm_publish": "npm version patch && npm publish --tag=latest --access public"
+  },
+  "dependencies": {
+    "@mojaloop/platform-shared-lib-messaging-types-lib": "~0.2.0"
   },
   "devDependencies": {
     "eslint": "^8.23.1",

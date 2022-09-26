@@ -40,8 +40,8 @@ export enum MessageTypes{
 
 export interface IMessage{
     msgType: MessageTypes;
-    msgName: string;             // name of the event or command
-    msgId: string;               // unique per message
+    msgName: string;                    // name of the event or command
+    msgId: string;                      // unique per message
     msgTimestamp: number;
     msgTopic: string;
     msgKey: string | null;              // usually the id of the aggregate (used for partitioning)
@@ -49,11 +49,14 @@ export interface IMessage{
     msgOffset: number | null;
 
     payload: any;
+
+    fspiopOpaqueState: any | null;            // FSPIOP Interop API opaque state token - all messages produced as response to this should copy it if present
+    // iso20022OpaqueState: any | null;      // future place for ISO 20022 Interop API opaque state token - all messages produced as response to this should copy it if present
 }
 
 export interface IDomainMessage extends IMessage{
-    aggregateName: string       // name of the source/target aggregate (source if event, target if command)
-    aggregateId: string         // id of the source/target aggregate (source if event, target if command)
+    boundedContextName: string       // name of the source/target BC (source if event, target if command)
+    aggregateId: string              // id of the source/target aggregate (source if event, target if command)
 }
 
 
@@ -69,21 +72,29 @@ export abstract class DomainMsg implements IDomainMessage {
     abstract msgTopic: string;
 
     abstract aggregateId: string;
-    abstract aggregateName: string;
+    abstract boundedContextName: string;
 
     abstract payload: any
+
+    abstract fspiopOpaqueState: any | null;
 }
 
 export abstract class StateEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.STATE_EVENT;
+
+    fspiopOpaqueState = null;
 }
 
 export abstract class DomainEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.DOMAIN_EVENT;
+
+    fspiopOpaqueState = null;
 }
 
 export abstract class CommandMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.COMMAND;
+
+    fspiopOpaqueState = null;
 }
 
 // export abstract class StateSnapshotMsg extends DomainMsg {
