@@ -34,14 +34,14 @@
 
 "use strict"
 
-export const BOUNDED_CONTEXT_NAME = "AccountLookupBc";
-export const AGGREGATE_NAME = "Party";
+const BOUNDED_CONTEXT_NAME = "AccountLookupBc";
+const AGGREGATE_NAME = "Party";
 
-export enum AccountLookupBCTopics {
+enum AccountLookupBCTopics {
     "DomainEvents" = "AccountLookupBcEvents"
 }
 
-export enum AccountLookupBCEvents {
+enum AccountLookupBCEvents {
     ParticipantAssociationRequested = "ParticipantAssociationRequested",
     ParticipantDisassociateRequest = "ParticipantDisassociateRequest",
     ParticipantQueryReceived = "ParticipantQueryReceived",
@@ -52,5 +52,7 @@ export enum AccountLookupBCEvents {
     AccountLookUperror = "AccountLookUperror"
 }
 
-
+export { AccountLookupBCTopics, AccountLookupBCEvents, BOUNDED_CONTEXT_NAME, AGGREGATE_NAME };
+export * from "./requests";
+export *from "./responses";
 
