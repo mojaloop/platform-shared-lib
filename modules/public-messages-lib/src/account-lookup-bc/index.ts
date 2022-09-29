@@ -25,6 +25,10 @@
  * Crosslake
  - Pedro Sousa Barreto <pedrob@crosslaketech.com>
 
+ * Arg Software
+ - Jose Francisco Antunes<jfantunes@arg.software>
+ - Rui Rocha<rui.rocha@arg.software>
+
  --------------
  ******/
 

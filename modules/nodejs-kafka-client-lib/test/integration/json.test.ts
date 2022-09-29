@@ -121,7 +121,8 @@ describe("JSON - nodejs-rdkafka", () => {
                     msgTopic: TOPIC_NAME_JSON,
                     payload: {
                         testProp: "propValue"
-                    }
+                    },
+                    fspiopOpaqueState: {}
                 })
             }
 
@@ -147,7 +148,8 @@ describe("JSON - nodejs-rdkafka", () => {
             msgTopic: TOPIC_NAME_JSON,
             payload: {
                 testProp: "propValue"
-            }
+            },
+            fspiopOpaqueState: {}
         },{
             msgId: "msgId",
             msgName: "msgName",
@@ -159,7 +161,8 @@ describe("JSON - nodejs-rdkafka", () => {
             msgTopic: TOPIC_NAME_JSON,
             payload: {
                 testProp: "propValue"
-            }
+            },
+            fspiopOpaqueState: {}
         }];
 
         return new Promise<void>(async (resolve) => {
