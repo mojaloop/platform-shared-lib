@@ -63,7 +63,6 @@ export interface IDomainMessage extends IMessage{
 export abstract class DomainMsg implements IDomainMessage {
     msgId: string = Crypto.randomUUID();
     msgTimestamp: number = Date.now();
-    msgName: string = (this as any).constructor.name;
     msgPartition: number | null = null;
     msgOffset: number | null;
 
@@ -73,6 +72,7 @@ export abstract class DomainMsg implements IDomainMessage {
 
     abstract aggregateId: string;
     abstract boundedContextName: string;
+    abstract msgName: string;
 
     abstract payload: any
 
