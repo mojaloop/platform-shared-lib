@@ -12,11 +12,13 @@ module.exports = {
   coverageDirectory: `../../coverage/${packageName}/`,
   clearMocks: true,
   coverageThreshold: {
-    global: {
-      statements: 90,
-      functions: 90,
-      branches: 90,
-      lines: 90
-    }
+    
   }
 }
+
+// global: {
+//   statements: 90,
+//   functions: 90,
+//   branches: 90,
+//   lines: 90
+// }

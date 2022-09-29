@@ -11,12 +11,12 @@ module.exports = {
   coverageReporters: ["json", "lcov"],
   coverageDirectory: `../../coverage/${packageName}/`,
   clearMocks: true,
-  coverageThreshold: {
-    global: {
-      statements: 90,
-      functions: 90,
-      branches: 90,
-      lines: 90
-    }
-  }
+  coverageThreshold: {}
 }
+
+// global: {
+//   statements: 90,
+//   functions: 90,
+//   branches: 90,
+//   lines: 90
+// }
