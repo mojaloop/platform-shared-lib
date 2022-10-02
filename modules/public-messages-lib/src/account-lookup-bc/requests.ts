@@ -62,7 +62,17 @@ export class ParticipantAssociationRequestReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void { 
-        throw new Error("Method not implemented.");
+        const { ownerFspId, partyId, partyType } = this.payload;
+
+		if (!ownerFspId) {
+            throw new Error("ownerFspId is required.");
+		}
+		if (!partyId) {
+            throw new Error("partyId is required.");
+		}
+        if (!partyType) {
+            throw new Error("partyType is required.");
+		}
     }
 }
 
@@ -92,7 +102,17 @@ export class ParticipantDisassociateRequestReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void { 
-        throw new Error("Method not implemented.");
+        const { ownerFspId, partyId, partyType } = this.payload;
+
+		if (!ownerFspId) {
+            throw new Error("ownerFspId is required.");
+		}
+		if (!partyId) {
+            throw new Error("partyId is required.");
+		}
+        if (!partyType) {
+            throw new Error("partyType is required.");
+		}
     }
 }
 
@@ -121,7 +141,17 @@ export class ParticipantQueryReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void { 
-        throw new Error("Method not implemented.");
+        const { requesterFspId, partyId, partyType } = this.payload;
+
+		if (!requesterFspId) {
+            throw new Error("requesterFspId is required.");
+		}
+		if (!partyId) {
+            throw new Error("partyId is required.");
+		}
+        if (!partyType) {
+            throw new Error("partyType is required.");
+		}
     }
 }
 
@@ -152,7 +182,17 @@ export class PartyQueryReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void { 
-        throw new Error("Method not implemented.");
+        const { requesterFspId, partyId, partyType } = this.payload;
+
+		if (!requesterFspId) {
+            throw new Error("requesterFspId is required.");
+		}
+		if (!partyId) {
+            throw new Error("partyId is required.");
+		}
+        if (!partyType) {
+            throw new Error("partyType is required.");
+		}
     }
 }
 
@@ -187,6 +227,22 @@ export class PartyInfoAvailableEvt extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        throw new Error("Method not implemented.");
+        const { requesterFspId, ownerFspId, partyId, partyType, partyName } = this.payload;
+
+		if (!requesterFspId) {
+            throw new Error("requesterFspId is required.");
+		}
+        if (!ownerFspId) {
+            throw new Error("ownerFspId is required.");
+        }
+		if (!partyId) {
+            throw new Error("partyId is required.");
+		}
+        if (!partyType) {
+            throw new Error("partyType is required.");
+		}
+        if (!partyName) {
+            throw new Error("partyName is required.");
+		}
      }
 }
