@@ -38,11 +38,7 @@ import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-li
 import { BOUNDED_CONTEXT_NAME, AGGREGATE_NAME, AccountLookupBCTopics, AccountLookupBCEvents } from ".";
 
 export type ParticipantAssociationCreatedEvtPayload = {
-    requesterFspId: string;
-    ownerFspId: string;
     partyId: string;
-    partyType: string;
-    partySubType: string | null;
 }
 
 export class ParticipantAssociationCreatedEvt extends DomainEventMsg {
@@ -62,19 +58,9 @@ export class ParticipantAssociationCreatedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        const { requesterFspId, ownerFspId, partyId, partyType } = this.payload;
-
-        if (!requesterFspId) {
-            throw new Error("requesterFspId is required.");
-		}
-		if (!ownerFspId) {
-            throw new Error("ownerFspId is required.");
-		}
+        const { partyId } = this.payload;
 		if (!partyId) {
             throw new Error("partyId is required.");
-		}
-        if (!partyType) {
-            throw new Error("partyType is required.");
 		}
      }
 }
