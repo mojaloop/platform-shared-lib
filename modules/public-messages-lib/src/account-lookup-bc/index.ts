@@ -44,6 +44,8 @@ enum AccountLookupBCTopics {
 enum AccountLookupBCEvents {
     ParticipantAssociationRequested = "ParticipantAssociationRequested",
     ParticipantDisassociateRequest = "ParticipantDisassociateRequest",
+    ParticipantAssociationCreated = "ParticipantAssociationCreated",
+    ParticipantAssociationRemoved = "ParticipantAssociationRemoved",
     ParticipantQueryReceived = "ParticipantQueryReceived",
     PartyInfoAvailable = "PartyInfoAvailable",
     ParticipantQueryResponse = "ParticipantQueryResponse",
