@@ -80,14 +80,10 @@ export class ParticipantAssociationCreatedEvt extends DomainEventMsg {
 }
 
 export type ParticipantAssociationRemovedEvtPayload = {
-    requesterFspId: string;
-    ownerFspId: string;
     partyId: string;
-    partyType: string;
-    partySubType: string | null;
 }
 
-export class ParticipantAssociationRemovedEvt extends DomainEventMsg {
+export class ParticipantAssociationAssociationRemovedEvt extends DomainEventMsg {
     boundedContextName: string = BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME;
@@ -104,19 +100,9 @@ export class ParticipantAssociationRemovedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        const { requesterFspId, ownerFspId, partyId, partyType } = this.payload;
-
-        if (!requesterFspId) {
-            throw new Error("requesterFspId is required.");
-		}
-		if (!ownerFspId) {
-            throw new Error("ownerFspId is required.");
-		}
+        const { partyId } = this.payload;
 		if (!partyId) {
             throw new Error("partyId is required.");
-		}
-        if (!partyType) {
-            throw new Error("partyType is required.");
 		}
      }
 }
@@ -255,32 +241,6 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
         if (!partyType) {
             throw new Error("partyType is required.");
 		}
-    }
-}
-
-
-export type PartyAssociationCreatedEvtPayload = {
-    partyId: string;
-}
-
-export class PartyAssociationCreatedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
-    aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainEvents;
-    msgName: string = AccountLookupBCEvents.PartyQueryResponse;
-    payload: PartyAssociationCreatedEvtPayload;
-
-    constructor (payload: PartyAssociationCreatedEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.partyId;
-        this.payload = payload;
-    }
-
-    validatePayload (): void { 
-        throw new Error("Method not implemented.");
     }
 }
 
