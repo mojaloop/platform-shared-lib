@@ -161,6 +161,7 @@ export type PartyQueryReceivedEvtPayload = {
     partyId: string;
     partyType: string;
     partySubType: string | null;
+    destinationFspId: string | null;
     currency: string | null;            // optional currency, ISO format
 }
 
@@ -202,8 +203,8 @@ export type PartyInfoAvailableEvtPayload = {
     partyId: string;
     partyType: string;
     partySubType: string | null;
+    destinationFspId: string | null;
     currency: string | null;            // optional currency, ISO format
-
     // actual party info
     partyName: string;
     partyDoB: Date | null;

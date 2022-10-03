@@ -69,7 +69,7 @@ export type ParticipantAssociationRemovedEvtPayload = {
     partyId: string;
 }
 
-export class ParticipantAssociationAssociationRemovedEvt extends DomainEventMsg {
+export class ParticipantAssociationRemovedEvt extends DomainEventMsg {
     boundedContextName: string = BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME;

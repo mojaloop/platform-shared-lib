@@ -42,16 +42,16 @@ enum AccountLookupBCTopics {
 }
 
 enum AccountLookupBCEvents {
-    ParticipantAssociationRequested = "ParticipantAssociationRequested",
-    ParticipantDisassociateRequest = "ParticipantDisassociateRequest",
-    ParticipantAssociationCreated = "ParticipantAssociationCreated",
-    ParticipantAssociationRemoved = "ParticipantAssociationRemoved",
-    ParticipantQueryReceived = "ParticipantQueryReceived",
-    PartyInfoAvailable = "PartyInfoAvailable",
-    ParticipantQueryResponse = "ParticipantQueryResponse",
-    PartyInfoRequested = "PartyInfoRequested",
-    PartyQueryResponse = "PartyQueryResponse",
-    AccountLookUperror = "AccountLookUperror"
+    ParticipantAssociationRequested = "[Account Lookup] ParticipantAssociationRequested",
+    ParticipantDisassociateRequest = "[Account Lookup] ParticipantDisassociateRequest",
+    ParticipantAssociationCreated = "[Account Lookup] ParticipantAssociationCreated",
+    ParticipantAssociationRemoved = "[Account Lookup] ParticipantAssociationRemoved",
+    ParticipantQueryReceived = "[Account Lookup] ParticipantQueryReceived",
+    PartyInfoAvailable = "[Account Lookup] PartyInfoAvailable",
+    ParticipantQueryResponse = "[Account Lookup] ParticipantQueryResponse",
+    PartyInfoRequested = "[Account Lookup] PartyInfoRequested",
+    PartyQueryResponse = "[Account Lookup] PartyQueryResponse",
+    AccountLookUperror = "[Account Lookup] AccountLookUp Error"
 }
 
 export { AccountLookupBCTopics, AccountLookupBCEvents, BOUNDED_CONTEXT_NAME, AGGREGATE_NAME };
