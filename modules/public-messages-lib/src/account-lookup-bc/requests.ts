@@ -37,14 +37,14 @@
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { BOUNDED_CONTEXT_NAME, AGGREGATE_NAME, AccountLookupBCTopics, AccountLookupBCEvents } from ".";
 
-export type ParticipantAssociationRequestReceivedEvtPayload = {
+export type PartyAssociationRequestReceivedEvtPayload = {
     ownerFspId: string;
     partyId: string;
     partyType: string;
     partySubType: string | null;
 }
 
-export class ParticipantAssociationRequestReceivedEvt extends DomainEventMsg {
+export class PartyAssociationRequestReceivedEvt extends DomainEventMsg {
     boundedContextName: string = BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME;
@@ -52,9 +52,9 @@ export class ParticipantAssociationRequestReceivedEvt extends DomainEventMsg {
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
     msgName: string = AccountLookupBCEvents.ParticipantAssociationRequested;
 
-    payload: ParticipantAssociationRequestReceivedEvtPayload;
+    payload: PartyAssociationRequestReceivedEvtPayload;
 
-    constructor (payload: ParticipantAssociationRequestReceivedEvtPayload) {
+    constructor (payload: PartyAssociationRequestReceivedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.partyId;

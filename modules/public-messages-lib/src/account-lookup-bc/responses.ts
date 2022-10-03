@@ -134,6 +134,32 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
     }
 }
 
+
+export type PartyAssociationCreatedEvtPayload = {
+    partyId: string;
+}
+
+export class PartyAssociationCreatedEvt extends DomainEventMsg {
+    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+    msgName: string = AccountLookupBCEvents.PartyQueryResponse;
+    payload: PartyAssociationCreatedEvtPayload;
+
+    constructor (payload: PartyAssociationCreatedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void { 
+        throw new Error("Method not implemented.");
+    }
+}
+
 export type AccountLookUperrorEvtPayload = {
     partyId: string;
     errorMsg: string;
