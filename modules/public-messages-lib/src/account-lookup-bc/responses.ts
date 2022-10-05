@@ -47,7 +47,6 @@ export class ParticipantAssociationCreatedEvt extends DomainEventMsg {
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
-    msgName: string = AccountLookupBCEvents.ParticipantAssociationCreated;
     payload: ParticipantAssociationCreatedEvtPayload;
 
     constructor (payload: ParticipantAssociationCreatedEvtPayload) {
@@ -75,7 +74,6 @@ export class ParticipantAssociationRemovedEvt extends DomainEventMsg {
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
-    msgName: string = AccountLookupBCEvents.ParticipantAssociationRemoved;
     payload: ParticipantAssociationRemovedEvtPayload;
 
     constructor (payload: ParticipantAssociationRemovedEvtPayload) {
@@ -109,7 +107,6 @@ export class ParticipantQueryResponseEvt extends DomainEventMsg {
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
-    msgName: string = AccountLookupBCEvents.ParticipantQueryResponse;
     payload: ParticipantQueryResponseEvtPayload;
 
     constructor (payload: ParticipantQueryResponseEvtPayload) {
@@ -153,7 +150,6 @@ export class PartyInfoRequestedEvt extends DomainEventMsg {
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
-    msgName: string = AccountLookupBCEvents.PartyInfoRequested;
     payload: PartyInfoRequestedEvtPayload;
 
     constructor (payload: PartyInfoRequestedEvtPayload) {
@@ -202,7 +198,6 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
-    msgName: string = AccountLookupBCEvents.PartyQueryResponse;
     payload: PartyQueryResponseEvtPayload;
 
     constructor (payload: PartyQueryResponseEvtPayload) {
@@ -241,7 +236,6 @@ export class AccountLookUperrorEvt extends DomainEventMsg {
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
-    msgName: string = AccountLookupBCEvents.AccountLookUperror;
     payload: AccountLookUperrorEvtPayload;
 
     constructor (payload: AccountLookUperrorEvtPayload) {

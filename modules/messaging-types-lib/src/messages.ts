@@ -66,13 +66,15 @@ export abstract class DomainMsg implements IDomainMessage {
     msgPartition: number | null = null;
     msgOffset: number | null;
 
+    msgName: string = (this as any).constructor.name;
+
     abstract msgType: MessageTypes;
     abstract msgKey: string;
     abstract msgTopic: string;
 
     abstract aggregateId: string;
     abstract boundedContextName: string;
-    abstract msgName: string;
+    //abstract msgName: string;
 
     abstract payload: any
 

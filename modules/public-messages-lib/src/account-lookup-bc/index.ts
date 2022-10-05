@@ -32,7 +32,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 const BOUNDED_CONTEXT_NAME = "AccountLookupBc";
 const AGGREGATE_NAME = "Party";
@@ -56,5 +56,5 @@ enum AccountLookupBCEvents {
 
 export { AccountLookupBCTopics, AccountLookupBCEvents, BOUNDED_CONTEXT_NAME, AGGREGATE_NAME };
 export * from "./requests";
-export *from "./responses";
+export * from "./responses";
 
