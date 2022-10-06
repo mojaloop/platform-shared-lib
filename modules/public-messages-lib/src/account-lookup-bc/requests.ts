@@ -35,7 +35,7 @@
 "use strict"
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { BOUNDED_CONTEXT_NAME, AGGREGATE_NAME, AccountLookupBCTopics, AccountLookupBCEvents } from ".";
+import { BOUNDED_CONTEXT_NAME, AGGREGATE_NAME, AccountLookupBCTopics } from ".";
 
 export type ParticipantAssociationRequestReceivedEvtPayload = {
     ownerFspId: string;

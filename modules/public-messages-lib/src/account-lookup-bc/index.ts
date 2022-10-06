@@ -41,20 +41,7 @@ enum AccountLookupBCTopics {
     "DomainEvents" = "AccountLookupBcEvents"
 }
 
-enum AccountLookupBCEvents {
-    ParticipantAssociationRequested = "[Account Lookup] ParticipantAssociationRequested",
-    ParticipantDisassociateRequest = "[Account Lookup] ParticipantDisassociateRequest",
-    ParticipantAssociationCreated = "[Account Lookup] ParticipantAssociationCreated",
-    ParticipantAssociationRemoved = "[Account Lookup] ParticipantAssociationRemoved",
-    ParticipantQueryReceived = "[Account Lookup] ParticipantQueryReceived",
-    PartyInfoAvailable = "[Account Lookup] PartyInfoAvailable",
-    ParticipantQueryResponse = "[Account Lookup] ParticipantQueryResponse",
-    PartyInfoRequested = "[Account Lookup] PartyInfoRequested",
-    PartyQueryResponse = "[Account Lookup] PartyQueryResponse",
-    AccountLookUperror = "[Account Lookup] AccountLookUp Error"
-}
-
-export { AccountLookupBCTopics, AccountLookupBCEvents, BOUNDED_CONTEXT_NAME, AGGREGATE_NAME };
+export { AccountLookupBCTopics , BOUNDED_CONTEXT_NAME, AGGREGATE_NAME };
 export * from "./requests";
 export * from "./responses";
 

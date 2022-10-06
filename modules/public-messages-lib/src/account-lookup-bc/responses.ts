@@ -35,7 +35,7 @@
 "use strict"
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { BOUNDED_CONTEXT_NAME, AGGREGATE_NAME, AccountLookupBCTopics, AccountLookupBCEvents } from ".";
+import { BOUNDED_CONTEXT_NAME, AGGREGATE_NAME, AccountLookupBCTopics } from ".";
 
 export type ParticipantAssociationCreatedEvtPayload = {
     partyId: string;
@@ -186,7 +186,7 @@ export type PartyQueryResponseEvtPayload = {
     partyType: string;
     partySubType: string | null;
     currency: string | null;            // optional currency, ISO format
-
+    destinationFspId: string,
     // actual party info
     partyName: string;
     partyDoB: Date | null;
@@ -228,6 +228,7 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
 export type AccountLookUperrorEvtPayload = {
     partyId: string;
     errorMsg: string;
+    sourceEvent: string;
 }
 
 export class AccountLookUperrorEvt extends DomainEventMsg {
