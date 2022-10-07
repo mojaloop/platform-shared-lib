@@ -226,7 +226,10 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
 }
 
 export type AccountLookUperrorEvtPayload = {
+    requesterFspId: string;
     partyId: string;
+    partyType: string;
+    partySubType: string | null;
     errorMsg: string;
     sourceEvent: string;
 }
