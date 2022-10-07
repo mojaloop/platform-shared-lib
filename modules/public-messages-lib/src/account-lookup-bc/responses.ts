@@ -38,7 +38,10 @@ import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-li
 import { BOUNDED_CONTEXT_NAME, AGGREGATE_NAME, AccountLookupBCTopics } from ".";
 
 export type ParticipantAssociationCreatedEvtPayload = {
+    ownerFspId: string;
     partyId: string;
+    partyType: string;
+    partySubType: string | null;
 }
 
 export class ParticipantAssociationCreatedEvt extends DomainEventMsg {
@@ -65,7 +68,10 @@ export class ParticipantAssociationCreatedEvt extends DomainEventMsg {
 }
 
 export type ParticipantAssociationRemovedEvtPayload = {
+    ownerFspId: string;
     partyId: string;
+    partyType: string;
+    partySubType: string | null;
 }
 
 export class ParticipantAssociationRemovedEvt extends DomainEventMsg {
