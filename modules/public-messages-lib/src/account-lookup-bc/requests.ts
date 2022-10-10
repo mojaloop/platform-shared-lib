@@ -211,7 +211,7 @@ export class PartyInfoAvailableEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+    msgTopic: string = AccountLookupBCTopics.DomainRequests;
     payload: PartyInfoAvailableEvtPayload;
 
     constructor (payload: PartyInfoAvailableEvtPayload) {

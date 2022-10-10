@@ -38,7 +38,8 @@ const BOUNDED_CONTEXT_NAME = "AccountLookupBc";
 const AGGREGATE_NAME = "Party";
 
 enum AccountLookupBCTopics {
-    "DomainEvents" = "AccountLookupBcEvents"
+    "DomainEvents" = "AccountLookupBcEvents",
+    "DomainRequests" = "AccountLookupBcRequests"
 }
 
 export { AccountLookupBCTopics , BOUNDED_CONTEXT_NAME, AGGREGATE_NAME };
