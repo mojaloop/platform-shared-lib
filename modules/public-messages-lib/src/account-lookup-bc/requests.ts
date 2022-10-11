@@ -49,7 +49,7 @@ export class ParticipantAssociationRequestReceivedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+    msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
     payload: ParticipantAssociationRequestReceivedEvtPayload;
 
@@ -88,7 +88,7 @@ export class ParticipantDisassociateRequestReceivedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+    msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
     payload: ParticipantDisassociateRequestReceivedEvtPayload;
 
@@ -127,7 +127,7 @@ export class ParticipantQueryReceivedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+    msgTopic: string = AccountLookupBCTopics.DomainRequests;
     payload: ParticipantQueryReceivedEvtPayload;
 
     constructor (payload: ParticipantQueryReceivedEvtPayload) {
@@ -167,7 +167,7 @@ export class PartyQueryReceivedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+    msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
     payload: PartyQueryReceivedEvtPayload;
 
