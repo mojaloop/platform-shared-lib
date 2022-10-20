@@ -42,6 +42,7 @@ export type ParticipantAssociationRequestReceivedEvtPayload = {
     partyId: string;
     partyType: string;
     partySubType: string | null;
+    currency: string | null;            // optional currency, ISO format
 }
 
 export class ParticipantAssociationRequestReceivedEvt extends DomainEventMsg {
@@ -81,6 +82,7 @@ export type ParticipantDisassociateRequestReceivedEvtPayload = {
     partyId: string;
     partyType: string;
     partySubType: string | null;
+    currency: string | null;            // optional currency, ISO format
 }
 
 export class ParticipantDisassociateRequestReceivedEvt extends DomainEventMsg {
