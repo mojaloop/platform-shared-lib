@@ -50,8 +50,8 @@ export interface IMessage{
 
     payload: any;
 
-    fspiopOpaqueState: any | null;            // FSPIOP Interop API opaque state token - all messages produced as response to this should copy it if present
-    // iso20022OpaqueState: any | null;      // future place for ISO 20022 Interop API opaque state token - all messages produced as response to this should copy it if present
+    fspiopOpaqueState: any;            // FSPIOP Interop API opaque state token - all messages produced as response to this should copy it if present
+    // iso20022OpaqueState: any;      // future place for ISO 20022 Interop API opaque state token - all messages produced as response to this should copy it if present
 }
 
 export interface IDomainMessage extends IMessage{
@@ -78,25 +78,22 @@ export abstract class DomainMsg implements IDomainMessage {
 
     abstract payload: any
 
-    abstract fspiopOpaqueState: any | null;
+    abstract fspiopOpaqueState: any;
 }
 
 export abstract class StateEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.STATE_EVENT;
-
-    fspiopOpaqueState = null;
+    fspiopOpaqueState:any = null;
 }
 
 export abstract class DomainEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.DOMAIN_EVENT;
-
-    fspiopOpaqueState = null;
+    fspiopOpaqueState:any = null;
 }
 
 export abstract class CommandMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.COMMAND;
-
-    fspiopOpaqueState = null;
+    fspiopOpaqueState:any = null;
 }
 
 // export abstract class StateSnapshotMsg extends DomainMsg {
