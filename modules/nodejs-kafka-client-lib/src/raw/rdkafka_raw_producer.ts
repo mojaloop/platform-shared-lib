@@ -35,7 +35,6 @@ import * as RDKafka from "node-rdkafka";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {NumberNullUndefined} from "node-rdkafka/index";
 import {IRawMessage, IRawMessageHeader, IRawMessageProducer} from "./raw_types";
-import {IMessage} from "@mojaloop/platform-shared-lib-messaging-types-lib/dist/index";
 
 export enum MLKafkaRawProducerOptionsCompressionCodecEnum {
     none = 'none',
