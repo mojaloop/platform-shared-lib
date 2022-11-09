@@ -128,7 +128,7 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
             this._topicConfig["compression.codec"] = this._options.compressionCodec;
         }
 
-        if (this._options.compressionCodec !== undefined) {
+        if (this._options.compressionLevel !== undefined) {
             this._topicConfig["compression.level"] = this._options.compressionLevel;
         }
 
