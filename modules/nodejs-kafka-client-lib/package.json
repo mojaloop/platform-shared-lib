@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/platform-shared-lib-nodejs-kafka-client-lib",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "mojaloop vnext platform shared libraries",
   "license": "Apache-2.0",
   "homepage": "https://github.com/mojaloop/platform-shared-lib/tree/main/modules/nodejs-kafka-client-lib",
