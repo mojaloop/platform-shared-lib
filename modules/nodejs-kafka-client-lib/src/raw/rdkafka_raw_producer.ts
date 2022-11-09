@@ -35,12 +35,22 @@ import * as RDKafka from "node-rdkafka";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {NumberNullUndefined} from "node-rdkafka/index";
 import {IRawMessage, IRawMessageHeader, IRawMessageProducer} from "./raw_types";
-import {IMessage} from "@mojaloop/platform-shared-lib-messaging-types-lib/dist/index";
+
+export enum MLKafkaRawProducerCompressionCodecs {
+    NONE = "none",
+    GZIP = "gzip",
+    SNAPPY = "snappy",
+    LZ4 = "lz4",
+    ZSTD = "zstd"
+}
 
 export class MLKafkaRawProducerOptions {
     kafkaBrokerList: string
     producerClientId?: string
     skipAcknowledgements?: boolean
+    messageMaxBytes?: number
+    compressionCodec?: MLKafkaRawProducerCompressionCodecs
+    compressionLevel?: number
 }
 
 /*interface MLKafkaRawProducerEventListenerMap {
@@ -102,12 +112,24 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
         };
         this._topicConfig = {};
 
-        if (this._options.producerClientId) {
+        if (this._options.producerClientId !== undefined) {
             this._globalConfig["client.id"] = this._options.producerClientId;
         }
 
         if (this._options.skipAcknowledgements===true) {
             this._topicConfig["request.required.acks"] = 0;
+        }
+
+        if (this._options.messageMaxBytes !== undefined) {
+            this._globalConfig["message.max.bytes"] = this._options.messageMaxBytes;
+        }
+
+        if (this._options.compressionCodec !== undefined) {
+            this._topicConfig["compression.codec"] = this._options.compressionCodec;
+        }
+
+        if (this._options.compressionCodec !== undefined) {
+            this._topicConfig["compression.level"] = this._options.compressionLevel;
         }
 
         this._globalConfig.dr_cb = true;

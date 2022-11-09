@@ -48,9 +48,11 @@ const defaultOptions = {
 export class MLKafkaRawConsumerOptions {
     kafkaBrokerList: string
     kafkaGroupId?: string
+    consumerClientId?: string
     useSyncCommit?: boolean
     outputType?: MLKafkaRawConsumerOutputType
     autoOffsetReset?: "earliest" | "latest" | "error" // default is latest
+    messageMaxBytes?: number
 }
 
 export class MLKafkaRawConsumer implements IRawMessageConsumer {
@@ -90,11 +92,25 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         if (this._options.useSyncCommit===undefined) {
             this._options.useSyncCommit = defaultOptions.useSyncCommit;
         }
+
         if (this._options.outputType===undefined) {
             this._options.outputType = defaultOptions.outputType;
         }
+
         if (this._options.autoOffsetReset===undefined) {
             this._options.autoOffsetReset = "latest";
+        }
+
+        if (this._options.consumerClientId !== undefined) {
+            this._globalConfig["client.id"] = this._options.consumerClientId;
+        }
+
+        if (this._options.kafkaGroupId !== undefined) {
+            this._globalConfig["group.id"] = this._options.kafkaGroupId;
+        }
+
+        if (this._options.messageMaxBytes !== undefined) {
+            this._globalConfig["message.max.bytes"] = this._options.messageMaxBytes;
         }
 
         // topic configs
@@ -102,10 +118,6 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
 
         // global client options
         this._globalConfig ["metadata.broker.list"] = this._options.kafkaBrokerList;
-
-        if (this._options.kafkaGroupId) {
-            this._globalConfig["group.id"] = this._options.kafkaGroupId;
-        }
     }
 
     private _onReady(info: RDKafka.ReadyInfo, metadata: RDKafka.Metadata): void {
