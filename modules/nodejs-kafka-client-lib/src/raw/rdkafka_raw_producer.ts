@@ -36,7 +36,7 @@ import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {NumberNullUndefined} from "node-rdkafka/index";
 import {IRawMessage, IRawMessageHeader, IRawMessageProducer} from "./raw_types";
 
-export enum MLKafkaRawProducerOptionsCompressionCodecEnum {
+export enum MLKafkaRawProducerCompressionCodecs {
     none = 'none',
     gzip = 'gzip',
     snappy= 'snappy',
@@ -49,7 +49,7 @@ export class MLKafkaRawProducerOptions {
     producerClientId?: string
     skipAcknowledgements?: boolean
     messageMaxBytes?: number
-    compressionCodec?: MLKafkaRawProducerOptionsCompressionCodecEnum
+    compressionCodec?: MLKafkaRawProducerCompressionCodecs
     compressionLevel?: number
 }
 
