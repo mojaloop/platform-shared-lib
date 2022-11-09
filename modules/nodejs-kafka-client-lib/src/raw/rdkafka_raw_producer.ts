@@ -37,11 +37,11 @@ import {NumberNullUndefined} from "node-rdkafka/index";
 import {IRawMessage, IRawMessageHeader, IRawMessageProducer} from "./raw_types";
 
 export enum MLKafkaRawProducerCompressionCodecs {
-    none = 'none',
-    gzip = 'gzip',
-    snappy= 'snappy',
-    lz4 = 'lz4',
-    zstd = 'zstd'
+    NONE = "none",
+    GZIP = "gzip",
+    SNAPPY = "snappy",
+    LZ4 = "lz4",
+    ZSTD = "zstd"
 }
 
 export class MLKafkaRawProducerOptions {
@@ -112,7 +112,7 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
         };
         this._topicConfig = {};
 
-        if (this._options.producerClientId) {
+        if (this._options.producerClientId !== undefined) {
             this._globalConfig["client.id"] = this._options.producerClientId;
         }
 
@@ -120,15 +120,15 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
             this._topicConfig["request.required.acks"] = 0;
         }
 
-        if (this._options.messageMaxBytes) {
+        if (this._options.messageMaxBytes !== undefined) {
             this._globalConfig["message.max.bytes"] = this._options.messageMaxBytes;
         }
 
-        if (this._options.compressionCodec) {
+        if (this._options.compressionCodec !== undefined) {
             this._topicConfig["compression.codec"] = this._options.compressionCodec;
         }
 
-        if (this._options.compressionCodec) {
+        if (this._options.compressionCodec !== undefined) {
             this._topicConfig["compression.level"] = this._options.compressionLevel;
         }
 
