@@ -37,10 +37,21 @@ import {NumberNullUndefined} from "node-rdkafka/index";
 import {IRawMessage, IRawMessageHeader, IRawMessageProducer} from "./raw_types";
 import {IMessage} from "@mojaloop/platform-shared-lib-messaging-types-lib/dist/index";
 
+export enum MLKafkaRawProducerOptionsCompressionCodecEnum {
+    none = 'none',
+    gzip = 'gzip',
+    snappy= 'snappy',
+    lz4 = 'lz4',
+    zstd = 'zstd'
+}
+
 export class MLKafkaRawProducerOptions {
     kafkaBrokerList: string
     producerClientId?: string
     skipAcknowledgements?: boolean
+    messageMaxBytes?: number
+    compressionCodec?: MLKafkaRawProducerOptionsCompressionCodecEnum
+    compressionLevel?: number
 }
 
 /*interface MLKafkaRawProducerEventListenerMap {
@@ -108,6 +119,18 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
 
         if (this._options.skipAcknowledgements===true) {
             this._topicConfig["request.required.acks"] = 0;
+        }
+
+        if (this._options.messageMaxBytes) {
+            this._globalConfig["message.max.bytes"] = this._options.messageMaxBytes;
+        }
+
+        if (this._options.compressionCodec) {
+            this._topicConfig["compression.codec"] = this._options.compressionCodec;
+        }
+
+        if (this._options.compressionCodec) {
+            this._topicConfig["compression.level"] = this._options.compressionLevel;
         }
 
         this._globalConfig.dr_cb = true;
