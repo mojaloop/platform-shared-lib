@@ -48,6 +48,7 @@ const defaultOptions = {
 export class MLKafkaRawConsumerOptions {
     kafkaBrokerList: string
     kafkaGroupId?: string
+    consumerClientId?: string
     useSyncCommit?: boolean
     outputType?: MLKafkaRawConsumerOutputType
     autoOffsetReset?: "earliest" | "latest" | "error" // default is latest
@@ -98,6 +99,10 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
 
         if (this._options.autoOffsetReset===undefined) {
             this._options.autoOffsetReset = "latest";
+        }
+
+        if (this._options.consumerClientId) {
+            this._globalConfig["client.id"] = this._options.consumerClientId;
         }
 
         if (this._options.kafkaGroupId) {
