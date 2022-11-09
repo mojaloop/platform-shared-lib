@@ -101,15 +101,15 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
             this._options.autoOffsetReset = "latest";
         }
 
-        if (this._options.consumerClientId) {
+        if (this._options.consumerClientId !== undefined) {
             this._globalConfig["client.id"] = this._options.consumerClientId;
         }
 
-        if (this._options.kafkaGroupId) {
+        if (this._options.kafkaGroupId !== undefined) {
             this._globalConfig["group.id"] = this._options.kafkaGroupId;
         }
 
-        if (this._options.messageMaxBytes) {
+        if (this._options.messageMaxBytes !== undefined) {
             this._globalConfig["message.max.bytes"] = this._options.messageMaxBytes;
         }
 
