@@ -37,7 +37,7 @@
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { BOUNDED_CONTEXT_NAME_QUOTING, AGGREGATE_NAME_QUOTING, QuotingBCTopics } from ".";
 
-export type QuotingRequestReceivedEvtPayload = {
+export type QuoteRequestReceivedEvtPayload = {
     requesterFspId: string;
     destinationFspId: string;
     quoteId: string;
@@ -61,9 +61,84 @@ export class QuotingRequestReceivedEvt extends DomainEventMsg {
     aggregateName: string = AGGREGATE_NAME_QUOTING;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainRequests;
-    payload: QuotingRequestReceivedEvtPayload;
+    payload: QuoteRequestReceivedEvtPayload;
 
-    constructor (payload: QuotingRequestReceivedEvtPayload) {
+    constructor (payload: QuoteRequestReceivedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.quoteId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { requesterFspId, destinationFspId, quoteId, transactionId, payee, payer, amountType, amount, transactionType } = this.payload;
+
+		if (!requesterFspId) {
+            throw new Error("requesterFspId is required.");
+		}
+
+        if (!destinationFspId) {
+            throw new Error("destinationFspId is required.");
+		}
+
+        if (!quoteId) {
+            throw new Error("quoteId is required.");
+		}
+
+        if (!transactionId) {
+            throw new Error("transactionId is required.");
+		}
+
+        if (!payee) {
+            throw new Error("payee is required.");
+		}
+
+        if (!payer) {
+            throw new Error("payer is required.");
+		}
+
+        if (!amountType) {
+            throw new Error("amountType is required.");
+		}
+
+        if (!amount) {
+            throw new Error("amount is required.");
+		}
+
+        if (!transactionType) {
+            throw new Error("transactionType is required.");
+		}
+
+    }	
+}
+
+export type QuoteResponseReceivedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string;
+    quoteId: string;
+    transactionId: string;
+    transactionRequestId: string | null;
+    payee: string;
+    payer: string;
+    amountType: string;
+    amount: string;
+    fees: string | null;
+    transactionType: string;
+    geoCode: string | null;
+    note: string | null;
+    expiration: string | null;
+    extensionList: string | null;
+}
+
+export class QuotingResponseReceivedEvt extends DomainEventMsg {
+    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    aggregateId: string;
+    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainRequests;
+    payload: QuoteResponseReceivedEvtPayload;
+
+    constructor (payload: QuoteResponseReceivedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.quoteId;

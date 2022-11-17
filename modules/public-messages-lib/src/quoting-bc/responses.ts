@@ -34,7 +34,7 @@
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { BOUNDED_CONTEXT_NAME_QUOTING, AGGREGATE_NAME_QUOTING, QuotingBCTopics } from ".";
 
-export type QuotingRequestCreatedEvtPayload = {
+export type QuoteRequestAcceptedEvtPayload = {
     requesterFspId: string;
     destinationFspId: string;
     quoteId: string;
@@ -50,22 +50,25 @@ export type QuotingRequestCreatedEvtPayload = {
     note: string | null;
     expiration: string | null;
     extensionList: string | null;
+    errorMsg: string;
+    sourceEvent: string;
 }
 
-export class QuotingRequestCreatedEvt extends DomainEventMsg {
+export class QuoteRequestAcceptedEvt extends DomainEventMsg {
     boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME_QUOTING;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainEvents;
-    payload: QuotingRequestCreatedEvtPayload;
+    payload: QuoteRequestAcceptedEvtPayload;
 
-    constructor (payload: QuotingRequestCreatedEvtPayload) {
+    constructor (payload: QuoteRequestAcceptedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.quoteId;
         this.payload = payload;
     }
+
 
     validatePayload (): void {
         const { requesterFspId, destinationFspId, quoteId, transactionId, payee, payer, amountType, amount, transactionType } = this.payload;
@@ -109,35 +112,46 @@ export class QuotingRequestCreatedEvt extends DomainEventMsg {
     }	
 }
 
-export type QuotingCalculationReceivedEvtPayload = {
+export type QuoteResponseAcceptedPayload = {
     requesterFspId: string;
     destinationFspId: string;
     quoteId: string;
+    transactionId: string;
+    transactionRequestId: string | null;
     payee: string;
     payer: string;
+    amountType: string;
+    amount: string;
+    fees: string | null;
+    transactionType: string;
+    geoCode: string | null;
+    note: string | null;
+    expiration: string | null;
+    extensionList: string | null;
     errorMsg: string;
     sourceEvent: string;
 }
 
-export class QuotingCalculationReceivedEvt extends DomainEventMsg {
+export class QuoteResponseAccepted extends DomainEventMsg {
     boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME_QUOTING;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainEvents;
-    payload: QuotingCalculationReceivedEvtPayload;
+    payload: QuoteResponseAcceptedPayload;
 
-    constructor (payload: QuotingCalculationReceivedEvtPayload) {
+    constructor (payload: QuoteResponseAcceptedPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.quoteId;
         this.payload = payload;
     }
 
-    validatePayload (): void { 
-        const { requesterFspId, destinationFspId, quoteId, payee, payer, errorMsg } = this.payload;
 
-        if (!requesterFspId) {
+    validatePayload (): void {
+        const { requesterFspId, destinationFspId, quoteId, transactionId, payee, payer, amountType, amount, transactionType } = this.payload;
+
+		if (!requesterFspId) {
             throw new Error("requesterFspId is required.");
 		}
 
@@ -149,6 +163,10 @@ export class QuotingCalculationReceivedEvt extends DomainEventMsg {
             throw new Error("quoteId is required.");
 		}
 
+        if (!transactionId) {
+            throw new Error("transactionId is required.");
+		}
+
         if (!payee) {
             throw new Error("payee is required.");
 		}
@@ -157,14 +175,19 @@ export class QuotingCalculationReceivedEvt extends DomainEventMsg {
             throw new Error("payer is required.");
 		}
 
-        if (!requesterFspId) {
-            throw new Error("partyId is required.");
+        if (!amountType) {
+            throw new Error("amountType is required.");
 		}
 
-		if (!errorMsg) {
-            throw new Error("errorMsg is required.");
+        if (!amount) {
+            throw new Error("amount is required.");
 		}
-    }
+
+        if (!transactionType) {
+            throw new Error("transactionType is required.");
+		}
+
+    }	
 }
 
 export type QuotingErrorEvtPayload = {
