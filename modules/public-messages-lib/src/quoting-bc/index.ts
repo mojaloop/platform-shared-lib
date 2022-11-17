@@ -22,14 +22,24 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Crosslake
- - Pedro Sousa Barreto <pedrob@crosslaketech.com>
+ * Arg Software
+ - Jose Francisco Antunes<jfantunes@arg.software>
+ - Rui Rocha<rui.rocha@arg.software>
 
  --------------
  ******/
 
-"use strict"
+"use strict";
 
+const BOUNDED_CONTEXT_NAME_QUOTING = "QuotingBc";
+const AGGREGATE_NAME_QUOTING = "Quote";
 
-export * from "./account-lookup-bc/";
-export * from "./quoting-bc/";
+enum QuotingBCTopics {
+    "DomainEvents" = "QuotingBcEvents",
+    "DomainRequests" = "QuotingBcRequests"
+}
+
+export { QuotingBCTopics , BOUNDED_CONTEXT_NAME_QUOTING, AGGREGATE_NAME_QUOTING };
+export * from "./requests";
+export * from "./responses";
+
