@@ -55,7 +55,7 @@ export type QuoteRequestReceivedEvtPayload = {
     extensionList: string | null;
 }
 
-export class QuotingRequestReceivedEvt extends DomainEventMsg {
+export class QuoteRequestReceivedEvt extends DomainEventMsg {
     boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME_QUOTING;
@@ -130,7 +130,7 @@ export type QuoteResponseReceivedEvtPayload = {
     extensionList: string | null;
 }
 
-export class QuotingResponseReceivedEvt extends DomainEventMsg {
+export class QuoteResponseReceivedEvt extends DomainEventMsg {
     boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME_QUOTING;

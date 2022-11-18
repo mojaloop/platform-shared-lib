@@ -50,8 +50,6 @@ export type QuoteRequestAcceptedEvtPayload = {
     note: string | null;
     expiration: string | null;
     extensionList: string | null;
-    errorMsg: string;
-    sourceEvent: string;
 }
 
 export class QuoteRequestAcceptedEvt extends DomainEventMsg {
@@ -128,8 +126,6 @@ export type QuoteResponseAcceptedPayload = {
     note: string | null;
     expiration: string | null;
     extensionList: string | null;
-    errorMsg: string;
-    sourceEvent: string;
 }
 
 export class QuoteResponseAccepted extends DomainEventMsg {
@@ -190,7 +186,7 @@ export class QuoteResponseAccepted extends DomainEventMsg {
     }	
 }
 
-export type QuotingErrorEvtPayload = {
+export type QuoteErrorEvtPayload = {
     requesterFspId: string;
     destinationFspId: string;
     quoteId: string;
@@ -198,15 +194,15 @@ export type QuotingErrorEvtPayload = {
     sourceEvent: string;
 }
 
-export class QuotingErrorEvt extends DomainEventMsg {
+export class QuoteErrorEvt extends DomainEventMsg {
     boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME_QUOTING;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainEvents;
-    payload: QuotingErrorEvtPayload;
+    payload: QuoteErrorEvtPayload;
 
-    constructor (payload: QuotingErrorEvtPayload) {
+    constructor (payload: QuoteErrorEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.quoteId;
