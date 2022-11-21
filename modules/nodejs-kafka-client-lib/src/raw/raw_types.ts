@@ -30,6 +30,8 @@
 
 "use strict"
 
+import { EofEvent } from "node-rdkafka";
+
 export interface IRawMessageHeader {
   [key: string]: string | Buffer;
 }
@@ -45,8 +47,11 @@ export interface IRawMessage {
   offset: number | null;
 }
 
+export type IRawConsumeEofEvent = EofEvent;
+
 export interface IRawMessageConsumer {
   setCallbackFn: (handlerCallback: (message: IRawMessage) => Promise<void>) => void;
+  setEndOfPartitionFn: (handlerCallback: (event: IRawConsumeEofEvent) => Promise<void>) => void;
   setTopics: (topics: string[]) => void;
 
   destroy: (force: boolean) => Promise<void>;

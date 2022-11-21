@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/platform-shared-lib",
-  "version": "0.0.2",
+  "version": "0.0.3-snapshot.0",
   "description": "mojaloop platform-shared-lib",
   "license": "Apache-2.0",
   "homepage": "https://github.com/mojaloop/platform-shared-lib",
@@ -49,6 +49,8 @@
   },
   "workspaces": [
     "modules/messaging-types-lib",
-    "modules/*"
+    "modules/public-messages-lib",
+    "modules/nodejs-kafka-client-lib",
+    "modules/test-nodejs-kafka-client-lib"
   ]
 }

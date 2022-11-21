@@ -48,6 +48,7 @@ export class MLKafkaRawProducerOptions {
     kafkaBrokerList: string
     producerClientId?: string
     skipAcknowledgements?: boolean
+    requiredAcks?: number
     messageMaxBytes?: number
     compressionCodec?: MLKafkaRawProducerCompressionCodecs
     compressionLevel?: number
@@ -118,6 +119,8 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
 
         if (this._options.skipAcknowledgements===true) {
             this._topicConfig["request.required.acks"] = 0;
+        } else {
+            this._topicConfig["request.required.acks"] = this._options.requiredAcks || -1; // default to all
         }
 
         if (this._options.messageMaxBytes !== undefined) {
