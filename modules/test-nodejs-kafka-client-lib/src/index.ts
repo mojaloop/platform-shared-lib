@@ -30,7 +30,7 @@
 
 "use strict"
 
-const util = require('util')
+import util from 'util'
 import { DefaultLogger } from '@mojaloop/logging-bc-client-lib';
 import { ILogger, LogLevel } from '@mojaloop/logging-bc-public-types-lib';
 import { IMessage } from '@mojaloop/platform-shared-lib-messaging-types-lib';
@@ -71,7 +71,6 @@ const app = async () => {
 
     // if (starTime && endTime) logger.info(`elapsedTime=${calculateLatency()}`)
 
-    // await outboundEventHandler.destroy();
     await consumer.destroy(false);
 
     logger.info('Exit complete!');
@@ -92,13 +91,11 @@ const app = async () => {
   const consumerRawOpts: MLKafkaRawConsumerOptions = {
     kafkaBrokerList: 'localhost:9092',
     kafkaGroupId: 'test',
-    consumeMessageNum: 10
+    consumeMessageNum: 10 // comment this out for flow mode
   }
 
-  let consumer: IRawMessageConsumer;
-
-  // consumer = new MLKafkaRawStreamConsumer(consumerRawStreamOpts, logger)
-  consumer = new MLKafkaRawConsumer(consumerRawOpts, logger)
+  // const consumer: IRawMessageConsumer = new MLKafkaRawStreamConsumer(consumerRawStreamOpts, logger)
+  const consumer: IRawMessageConsumer = new MLKafkaRawConsumer(consumerRawOpts, logger)
 
   const sleep = (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms));

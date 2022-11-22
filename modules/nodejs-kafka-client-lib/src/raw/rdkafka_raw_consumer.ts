@@ -280,7 +280,7 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         this._topics = topics;
     }
 
-    async destroy(force: boolean = false): Promise<void> {
+    async destroy(force: boolean): Promise<void> {
         this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - destroy called...");
         return await this.disconnect();
     }
