@@ -114,17 +114,14 @@ export type QuoteResponseAcceptedPayload = {
     requesterFspId: string;
     destinationFspId: string;
     quoteId: string;
-    transactionId: string;
-    transactionRequestId: string | null;
-    payee: string;
-    payer: string;
-    amountType: string;
-    amount: string;
-    fees: string | null;
-    transactionType: string;
+    transferAmount: string;
+    expiration: string;
+    ilpPacket: string;
+    condition: string;
+    payeeReceiveAmount: string | null;
+    payeeFspFee: string | null;
+    payeeFspCommission: string | null;
     geoCode: string | null;
-    note: string | null;
-    expiration: string | null;
     extensionList: string | null;
 }
 
@@ -143,11 +140,10 @@ export class QuoteResponseAccepted extends DomainEventMsg {
         this.payload = payload;
     }
 
-
     validatePayload (): void {
-        const { requesterFspId, destinationFspId, quoteId, transactionId, payee, payer, amountType, amount, transactionType } = this.payload;
+        const { requesterFspId, destinationFspId, quoteId, transferAmount, expiration, ilpPacket, condition } = this.payload;
 
-		if (!requesterFspId) {
+        if (!requesterFspId) {
             throw new Error("requesterFspId is required.");
 		}
 
@@ -155,34 +151,25 @@ export class QuoteResponseAccepted extends DomainEventMsg {
             throw new Error("destinationFspId is required.");
 		}
 
-        if (!quoteId) {
+		if (!quoteId) {
             throw new Error("quoteId is required.");
 		}
 
-        if (!transactionId) {
-            throw new Error("transactionId is required.");
+        if (!transferAmount) {
+            throw new Error("transferAmount is required.");
 		}
 
-        if (!payee) {
-            throw new Error("payee is required.");
+        if (!expiration) {
+            throw new Error("expiration is required.");
 		}
 
-        if (!payer) {
-            throw new Error("payer is required.");
+        if (!ilpPacket) {
+            throw new Error("ilpPacket is required.");
 		}
 
-        if (!amountType) {
-            throw new Error("amountType is required.");
+        if (!condition) {
+            throw new Error("condition is required.");
 		}
-
-        if (!amount) {
-            throw new Error("amount is required.");
-		}
-
-        if (!transactionType) {
-            throw new Error("transactionType is required.");
-		}
-
     }	
 }
 
