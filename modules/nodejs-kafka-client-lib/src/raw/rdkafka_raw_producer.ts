@@ -30,6 +30,7 @@
 
 "use strict"
 
+import Util from "util";
 import {EventEmitter} from "events";
 import * as RDKafka from "node-rdkafka";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
@@ -103,6 +104,7 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
         this._client.on("delivery-report", this._onDeliveryReport.bind(this));
 
         this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaProducer - instance created");
+        this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaProducer - options: ${Util.inspect(this._options)}`);
         this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaProducer - features: ${RDKafka.features}`);
     }
 
@@ -131,7 +133,7 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
             this._topicConfig["compression.codec"] = this._options.compressionCodec;
         }
 
-        if (this._options.compressionCodec !== undefined && this._options.compressionCodec !== MLKafkaRawProducerCompressionCodecs.NONE) {
+        if (this._options.compressionLevel !== undefined && this._options.compressionCodec !== MLKafkaRawProducerCompressionCodecs.NONE) {
             this._topicConfig["compression.level"] = this._options.compressionLevel;
         }
 
