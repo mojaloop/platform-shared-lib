@@ -82,12 +82,9 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         this._client.on("event.throttle", this._onThrottle.bind(this));
         this._client.on("event.stats", this._onStats.bind(this));
         this._client.on("disconnected", this._onDisconnect.bind(this));
-        this._client.on("partition.eof", this._onPartitionEoF.bind(this));
-        
-        // We only bind to onData when we are in flowMode
-        if (!this._options.consumeMessageNum) this._client.on("data", this._onData.bind(this));
 
-        this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - instance created");
+        this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaConsumer - instance created with ${(this._options?.consumeMessageNum) ? `back-pressure enabled with consumeMessageNum='${this._options?.consumeMessageNum}'`: 'flow mode enabled'}`);
+        this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - options: ${Util.inspect(this._options)}`);
         this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaConsumer - features: ${RDKafka.features.toString()}`);
     }
 
@@ -270,10 +267,13 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
 
     setCallbackFn(handlerCallback: (message: IRawMessage) => Promise<void>): void {
         this._handlerCallback = handlerCallback;
+        // We only bind to onData when we are in flowMode
+        if (!this._options.consumeMessageNum) this._client.on("data", this._onData.bind(this));
     }
 
     setEndOfPartitionFn(handlerCallback: (event: IRawConsumeEofEvent) => Promise<void>): void {
         this._endOfPartitionFn = handlerCallback;
+        this._client.on("partition.eof", this._onPartitionEoF.bind(this));
     }
 
     setTopics(topics: string[]): void {

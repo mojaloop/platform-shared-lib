@@ -127,11 +127,11 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
             this._globalConfig["message.max.bytes"] = this._options.messageMaxBytes;
         }
 
-        if (this._options.compressionCodec !== undefined) {
+        if (this._options.compressionCodec !== undefined && this._options.compressionCodec !== MLKafkaRawProducerCompressionCodecs.NONE) {
             this._topicConfig["compression.codec"] = this._options.compressionCodec;
         }
 
-        if (this._options.compressionCodec !== undefined) {
+        if (this._options.compressionCodec !== undefined && this._options.compressionCodec !== MLKafkaRawProducerCompressionCodecs.NONE) {
             this._topicConfig["compression.level"] = this._options.compressionLevel;
         }
 

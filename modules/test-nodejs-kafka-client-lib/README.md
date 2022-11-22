@@ -26,3 +26,8 @@ kcat -b localhost:9092 -t ttksim1-topic-sdk-outbound-domain-events -T -P -l ./te
 
 (.*)transferId":"([\w-]+)"(.*)
 $2~$1transferId":"$2"$3
+
+## Refereces
+
+- https://github.com/Blizzard/node-rdkafka/blob/master/lib/kafka-consumer.js#L382
+- https://github.com/Blizzard/node-rdkafka/issues/877
