@@ -110,7 +110,7 @@ export class QuoteRequestAcceptedEvt extends DomainEventMsg {
     }	
 }
 
-export type QuoteResponseAcceptedPayload = {
+export type QuoteResponseAcceptedEvtPayload = {
     requesterFspId: string;
     destinationFspId: string;
     quoteId: string;
@@ -131,9 +131,9 @@ export class QuoteResponseAccepted extends DomainEventMsg {
     aggregateName: string = AGGREGATE_NAME_QUOTING;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainEvents;
-    payload: QuoteResponseAcceptedPayload;
+    payload: QuoteResponseAcceptedEvtPayload;
 
-    constructor (payload: QuoteResponseAcceptedPayload) {
+    constructor (payload: QuoteResponseAcceptedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.quoteId;
