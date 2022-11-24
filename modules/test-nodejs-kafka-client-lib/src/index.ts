@@ -44,7 +44,9 @@ const app = async () => {
   const listOfLatency: number[] = [];
 
   // Instantiate logger
+  // const logger: ILogger = new DefaultLogger('test-nodejs-kafka-client-lib', 'test', '0.0.1', LogLevel.TRACE);
   const logger: ILogger = new DefaultLogger('test-nodejs-kafka-client-lib', 'test', '0.0.1', LogLevel.DEBUG);
+  
 
   const calculateLatency = () => {
     endTime = process.hrtime(starTime);
@@ -85,13 +87,14 @@ const app = async () => {
     kafkaGroupId: 'test',
     topics: [ 
       'ttksim2-topic-sdk-outbound-domain-events'
-    ]
+    ],
   }
 
   const consumerRawOpts: MLKafkaRawConsumerOptions = {
     kafkaBrokerList: 'localhost:9092',
     kafkaGroupId: 'test',
-    consumeMessageNum: 10 // comment this out for flow mode
+    consumeMessageNum: 10, // comment this out for flow mode
+    processInOrder: true, // process message in order?
   }
 
   // const consumer: IRawMessageConsumer = new MLKafkaRawStreamConsumer(consumerRawStreamOpts, logger)
@@ -110,7 +113,7 @@ const app = async () => {
       starTime = process.hrtime();
     }
     isProcessing = true;
-    logger.info(`message=${util.inspect(message)}`);
+    logger.info(`PROCESSING message=${util.inspect(message)}`);
 
     // const sleepInMs = 1000
     // logger.warn(`SLEEPING FOR ${sleepInMs}ms`);

@@ -51,6 +51,7 @@ export class MLKafkaRawConsumerOptions {
     kafkaGroupId?: string
     consumerClientId?: string
     consumeMessageNum?: number
+    processInOrder?: boolean
     useSyncCommit?: boolean
     outputType?: MLKafkaRawConsumerOutputType
     autoOffsetReset?: "earliest" | "latest" | "error" // default is latest
@@ -185,12 +186,28 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         if (kafkaMessages?.length > 0) {
             this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback kafkaMessages.length=${kafkaMessages.length}`);
             let processCount = 0;
+            const handlerCallbackPromises = []
             for (const kafkaMessage of kafkaMessages) {
                 processCount++;
-                this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback processing ${processCount} / ${kafkaMessages.length}`);
                 const msg = this._toIMessage(kafkaMessage);
-                await this._handlerCallback(msg)
-                this._commitMsg(kafkaMessage);
+                if (this._options?.processInOrder === true) {
+                    this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback processing ${processCount} / ${kafkaMessages.length}`);
+                    await this._handlerCallback(msg)
+                    this._commitMsg(kafkaMessage);
+                } else { // lets queue up the promises
+                    this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback queuing ${processCount} / ${kafkaMessages.length}`);
+                    handlerCallbackPromises.push(this._handlerCallback(msg))
+                }
+            }
+
+            if ((this._options?.processInOrder === undefined) || (this._options?.processInOrder === false)) {
+            // if (this._options?.processInOrder === false) {
+                this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback processing all ${kafkaMessages.length} promises`);
+                // lets process the promises in any order
+                await Promise.all(handlerCallbackPromises);
+                // lets commit the last message
+                // TODO: we need to also think about handling error scenarios here
+                this._commitMsg(kafkaMessages[kafkaMessages.length-1]);
             }
         }
         // lets consume more messages
