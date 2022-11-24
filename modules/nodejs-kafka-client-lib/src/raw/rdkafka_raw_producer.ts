@@ -30,6 +30,8 @@
 
 "use strict"
 
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+
 import {EventEmitter} from "events";
 import * as RDKafka from "node-rdkafka";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";

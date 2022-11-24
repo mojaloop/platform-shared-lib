@@ -30,6 +30,8 @@
 
 "use strict"
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export interface IRawMessageHeader {
   [key: string]: string | Buffer;
 }

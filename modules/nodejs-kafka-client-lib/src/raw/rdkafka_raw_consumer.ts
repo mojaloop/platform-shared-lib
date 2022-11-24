@@ -30,6 +30,8 @@
 
 "use strict"
 
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unused-vars */
+
 import * as RDKafka from "node-rdkafka";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {IRawMessage, IRawMessageConsumer} from "./raw_types";

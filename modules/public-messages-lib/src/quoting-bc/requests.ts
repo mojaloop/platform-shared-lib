@@ -38,21 +38,67 @@ import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-li
 import { BOUNDED_CONTEXT_NAME_QUOTING, AGGREGATE_NAME_QUOTING, QuotingBCTopics } from ".";
 
 export type QuoteRequestReceivedEvtPayload = {
-    requesterFspId: string;
-    destinationFspId: string;
     quoteId: string;
     transactionId: string;
     transactionRequestId: string | null;
-    payee: string;
-    payer: string;
+    payee:  {
+        partyIdInfo: {
+            partyIdType: string;
+            partyIdentifier: string;
+            partySubIdOrType: string | null;
+            fspId: string | null;
+        } | null;
+        merchantClassificationCode: string | null,
+        name: string | null,
+        personalInfo: {
+            complexName: {
+                firstName: string | null;
+                middleName: string | null;
+                lastName: string | null;              
+            } | null,
+            dateOfBirth: string | null
+        } | null
+    };
+    payer:  {
+        partyIdInfo: {
+            partyIdType: string;
+            partyIdentifier: string;
+            partySubIdOrType: string | null;
+            fspId: string | null;
+        } | null;
+        merchantClassificationCode: string | null,
+        name: string | null,
+        personalInfo: {
+            complexName: {
+                firstName: string | null;
+                middleName: string | null;
+                lastName: string | null;              
+            } | null,
+            dateOfBirth: string | null
+        } | null
+    };
     amountType: string;
-    amount: string;
-    fees: string | null;
+    amount: {
+        currency: string;
+        amount: string;
+    };
     transactionType: string;
-    geoCode: string | null;
+    fees: {
+        currency: string;
+        amount: string;
+    } | null;
+    geoCode: {
+        latitude: string;
+        longitude: string;
+    } | null;
     note: string | null;
     expiration: string | null;
-    extensionList: string | null;
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
 }
 
 export class QuoteRequestReceivedEvt extends DomainEventMsg {
@@ -71,15 +117,7 @@ export class QuoteRequestReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        const { requesterFspId, destinationFspId, quoteId, transactionId, payee, payer, amountType, amount, transactionType } = this.payload;
-
-		if (!requesterFspId) {
-            throw new Error("requesterFspId is required.");
-		}
-
-        if (!destinationFspId) {
-            throw new Error("destinationFspId is required.");
-		}
+        const { quoteId, transactionId, payee, payer, amountType, amount, transactionType } = this.payload;
 
         if (!quoteId) {
             throw new Error("quoteId is required.");
@@ -113,18 +151,36 @@ export class QuoteRequestReceivedEvt extends DomainEventMsg {
 }
 
 export type QuoteResponseReceivedEvtPayload = {
-    requesterFspId: string;
-    destinationFspId: string;
     quoteId: string;
-    transferAmount: string;
+    transferAmount: {
+        currency: string;
+        amount: string;
+    };
     expiration: string;
     ilpPacket: string;
     condition: string;
-    payeeReceiveAmount: string | null;
-    payeeFspFee: string | null;
-    payeeFspCommission: string | null;
-    geoCode: string | null;
-    extensionList: string | null;
+    payeeReceiveAmount: {
+        currency: string;
+        amount: string;
+    } | null;
+    payeeFspFee: {
+        currency: string;
+        amount: string;
+    } | null;
+    payeeFspCommission: {
+        currency: string;
+        amount: string;
+    } | null;
+    geoCode: {
+        latitude: string;
+        longitude: string;
+    } | null;
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
 }
 
 export class QuoteResponseReceivedEvt extends DomainEventMsg {
@@ -143,17 +199,9 @@ export class QuoteResponseReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        const { requesterFspId, destinationFspId, quoteId, transferAmount, expiration, ilpPacket, condition } = this.payload;
+        const { quoteId, transferAmount, expiration, ilpPacket, condition } = this.payload;
 
-        if (!requesterFspId) {
-            throw new Error("requesterFspId is required.");
-		}
-
-        if (!destinationFspId) {
-            throw new Error("destinationFspId is required.");
-		}
-        
-		if (!quoteId) {
+    if (!quoteId) {
             throw new Error("quoteId is required.");
 		}
 

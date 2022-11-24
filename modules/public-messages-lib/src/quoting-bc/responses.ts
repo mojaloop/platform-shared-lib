@@ -35,21 +35,77 @@ import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-li
 import { BOUNDED_CONTEXT_NAME_QUOTING, AGGREGATE_NAME_QUOTING, QuotingBCTopics } from ".";
 
 export type QuoteRequestAcceptedEvtPayload = {
-    requesterFspId: string;
-    destinationFspId: string;
     quoteId: string;
     transactionId: string;
     transactionRequestId: string | null;
-    payee: string;
-    payer: string;
-    amountType: string;
-    amount: string;
-    fees: string | null;
-    transactionType: string;
-    geoCode: string | null;
+    payee:  {
+        partyIdInfo: {
+            partyIdType: string;
+            partyIdentifier: string;
+            partySubIdOrType: string | null;
+            fspId: string | null;
+        } | null;
+        merchantClassificationCode: string | null,
+        name: string | null,
+        personalInfo: {
+            complexName: {
+                firstName: string | null;
+                middleName: string | null;
+                lastName: string | null;              
+            } | null,
+            dateOfBirth: string | null
+        } | null
+    };
+    payer:{
+        partyIdInfo: {
+            partyIdType: string;
+            partyIdentifier: string;
+            partySubIdOrType: string | null;
+            fspId: string | null;
+        } | null;
+        merchantClassificationCode: string | null,
+        name: string | null,
+        personalInfo: {
+            complexName: {
+                firstName: string | null;
+                middleName: string | null;
+                lastName: string | null;              
+            } | null,
+            dateOfBirth: string | null
+        } | null
+    };
+    amountType: "SEND" | "RECEIVE";
+    amount: {
+        currency: string;
+        amount: string;
+    };
+    transactionType: {
+        scenario: string
+        subScenario: string | null
+        initiator: string
+        initiatorType: string
+        refundInfo: {
+            originalTransactionId: string
+            refundReason: string | null
+        } | null,
+        balanceOfPayments: string | null
+    };
+    fees: {
+        currency: string;
+        amount: string;
+    } | null;
+    geoCode: {
+        latitude: string;
+        longitude: string;
+    } | null;
     note: string | null;
     expiration: string | null;
-    extensionList: string | null;
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
 }
 
 export class QuoteRequestAcceptedEvt extends DomainEventMsg {
@@ -69,15 +125,7 @@ export class QuoteRequestAcceptedEvt extends DomainEventMsg {
 
 
     validatePayload (): void {
-        const { requesterFspId, destinationFspId, quoteId, transactionId, payee, payer, amountType, amount, transactionType } = this.payload;
-
-		if (!requesterFspId) {
-            throw new Error("requesterFspId is required.");
-		}
-
-        if (!destinationFspId) {
-            throw new Error("destinationFspId is required.");
-		}
+        const { quoteId, transactionId, payee, payer, amountType, amount, transactionType } = this.payload;
 
         if (!quoteId) {
             throw new Error("quoteId is required.");
@@ -111,18 +159,36 @@ export class QuoteRequestAcceptedEvt extends DomainEventMsg {
 }
 
 export type QuoteResponseAcceptedEvtPayload = {
-    requesterFspId: string;
-    destinationFspId: string;
     quoteId: string;
-    transferAmount: string;
+    transferAmount: {
+        currency: string;
+        amount: string;
+    };
     expiration: string;
     ilpPacket: string;
     condition: string;
-    payeeReceiveAmount: string | null;
-    payeeFspFee: string | null;
-    payeeFspCommission: string | null;
-    geoCode: string | null;
-    extensionList: string | null;
+    payeeReceiveAmount: {
+        currency: string;
+        amount: string;
+    } | null;
+    payeeFspFee: {
+        currency: string;
+        amount: string;
+    } | null;
+    payeeFspCommission: {
+        currency: string;
+        amount: string;
+    } | null;
+    geoCode: {
+        latitude: string;
+        longitude: string;
+    } | null;
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
 }
 
 export class QuoteResponseAccepted extends DomainEventMsg {
@@ -141,15 +207,7 @@ export class QuoteResponseAccepted extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        const { requesterFspId, destinationFspId, quoteId, transferAmount, expiration, ilpPacket, condition } = this.payload;
-
-        if (!requesterFspId) {
-            throw new Error("requesterFspId is required.");
-		}
-
-        if (!destinationFspId) {
-            throw new Error("destinationFspId is required.");
-		}
+        const { quoteId, transferAmount, expiration, ilpPacket, condition } = this.payload;
 
 		if (!quoteId) {
             throw new Error("quoteId is required.");

@@ -29,6 +29,9 @@
  ******/
 
 "use strict"
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import * as Crypto from "crypto";
 
 export enum MessageTypes{
