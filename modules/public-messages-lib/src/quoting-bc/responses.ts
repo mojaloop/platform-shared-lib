@@ -44,7 +44,7 @@ export type QuoteRequestAcceptedEvtPayload = {
             partyIdentifier: string;
             partySubIdOrType: string | null;
             fspId: string | null;
-        } | null;
+        };
         merchantClassificationCode: string | null,
         name: string | null,
         personalInfo: {
@@ -62,7 +62,7 @@ export type QuoteRequestAcceptedEvtPayload = {
             partyIdentifier: string;
             partySubIdOrType: string | null;
             fspId: string | null;
-        } | null;
+        };
         merchantClassificationCode: string | null,
         name: string | null,
         personalInfo: {

@@ -47,7 +47,7 @@ export type QuoteRequestReceivedEvtPayload = {
             partyIdentifier: string;
             partySubIdOrType: string | null;
             fspId: string | null;
-        } | null;
+        };
         merchantClassificationCode: string | null,
         name: string | null,
         personalInfo: {
@@ -65,7 +65,7 @@ export type QuoteRequestReceivedEvtPayload = {
             partyIdentifier: string;
             partySubIdOrType: string | null;
             fspId: string | null;
-        } | null;
+        };
         merchantClassificationCode: string | null,
         name: string | null,
         personalInfo: {
@@ -77,12 +77,22 @@ export type QuoteRequestReceivedEvtPayload = {
             dateOfBirth: string | null
         } | null
     };
-    amountType: string;
+    amountType: "SEND" | "RECEIVE";
     amount: {
         currency: string;
         amount: string;
     };
-    transactionType: string;
+    transactionType: {
+        scenario: string
+        subScenario: string | null
+        initiator: string
+        initiatorType: string
+        refundInfo: {
+            originalTransactionId: string
+            refundReason: string | null
+        } | null,
+        balanceOfPayments: string | null
+    };
     fees: {
         currency: string;
         amount: string;
