@@ -189,28 +189,59 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
             const handlerCallbackPromises = []
             for (const kafkaMessage of kafkaMessages) {
                 processCount++;
-                const msg = this._toIMessage(kafkaMessage);
+                const processPromise = new Promise<RDKafka.Message>(async (resolve) => {
+                    const msg = this._toIMessage(kafkaMessage);
+                    await this._handlerCallback(msg);
+                    // return kafkaMessage;
+                    resolve(kafkaMessage);
+                })
                 if (this._options?.processInOrder === true) {
                     this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback processing ${processCount} / ${kafkaMessages.length}`);
-                    await this._handlerCallback(msg)
+
+                    // Process callback logic
+                    await processPromise;
+
+                    // Commit message
                     this._commitMsg(kafkaMessage);
                 } else { // lets queue up the promises
                     this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback queuing ${processCount} / ${kafkaMessages.length}`);
-                    handlerCallbackPromises.push(this._handlerCallback(msg))
+
+                    // Queue up promise
+                    handlerCallbackPromises.push(processPromise);
                 }
             }
 
+            // Lets check if we are in un-ordered processing mode
             if ((this._options?.processInOrder === undefined) || (this._options?.processInOrder === false)) {
-            // if (this._options?.processInOrder === false) {
                 this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback processing all ${kafkaMessages.length} promises`);
-                // lets process the promises in any order
-                await Promise.all(handlerCallbackPromises);
-                // lets commit the last message
-                // TODO: we need to also think about handling error scenarios here
-                this._commitMsg(kafkaMessages[kafkaMessages.length-1]);
+                
+                // Lets process the promises in ANY order
+                const promiseResults = await Promise.allSettled(handlerCallbackPromises);
+
+                this._logger?.isTraceEnabled() && this._logger.trace(`MLRawKafkaConsumer - _handleOnConsumeCallback processing all results ${Util.inspect(promiseResults)}`);
+
+                let lastFulfilledKafkaMessage: RDKafka.Message | undefined;
+
+                // // The order of the promised will match the order of the responses: https://262.ecma-international.org/#sec-performpromiseallsettled
+                // // Therefore we can find the last successful KafkaMessage that was processed and commit that to Kafka.
+                for (const result of promiseResults) {
+                    if (result?.status === 'fulfilled'){
+                        // this._commitMsg(result.value); // We could just commit on all successful messages
+                        lastFulfilledKafkaMessage = result.value
+                        this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback processing succeeded for result ${Util.inspect(result)}`);
+                    } else {
+                        this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback processing failed for result ${Util.inspect(result)}`);
+                    };
+                }
+                if (lastFulfilledKafkaMessage) {
+                    this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - _handleOnConsumeCallback committing last successful kafkaMessage ${Util.inspect(lastFulfilledKafkaMessage)}`);
+                    this._commitMsg(lastFulfilledKafkaMessage);
+                } else {
+                    this._logger?.isErrorEnabled() && this._logger.error(`MLRawKafkaConsumer - _handleOnConsumeCallback committing last kafkaMessage was UNSUCCESSFUL`);
+                }
             }
         }
-        // lets consume more messages
+        // We are done processing our messages, SO, lets consume more messages!
         this._client.consume(this._options.consumeMessageNum || 1, this._handleOnConsumeCallback.bind(this));  // <---------- is the missing line
     }
 

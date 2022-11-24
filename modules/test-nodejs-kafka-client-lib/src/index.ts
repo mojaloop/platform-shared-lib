@@ -41,11 +41,14 @@ const app = async () => {
   let isProcessing = false;
   let starTime: [number, number];
   let endTime: [number, number];
+  let currentMessages: number = 0
+  let totalMessages: number = 0
   const listOfLatency: number[] = [];
 
   // Instantiate logger
   // const logger: ILogger = new DefaultLogger('test-nodejs-kafka-client-lib', 'test', '0.0.1', LogLevel.TRACE);
-  const logger: ILogger = new DefaultLogger('test-nodejs-kafka-client-lib', 'test', '0.0.1', LogLevel.DEBUG);
+  // const logger: ILogger = new DefaultLogger('test-nodejs-kafka-client-lib', 'test', '0.0.1', LogLevel.DEBUG);
+  const logger: ILogger = new DefaultLogger('test-nodejs-kafka-client-lib', 'test', '0.0.1', LogLevel.INFO);
   
 
   const calculateLatency = () => {
@@ -94,7 +97,7 @@ const app = async () => {
     kafkaBrokerList: 'localhost:9092',
     kafkaGroupId: 'test',
     consumeMessageNum: 10, // comment this out for flow mode
-    processInOrder: true, // process message in order?
+    // processInOrder: true, // process message in order?
   }
 
   // const consumer: IRawMessageConsumer = new MLKafkaRawStreamConsumer(consumerRawStreamOpts, logger)
@@ -105,10 +108,12 @@ const app = async () => {
   }
 
   const handler: (message: IRawMessage) => Promise<void> = async (message) => {
+    currentMessages++;
+    totalMessages++;
     if (isProcessing) {
       logger.warn(`PROCESSING OVERLAP!!!!!!! isProcessing=${isProcessing}`);
       endTime = process.hrtime();
-      await killProcess();
+      // await killProcess();
     } else {
       starTime = process.hrtime();
     }
@@ -122,13 +127,16 @@ const app = async () => {
     if (message.key === "3d4d97d5-9cb1-4893-803e-999999999999") {
       logger.warn('END KEY FOUND - WE ARE CLOSING STREAM!');
       endTime = process.hrtime();
-      // await killProcess();
       if (starTime && endTime) { 
         const calcs = calculateLatency()
         logger.warn(`latency: ${calcs.latency}ms`)
         logger.warn(`average: ${calcs.average}ms`)
+        logger.warn(`current Messages: ${currentMessages}`)
+        logger.warn(`total Messages: ${totalMessages}`)
         logger.warn(`runs: ${calcs.runs}`)
       }
+      currentMessages = 0;
+      await killProcess();
     }
     isProcessing = false;
     return

@@ -15,7 +15,11 @@
   ],
   "scripts": {
     "start": "npm run service",
+    "start:measure": "npm run publish:samples100 && npm run service:time",
     "service": "tsc && node dist/index.js --config ../../.env",
+    "service:time": "time npx ts-node ./src/index.ts",
+    "publish:samples10": "kcat -b localhost:9092 -t ttksim2-topic-sdk-outbound-domain-events -P -l -K~ ../test-nodejs-kafka-client-lib/test/mess10.jsonl",
+    "publish:samples100": "kcat -b localhost:9092 -t ttksim2-topic-sdk-outbound-domain-events -P -l -K~ ../test-nodejs-kafka-client-lib/test/mess2.jsonl",
     "build": "tsc",
     "watch": "tsc -w",
     "clean": "rm -Rf dist",
