@@ -232,3 +232,32 @@ export class QuoteResponseReceivedEvt extends DomainEventMsg {
 		}
     }	
 }
+
+export type QuoteQueryReceivedEvtPayload = {
+    quoteId: string;
+}
+
+export class QuoteQueryReceivedEvt extends DomainEventMsg {
+    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    aggregateId: string;
+    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainRequests;
+
+    payload: QuoteQueryReceivedEvtPayload;
+
+    constructor (payload: QuoteQueryReceivedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.quoteId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void { 
+        const { quoteId } = this.payload;
+
+        if (!quoteId) {
+            throw new Error("quoteId is required.");
+		}
+    }
+}

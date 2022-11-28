@@ -274,3 +274,76 @@ export class QuoteErrorEvt extends DomainEventMsg {
 		}
     }
 }
+
+export type QuoteQueryResponseEvtPayload = {
+    quoteId: string;
+    transferAmount: {
+        currency: string;
+        amount: string;
+    };
+    expiration: string;
+    ilpPacket: string;
+    condition: string;
+    payeeReceiveAmount: {
+        currency: string;
+        amount: string;
+    } | null;
+    payeeFspFee: {
+        currency: string;
+        amount: string;
+    } | null;
+    payeeFspCommission: {
+        currency: string;
+        amount: string;
+    } | null;
+    geoCode: {
+        latitude: string;
+        longitude: string;
+    } | null;
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+}
+
+export class QuoteQueryResponseEvt extends DomainEventMsg {
+    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    aggregateId: string;
+    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+    payload: QuoteQueryResponseEvtPayload;
+
+    constructor (payload: QuoteQueryResponseEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.quoteId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void { 
+        const { quoteId, transferAmount, expiration, ilpPacket, condition } = this.payload;
+
+		if (!quoteId) {
+            throw new Error("quoteId is required.");
+		}
+
+        if (!transferAmount) {
+            throw new Error("transferAmount is required.");
+		}
+
+        if (!expiration) {
+            throw new Error("expiration is required.");
+		}
+
+        if (!ilpPacket) {
+            throw new Error("ilpPacket is required.");
+		}
+
+        if (!condition) {
+            throw new Error("condition is required.");
+		}
+    }
+}
