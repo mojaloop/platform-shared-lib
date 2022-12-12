@@ -347,3 +347,122 @@ export class QuoteQueryResponseEvt extends DomainEventMsg {
 		}
     }
 }
+
+export type BulkQuoteReceivedEvtPayload = {
+    bulkQuoteId: string;
+    payer:  {
+        partyIdInfo: {
+            partyIdType: string;
+            partyIdentifier: string;
+            partySubIdOrType: string | null;
+            fspId: string | null;
+        };
+        merchantClassificationCode: string | null,
+        name: string | null,
+        personalInfo: {
+            complexName: {
+                firstName: string | null;
+                middleName: string | null;
+                lastName: string | null;              
+            } | null,
+            dateOfBirth: string | null
+        } | null
+    };
+    geoCode: {
+        latitude: string;
+        longitude: string;
+    } | null;
+    expiration: string | null;
+    individualQuotes: {
+        quoteId: string;
+        transactionId: string;
+        payee:  {
+            partyIdInfo: {
+                partyIdType: string;
+                partyIdentifier: string;
+                partySubIdOrType: string | null;
+                fspId: string | null;
+            };
+            merchantClassificationCode: string | null,
+            name: string | null,
+            personalInfo: {
+                complexName: {
+                    firstName: string | null;
+                    middleName: string | null;
+                    lastName: string | null;              
+                } | null,
+                dateOfBirth: string | null
+            } | null
+        };
+        amountType: "SEND" | "RECEIVE";
+        amount: {
+            currency: string;
+            amount: string;
+        };
+        fees: {
+            currency: string;
+            amount: string;
+        } | null;
+        transactionType: {
+            scenario: string
+            subScenario: string | null
+            initiator: string
+            initiatorType: string
+            refundInfo: {
+                originalTransactionId: string
+                refundReason: string | null
+            } | null,
+            balanceOfPayments: string | null
+        };
+        note: string | null;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+    }[];
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+}
+
+export class BulkQuoteReceivedEvt extends DomainEventMsg {
+    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    aggregateId: string;
+    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainRequests;
+
+    payload: BulkQuoteReceivedEvtPayload;
+
+    constructor (payload: BulkQuoteReceivedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkQuoteId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void { 
+        const { bulkQuoteId, payer, individualQuotes } = this.payload;
+
+        if (!bulkQuoteId) {
+            throw new Error("bulkQuoteId is required.");
+		}
+
+        if (!payer) {
+            throw new Error("payer is required.");
+		}
+
+        if (!individualQuotes) {
+            throw new Error("individualQuotes is required.");
+		}
+
+        if (individualQuotes.length < 0) {
+            throw new Error("individualQuotes needs at least one element.");
+		}
+    }
+}
