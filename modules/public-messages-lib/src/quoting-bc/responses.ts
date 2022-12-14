@@ -436,7 +436,7 @@ export class BulkQuoteReceivedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = AGGREGATE_NAME_QUOTING;
     msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainRequests;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
 
     payload: BulkQuoteReceivedEvtPayload;
 

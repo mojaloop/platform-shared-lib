@@ -36,6 +36,7 @@
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { BOUNDED_CONTEXT_NAME_QUOTING, AGGREGATE_NAME_QUOTING, QuotingBCTopics } from ".";
+import crypto from "crypto";
 
 export type QuoteRequestReceivedEvtPayload = {
     quoteId: string;
@@ -378,6 +379,104 @@ export class BulkQuoteRequestedEvt extends DomainEventMsg {
 
         if (individualQuotes.length < 0) {
             throw new Error("individualQuotes needs at least one element.");
+		}
+    }
+}
+
+export type BulkQuotePendingReceivedEvtPayload = {
+    individualQuoteResults: {
+        quoteId: string;
+        payee:  {
+            partyIdInfo: {
+                partyIdType: string;
+                partyIdentifier: string;
+                partySubIdOrType: string | null;
+                fspId: string | null;
+            };
+            merchantClassificationCode: string | null,
+            name: string | null,
+            personalInfo: {
+                complexName: {
+                    firstName: string | null;
+                    middleName: string | null;
+                    lastName: string | null;              
+                } | null,
+                dateOfBirth: string | null
+            } | null
+        } | null;
+        transferAmount: {
+            currency: string;
+            amount: string;
+        } | null;
+        payeeReceiveAmount: {
+            currency: string;
+            amount: string;
+        } | null;
+        payeeFspFee: {
+            currency: string;
+            amount: string;
+        } | null;
+        payeeFspCommission: {
+            currency: string;
+            amount: string;
+        } | null;
+        ilpPacket: string;
+        condition: string;
+        errorInformation: {
+            errorCode: string,
+            errorDescription: string,
+            extensionList: {
+                extension: {
+                    key: string;
+                    value: string;
+                }[]
+            };
+        } | null;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+    }[];
+    expiration: string | null;
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+}
+
+export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
+    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    aggregateId: string;
+    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainRequests;
+
+    payload: BulkQuotePendingReceivedEvtPayload;
+
+    constructor (payload: BulkQuotePendingReceivedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = crypto.randomUUID({ disableEntropyCache: true });
+        this.payload = payload;
+    }
+
+    validatePayload (): void { 
+        const { expiration, individualQuoteResults } = this.payload;
+
+        if (!expiration) {
+            throw new Error("expiration is required.");
+		}
+
+        if (!individualQuoteResults) {
+            throw new Error("individualQuoteResults is required.");
+		}
+
+        if (individualQuoteResults.length < 0) {
+            throw new Error("individualQuoteResults needs at least one element.");
 		}
     }
 }
