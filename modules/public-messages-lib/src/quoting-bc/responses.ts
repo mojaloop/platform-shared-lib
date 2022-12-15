@@ -376,7 +376,6 @@ export type BulkQuoteReceivedEvtPayload = {
     individualQuotes: {
         quoteId: string;
         transactionId: string;
-        transactionRequestId: string | null;
         payee:  {
             partyIdInfo: {
                 partyIdType: string;
