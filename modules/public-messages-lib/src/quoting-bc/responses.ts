@@ -232,8 +232,8 @@ export class QuoteResponseAccepted extends DomainEventMsg {
 }
 
 export type QuoteErrorEvtPayload = {
-    requesterFspId: string;
-    destinationFspId: string;
+    requesterFspId: string | null;
+    destinationFspId: string | null;
     quoteId: string;
     errorMsg: string;
     sourceEvent: string;
@@ -255,19 +255,15 @@ export class QuoteErrorEvt extends DomainEventMsg {
     }
 
     validatePayload (): void { 
-        const { requesterFspId, destinationFspId, quoteId, errorMsg } = this.payload;
-
-        if (!requesterFspId) {
-            throw new Error("requesterFspId is required.");
-		}
-
-        if (!destinationFspId) {
-            throw new Error("destinationFspId is required.");
-		}
+        const { sourceEvent, quoteId, errorMsg } = this.payload;
 
         if (!quoteId) {
             throw new Error("quoteId is required.");
 		}
+
+        if (!sourceEvent) {
+            throw new Error("sourceEvent is required.");
+        }
 
 		if (!errorMsg) {
             throw new Error("errorMsg is required.");
