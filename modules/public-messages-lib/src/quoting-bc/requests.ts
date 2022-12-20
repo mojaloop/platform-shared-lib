@@ -384,6 +384,7 @@ export class BulkQuoteRequestedEvt extends DomainEventMsg {
 }
 
 export type BulkQuotePendingReceivedEvtPayload = {
+    bulkQuoteId: string;
     individualQuoteResults: {
         quoteId: string;
         payee:  {
@@ -465,7 +466,11 @@ export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void { 
-        const { expiration, individualQuoteResults } = this.payload;
+        const { bulkQuoteId, expiration, individualQuoteResults } = this.payload;
+
+        if (!bulkQuoteId) {
+            throw new Error("bulkQuoteId is required.");
+		}
 
         if (!expiration) {
             throw new Error("expiration is required.");
