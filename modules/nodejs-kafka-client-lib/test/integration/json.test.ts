@@ -63,6 +63,8 @@ describe("JSON - nodejs-rdkafka", () => {
         };
 
         kafkaProducer = new MLKafkaJsonProducer(producerOptions, logger);
+        await kafkaProducer.connect();
+        await new Promise(f=> setTimeout(f, 500));
 
         consumerOptions = {
             kafkaBrokerList: KAFKA_URL,
@@ -70,6 +72,9 @@ describe("JSON - nodejs-rdkafka", () => {
         };
 
         kafkaConsumer = new MLKafkaJsonConsumer(consumerOptions, logger);
+
+        // need to wait a bit as a consequence of the connects() and start() being called in sequence
+        await new Promise(f=> setTimeout(f, 500));
     });
 
     afterAll(async () => {
@@ -106,7 +111,7 @@ describe("JSON - nodejs-rdkafka", () => {
                 return;
             });
 
-            await kafkaProducer.connect()
+            //await kafkaProducer.connect()
 
             const msgs: IMessage[] = []
             for (let i = 0; i < messageCount; i++) {
@@ -189,20 +194,23 @@ describe("JSON - nodejs-rdkafka", () => {
                 expect(msgValObj.testProp).toEqual(messages[1].payload.testProp);
                 // expect(msgValObj.testProp).toEqual(0); // uncomment to test that the test is testing ;)
 
-                if(receivedMessageCount == 2) resolve();
+                if(receivedMessageCount == 2)
+                    resolve();
             }
 
-            kafkaConsumer.setFilteringFn(message => message.msgName !== filterOutMsgName);
+            kafkaConsumer.setFilteringFn(message => {
+                return message.msgName !== filterOutMsgName;
+            });
 
             kafkaConsumer.setCallbackFn(handler);
             kafkaConsumer.setTopics([TOPIC_NAME_JSON]);
 
             await kafkaConsumer.connect();
             await kafkaConsumer.start();
-            await kafkaProducer.connect();
+
 
             // need to wait a bit as a consequence of the connects() and start() being called in sequence
-            await new Promise(f => setTimeout(f, 2000));
+            await new Promise(f=> setTimeout(f, 500));
 
             await kafkaProducer.send(messages);     // test send with array
             await kafkaProducer.send(messages[1]);  // test send with single msg

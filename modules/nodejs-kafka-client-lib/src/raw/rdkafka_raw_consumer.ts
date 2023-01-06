@@ -48,23 +48,23 @@ const defaultOptions = {
 }
 
 export class MLKafkaRawConsumerOptions {
-    kafkaBrokerList: string
-    kafkaGroupId?: string
-    consumerClientId?: string
-    useSyncCommit?: boolean
-    outputType?: MLKafkaRawConsumerOutputType
-    autoOffsetReset?: "earliest" | "latest" | "error" // default is latest
-    messageMaxBytes?: number
+    kafkaBrokerList: string;
+    kafkaGroupId?: string;
+    consumerClientId?: string;
+    useSyncCommit?: boolean;
+    outputType?: MLKafkaRawConsumerOutputType;
+    autoOffsetReset?: "earliest" | "latest" | "error"; // default is latest
+    messageMaxBytes?: number;
 }
 
 export class MLKafkaRawConsumer implements IRawMessageConsumer {
-    private readonly _logger: ILogger | null
-    private _options: MLKafkaRawConsumerOptions
-    private _globalConfig: RDKafka.ConsumerGlobalConfig
-    private _topicConfig: RDKafka.ConsumerTopicConfig
-    private _topics: string[]
-    private readonly _client: RDKafka.KafkaConsumer
-    private _handlerCallback: (message: IRawMessage) => Promise<void>
+    private readonly _logger: ILogger | null;
+    private _options: MLKafkaRawConsumerOptions;
+    private _globalConfig: RDKafka.ConsumerGlobalConfig;
+    private _topicConfig: RDKafka.ConsumerTopicConfig;
+    private _topics: string[];
+    private readonly _client: RDKafka.KafkaConsumer;
+    private _handlerCallback: (message: IRawMessage) => Promise<void>;
 
     constructor(options: MLKafkaRawConsumerOptions, logger: ILogger | null = null) {
         this._options = options;

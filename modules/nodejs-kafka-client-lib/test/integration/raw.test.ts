@@ -28,7 +28,7 @@
  --------------
  ******/
 
-'use strict'
+"use strict";
 import {ConsoleLogger, LogLevel} from "@mojaloop/logging-bc-public-types-lib";
 
 import {
@@ -60,7 +60,7 @@ describe("RAW - nodejs-rdkafka", () => {
          // producer needed for the tests
         producerOptions = {
             kafkaBrokerList: KAFKA_URL,
-            producerClientId: 'test_producer_' + Date.now()
+            producerClientId: "test_producer_" + Date.now()
         };
 
         kafkaProducer = new MLKafkaRawProducer(producerOptions, logger); // test with logger
@@ -72,7 +72,7 @@ describe("RAW - nodejs-rdkafka", () => {
 
     afterAll(async () => {
         // Cleanup
-        await kafkaProducer.disconnect();
+        //await kafkaProducer.disconnect();
         await kafkaProducer.destroy();
         //await kafkaConsumer.destroy(false);
     });
@@ -93,7 +93,7 @@ describe("RAW - nodejs-rdkafka", () => {
             kafkaBrokerList: KAFKA_URL,
             skipAcknowledgements: true
         });
-        notUsed.disconnect(); // test disconeect not connected
+        notUsed.disconnect(); // test disconnect not connected
 
         // consumer constructor tests
         new MLKafkaRawConsumer({
@@ -133,7 +133,7 @@ describe("RAW - nodejs-rdkafka", () => {
                 return;
             });
 
-            await kafkaProducer.connect()
+            await kafkaProducer.connect();
 
             const msgs = []
             for (let i = 0; i < messageCount; i++) {
@@ -142,12 +142,12 @@ describe("RAW - nodejs-rdkafka", () => {
                     value: {testProp: i},
                     key: null,
                     headers: [
-                        {key1: Buffer.from('testStr')}
+                        {key1: Buffer.from("testStr")}
                     ]
                 })
             }
 
-            await kafkaProducer.send(msgs)
+            await kafkaProducer.send(msgs);
             // console.log('done sending')
         });
     });
@@ -155,26 +155,31 @@ describe("RAW - nodejs-rdkafka", () => {
     test("RAW - produce and consume json", async () => {
         consumerOptions = {
             kafkaBrokerList: KAFKA_URL,
-            kafkaGroupId: 'test_consumer_group_' + Date.now(),
+            kafkaGroupId: "test_consumer_group_" + Date.now(),
             outputType: MLKafkaRawConsumerOutputType.Json
         };
 
         kafkaConsumer = new MLKafkaRawConsumer(consumerOptions, logger);
 
+        const messageCount = 10;
         let receivedMessageCount = 0;
         let receivedMessage: any = {};
         const msgTopic = TOPIC_NAME_RAW
-        const msgValue = {testProp: Date.now()}
-        const msgHeader = {key1: Buffer.from('testStr')};
+        const msgValue = {testProp: Date.now(), index:-1}
+        const msgHeader = {key1: Buffer.from("testStr")};
 
         return new Promise<void>(async (resolve) => {
+            async function exit(){
+                await kafkaConsumer.destroy(true);
+                return resolve();
+            }
+
             async function handler(message: IRawMessage): Promise<void> {
                 logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
                 receivedMessageCount++;
                 receivedMessage = message;
-                //resolve();
-                //return;
-
+                // resolve();
+                // return;
 
                 expect(receivedMessage.topic).toEqual(msgTopic);
                 expect(receivedMessage.value).not.toBeNull();
@@ -192,7 +197,8 @@ describe("RAW - nodejs-rdkafka", () => {
                 expect(headerObj[0]).not.toBeNull();
                 expect(headerObj[0].key1).toEqual(msgHeader.key1.toString()); // for raw consumer compare with buffer
 
-                resolve();
+                if(receivedMessageCount == messageCount)
+                    exit();
             }
 
             kafkaConsumer.setCallbackFn(handler);
@@ -208,21 +214,26 @@ describe("RAW - nodejs-rdkafka", () => {
                 console.log("deliveryReport");
             })
 
-            await kafkaProducer.send({
-                topic: msgTopic,
-                value: msgValue,
-                key: null,
-                headers: [
-                    msgHeader
-                ]
-            });
+            const msgs = []
+            for (let i = 0; i < messageCount; i++) {
+                msgs.push({
+                    topic: msgTopic,
+                    value: {testProp: msgValue.testProp, index: i},
+                    key: null,
+                    headers: [
+                        msgHeader
+                    ]
+                });
+            }
+
+            await kafkaProducer.send(msgs);
         });
     });
 
     test("RAW - produce and consume string", async () => {
         consumerOptions = {
             kafkaBrokerList: KAFKA_URL,
-            kafkaGroupId: 'test_consumer_group_' + Date.now(),
+            kafkaGroupId: "test_consumer_group_" + Date.now(),
             outputType: MLKafkaRawConsumerOutputType.String
         };
 
@@ -232,7 +243,7 @@ describe("RAW - nodejs-rdkafka", () => {
         let receivedMessage: any = {};
         const msgTopic = TOPIC_NAME_RAW
         const msgValue = {testProp: Date.now()}
-        const msgHeader = {key1: Buffer.from('testStr')};
+        const msgHeader = {key1: Buffer.from("testStr")};
 
         return new Promise<void>(async (resolve) => {
             async function handler(message: IRawMessage): Promise<void> {
@@ -277,7 +288,7 @@ describe("RAW - nodejs-rdkafka", () => {
     test("RAW - produce and consume binary AND useSyncCommit", async () => {
         consumerOptions = {
             kafkaBrokerList: KAFKA_URL,
-            kafkaGroupId: 'test_consumer_group_' + Date.now(),
+            kafkaGroupId: "test_consumer_group_" + Date.now(),
             outputType: MLKafkaRawConsumerOutputType.Raw,
             useSyncCommit: true
         };
@@ -288,7 +299,7 @@ describe("RAW - nodejs-rdkafka", () => {
         let receivedMessage: any = {};
         const msgTopic = TOPIC_NAME_RAW
         const msgValue = {testProp: Date.now()}
-        const msgHeader = {key1: Buffer.from('testStr')};
+        const msgHeader = {key1: Buffer.from("testStr")};
 
         return new Promise<void>(async (resolve) => {
             async function handler(message: IRawMessage): Promise<void> {
@@ -331,4 +342,34 @@ describe("RAW - nodejs-rdkafka", () => {
             });
         });
     });
+
+   /* test("RAW - produce with custom partitioner", async () => {
+        const options:MLKafkaRawProducerOptions = {
+            kafkaBrokerList: KAFKA_URL,
+            producerClientId: "custom_partitioner_test_producer_" + Date.now(),
+            // partitionerFn: (key, partitionCount, opaque) => {
+            //     debugger;
+            //     return 0;
+            // },
+            partitionerFn: function(){
+                debugger;
+                return 0;
+            }
+        };
+        logger.setLogLevel(LogLevel.INFO);
+        const producer: MLKafkaRawProducer = new MLKafkaRawProducer(options, logger);
+        await producer.connect();
+
+        // need to wait a bit as a consequence of the connects() and start() being called in sequence
+        await new Promise(f => setTimeout(f, 500));
+
+        debugger;
+        await producer.send({
+            topic: "msgTopic",
+            value: {key: "1"},
+            key: "1"
+        });
+
+        debugger;
+    });*/
 })

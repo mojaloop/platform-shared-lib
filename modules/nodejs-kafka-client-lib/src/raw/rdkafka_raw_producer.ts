@@ -46,13 +46,24 @@ export enum MLKafkaRawProducerCompressionCodecs {
     ZSTD = "zstd"
 }
 
+export enum MLKafkaRawProducerPartitioners {
+    RANDOM = "random",
+    MURMUR2 = "murmur2",
+    MURMUR2_RANDOM = "murmur2_random"
+    // We'll only use these for now, so no need to add others and couple it even further
+    // Better to use "murmur2*" algorithms family instead of the "consistent*" for consistency across stacks
+}
+
 export class MLKafkaRawProducerOptions {
-    kafkaBrokerList: string
-    producerClientId?: string
-    skipAcknowledgements?: boolean
-    messageMaxBytes?: number
-    compressionCodec?: MLKafkaRawProducerCompressionCodecs
-    compressionLevel?: number
+    kafkaBrokerList: string;
+    producerClientId?: string;
+    skipAcknowledgements?: boolean;
+    messageMaxBytes?: number;
+    compressionCodec?: MLKafkaRawProducerCompressionCodecs;
+    compressionLevel?: number;
+    partitioner?: MLKafkaRawProducerPartitioners;
+    // /* return -1 if partitioning failed */
+    // partitionerFn?: (key:string, partitionCount:number, opaque?:any)=>number; // if used will ignore the "partitioner" setting above
 }
 
 /*interface MLKafkaRawProducerEventListenerMap {
@@ -89,11 +100,13 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
         // parse options and apply defaults
         this._parseOptionsAndApplyDefault();
 
-        // this._topicConfig.partitioner_cb = () => {
-        //   console.log(arguments)
-        // }
-
         this._client = new RDKafka.HighLevelProducer(this._globalConfig, this._topicConfig);
+
+        // // Can't get this custom partitioner cb to be called.
+        // if(this._topicConfig.partitioner_cb) {
+        //     // @ts-ignore
+        //     this._client._client.setPartitioner(this._topicConfig.partitioner_cb);
+        // }
 
         this._client.on("ready", this._onReady.bind(this));
         this._client.on("event.error", this._onError.bind(this));
@@ -113,6 +126,16 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
             "metadata.broker.list": this._options.kafkaBrokerList
         };
         this._topicConfig = {};
+
+        /*if(this._options.partitionerFn){
+            this._topicConfig.partitioner_cb = this._options.partitionerFn;
+        }else if...*/
+        if(this._options.partitioner){
+            this._topicConfig.partitioner = this._options.partitioner;
+        }else{
+            // default partitioner
+            this._topicConfig.partitioner = MLKafkaRawProducerPartitioners.MURMUR2_RANDOM;
+        }
 
         if (this._options.producerClientId !== undefined) {
             this._globalConfig["client.id"] = this._options.producerClientId;
@@ -185,7 +208,7 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
 
     private _toRDKafkaProduceParams(msg: IRawMessage): { topic: string, partition: NumberNullUndefined, message: Buffer, key: Buffer, timestamp: NumberNullUndefined, headers: IRawMessageHeader[] } {
         const topic: string = msg.topic;
-        const partition = -1; // use default from rdkafka
+        const partition = msg.partition;// ?? -1; // use default from rdkafka
         const timestamp = msg.timestamp;
 
         let message: Buffer = Buffer.alloc(0); // default
