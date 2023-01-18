@@ -30,15 +30,15 @@
 
 "use strict";
 
-const BOUNDED_CONTEXT_NAME = "TransfersBc";
-const AGGREGATE_NAME = "Transfers";
+const TRANSFERS_BOUNDED_CONTEXT_NAME = "TransfersBc";
+const TRANSFERS_AGGREGATE_NAME = "Transfers";
 
 enum TransfersBCTopics {
     "DomainEvents" = "TransfersBcEvents",
     "DomainRequests" = "TransfersBcRequests"
 }
 
-export {TransfersBCTopics , BOUNDED_CONTEXT_NAME, AGGREGATE_NAME};
+export {TransfersBCTopics , TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME};
 export * from "./requests";
 export * from "./responses";
 

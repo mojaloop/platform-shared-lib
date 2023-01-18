@@ -34,6 +34,7 @@
 
 "use strict";
 
+// TODO put BC name first (see transfers)
 const BOUNDED_CONTEXT_NAME = "AccountLookupBc";
 const AGGREGATE_NAME = "Party";
 

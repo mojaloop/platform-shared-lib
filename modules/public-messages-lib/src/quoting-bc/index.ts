@@ -31,6 +31,7 @@
 
 "use strict";
 
+// TODO put BC name first (see transfers)
 const BOUNDED_CONTEXT_NAME_QUOTING = "QuotingBc";
 const AGGREGATE_NAME_QUOTING = "Quote";
 
