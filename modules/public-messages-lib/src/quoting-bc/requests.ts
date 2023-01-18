@@ -36,7 +36,6 @@
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { BOUNDED_CONTEXT_NAME_QUOTING, AGGREGATE_NAME_QUOTING, QuotingBCTopics } from ".";
-import crypto from "crypto";
 
 export type QuoteRequestReceivedEvtPayload = {
     quoteId: string;
@@ -461,7 +460,7 @@ export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
     constructor (payload: BulkQuotePendingReceivedEvtPayload) {
         super();
 
-        this.aggregateId = this.msgKey = crypto.randomUUID({ disableEntropyCache: true });
+        this.aggregateId = this.msgKey = payload.bulkQuoteId;
         this.payload = payload;
     }
 
