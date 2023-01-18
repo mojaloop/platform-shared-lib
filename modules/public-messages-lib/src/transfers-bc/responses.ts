@@ -31,7 +31,7 @@
 "use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import {AGGREGATE_NAME, BOUNDED_CONTEXT_NAME, TransfersBCTopics} from ".";
+import {TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME, TransfersBCTopics} from ".";
 
 
 export type TransferPreparedEvtPayload = {
@@ -45,9 +45,9 @@ export type TransferPreparedEvtPayload = {
 }
 
 export class TransferPreparedEvt extends DomainEventMsg {
-	boundedContextName: string = BOUNDED_CONTEXT_NAME
+	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
 	aggregateId: string;
-	aggregateName: string = AGGREGATE_NAME;
+	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
 	msgKey: string;
 	msgTopic: string = TransfersBCTopics.DomainEvents;
 	payload: TransferPreparedEvtPayload;
