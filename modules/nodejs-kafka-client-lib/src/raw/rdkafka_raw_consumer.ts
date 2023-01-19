@@ -55,6 +55,7 @@ export class MLKafkaRawConsumerOptions {
     outputType?: MLKafkaRawConsumerOutputType;
     autoOffsetReset?: "earliest" | "latest" | "error"; // default is latest
     messageMaxBytes?: number;
+    sessionTimeoutMs?: number;   //Client group session and failure detection timeout, default is 45 secs
 }
 
 export class MLKafkaRawConsumer implements IRawMessageConsumer {
@@ -113,6 +114,10 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
 
         if (this._options.messageMaxBytes !== undefined) {
             this._globalConfig["message.max.bytes"] = this._options.messageMaxBytes;
+        }
+
+        if (this._options.sessionTimeoutMs !== undefined) {
+            this._globalConfig["session.timeout.ms"] = this._options.sessionTimeoutMs;
         }
 
         // topic configs
