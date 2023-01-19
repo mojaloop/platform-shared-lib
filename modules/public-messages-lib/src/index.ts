@@ -33,3 +33,4 @@
 
 export * from "./account-lookup-bc/";
 export * from "./quoting-bc/";
+export * from "./transfers-bc/";
