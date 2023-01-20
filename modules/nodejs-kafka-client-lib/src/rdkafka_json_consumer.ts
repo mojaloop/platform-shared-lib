@@ -48,6 +48,8 @@ export class MLKafkaJsonConsumerOptions {
     useSyncCommit?: boolean
     autoOffsetReset?: "earliest" | "latest" | "error" // default is latest
     sessionTimeoutMs?: number;   //Client group session and failure detection timeout, default is 45 secs
+    batchSize?: number;
+    batchTimeoutMs?: number;
 }
 
 export class MLKafkaJsonConsumer implements IMessageConsumer {

@@ -44,7 +44,9 @@ export enum MLKafkaRawConsumerOutputType {
 
 const defaultOptions = {
     useSyncCommit: false,
-    outputType: MLKafkaRawConsumerOutputType.Json
+    outputType: MLKafkaRawConsumerOutputType.Json,
+    batchSize: 10,
+    batchTimeoutMs: 500
 }
 
 export class MLKafkaRawConsumerOptions {
@@ -56,6 +58,8 @@ export class MLKafkaRawConsumerOptions {
     autoOffsetReset?: "earliest" | "latest" | "error"; // default is latest
     messageMaxBytes?: number;
     sessionTimeoutMs?: number;   //Client group session and failure detection timeout, default is 45 secs
+    batchSize?: number;
+    batchTimeoutMs?: number;
 }
 
 export class MLKafkaRawConsumer implements IRawMessageConsumer {
@@ -82,7 +86,7 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         this._client.on("event.throttle", this._onThrottle.bind(this));
         this._client.on("event.stats", this._onStats.bind(this));
         this._client.on("disconnected", this._onDisconnect.bind(this));
-        this._client.on("data", this._onData.bind(this));
+        //this._client.on("data", this._onData.bind(this));
 
         this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - instance created");
         this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaConsumer - features: ${RDKafka.features.toString()}`);
@@ -92,15 +96,23 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         this._globalConfig = {};
         this._topicConfig = {};
 
-        if (this._options.useSyncCommit===undefined) {
+        if (this._options.useSyncCommit === undefined) {
             this._options.useSyncCommit = defaultOptions.useSyncCommit;
         }
 
-        if (this._options.outputType===undefined) {
+        if (this._options.outputType === undefined) {
             this._options.outputType = defaultOptions.outputType;
         }
 
-        if (this._options.autoOffsetReset===undefined) {
+        if (this._options.batchSize === undefined) {
+            this._options.batchSize = defaultOptions.batchSize;
+        }
+
+        if (this._options.batchTimeoutMs === undefined) {
+            this._options.batchTimeoutMs = defaultOptions.batchTimeoutMs;
+        }
+
+        if (this._options.autoOffsetReset === undefined) {
             this._options.autoOffsetReset = "latest";
         }
 
@@ -161,8 +173,8 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         }
     }
 
-    private async _onData(kafkaMessage: RDKafka.Message): Promise<void> {
-        /* istanbul ignore if */
+   /* private async _onData(kafkaMessage: RDKafka.Message): Promise<void> {
+        /!* istanbul ignore if *!/
         if (!kafkaMessage) {
             this._logger?.isErrorEnabled() && this._logger.error("MLRawKafkaConsumer - Received null message");
             return;
@@ -173,6 +185,31 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         // call the provided handler and then commit
         await this._handlerCallback(msg);
         this._commitMsg(kafkaMessage);
+    }*/
+
+    private _consumeLoop():void {
+        this._client.consume(this._options.batchSize || defaultOptions.batchSize, async (err, kafkaMessages) => {
+            if (err || !kafkaMessages || kafkaMessages.length==0) {
+                if (err) {
+                    this._logger?.error(err, `MLKafkaRawConsumer got callback with err: ${err.message}`);
+                }
+                setImmediate(() => {
+                    this._consumeLoop();
+                });
+                return;
+            }
+
+            for (const kafkaMessage of kafkaMessages) {
+                const msg = this._toIMessage(kafkaMessage);
+                // call the provided handler and then commit
+                await this._handlerCallback(msg);
+                this._commitMsg(kafkaMessage);
+            }
+
+            setImmediate(() => {
+                this._consumeLoop();
+            });
+        });
     }
 
     private _toIMessage(kafkaMsg: RDKafka.Message): IRawMessage {
@@ -304,14 +341,18 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
                 reject(err);
             }
 
+            this._client.setDefaultConsumeTimeout(this._options.batchTimeoutMs || defaultOptions.batchTimeoutMs);
+
             this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaConsumer - Subscribing to topics ${JSON.stringify(this._topics)}`);
             if (Array.isArray(this._topics) && this._topics.length > 0) {
                 this._client.subscribe(this._topics);
             }
 
-            this._client.consume();
-            this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - started");
+            setImmediate(() => {
+                this._consumeLoop();
+            });
 
+            this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - started");
             resolve();
         })
     }
