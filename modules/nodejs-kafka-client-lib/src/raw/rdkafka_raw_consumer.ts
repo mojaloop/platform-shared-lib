@@ -32,8 +32,12 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unused-vars */
 
+
+import {EventEmitter} from "events";
+import {TopicPartition} from "node-rdkafka";
 import * as RDKafka from "node-rdkafka";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
+import {LibrdKafkaError, Metadata} from "node-rdkafka/index";
 import {IRawMessage, IRawMessageConsumer} from "./raw_types";
 
 export enum MLKafkaRawConsumerOutputType {
@@ -45,8 +49,8 @@ export enum MLKafkaRawConsumerOutputType {
 const defaultOptions = {
     useSyncCommit: false,
     outputType: MLKafkaRawConsumerOutputType.Json,
-    batchSize: 10,
-    batchTimeoutMs: 500
+    batchSize: 1,
+    batchTimeoutMs: 1000
 }
 
 export class MLKafkaRawConsumerOptions {
@@ -62,7 +66,20 @@ export class MLKafkaRawConsumerOptions {
     batchTimeoutMs?: number;
 }
 
-export class MLKafkaRawConsumer implements IRawMessageConsumer {
+type MLKafkaRawConsumerEvents = "ready" | "rebalance" | "rebalance.error" | "event" | "throttle" | "stats" | "disconnected";
+type MLKafkaRawConsumerEventListenerMap = {
+    "ready": ()=>void;
+    "rebalance": (type: "assign" | "revoke", assignments: {topic: string, partition: number }[])=>void;
+    "rebalance.error": (error: Error)=>void;
+    "event": (eventData: any)=>void;
+    "throttle": (eventData: any) => void;
+    "stats": (eventData: any) => void;
+    "disconnected": () => void;
+}
+type MLKafkaRawConsumerEventListener<K extends string> = K extends keyof MLKafkaRawConsumerEventListenerMap ? MLKafkaRawConsumerEventListenerMap[K]:never;
+
+
+export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsumer  {
     private readonly _logger: ILogger | null;
     private _options: MLKafkaRawConsumerOptions;
     private _globalConfig: RDKafka.ConsumerGlobalConfig;
@@ -72,6 +89,7 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
     private _handlerCallback: (message: IRawMessage) => Promise<void>;
 
     constructor(options: MLKafkaRawConsumerOptions, logger: ILogger | null = null) {
+        super();
         this._options = options;
         this._logger = logger;
 
@@ -81,6 +99,9 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         this._client = new RDKafka.KafkaConsumer(this._globalConfig, this._topicConfig);
 
         this._client.on("ready", this._onReady.bind(this));
+        this._client.on("rebalance", this._onRebalance.bind(this));
+        this._client.on("rebalance.error", this._onRebalanceError.bind(this));
+        this._client.on("event.event", this._onEvent.bind(this));
         this._client.on("event.log", this._onLog.bind(this));
         this._client.on("event.error", this._onError.bind(this));
         this._client.on("event.throttle", this._onThrottle.bind(this));
@@ -92,9 +113,22 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaConsumer - features: ${RDKafka.features.toString()}`);
     }
 
+    on(event: MLKafkaRawConsumerEvents, listener: MLKafkaRawConsumerEventListener<MLKafkaRawConsumerEvents>): this {
+        return super.on(event, listener);
+    }
+
+    once(event: MLKafkaRawConsumerEvents, listener: MLKafkaRawConsumerEventListener<MLKafkaRawConsumerEvents>): this {
+        return super.once(event, listener);
+    }
+
     private _parseOptionsAndApplyDefault(): void {
         this._globalConfig = {};
         this._topicConfig = {};
+
+        // we want to always receive the rebalance events
+        this._globalConfig.rebalance_cb = true;
+        // we want to always receive the event events
+        this._globalConfig.event_cb = true;
 
         if (this._options.useSyncCommit === undefined) {
             this._options.useSyncCommit = defaultOptions.useSyncCommit;
@@ -141,7 +175,12 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
 
     private _onReady(info: RDKafka.ReadyInfo, metadata: RDKafka.Metadata): void {
         this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaConsumer - event.ready - info: ${JSON.stringify(info, null, 2)}`);
-        this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - event.ready - metadata: ${JSON.stringify(metadata, null, 2)}`);
+
+        // this a huge
+        //this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - event.ready - metadata: ${JSON.stringify(metadata, null, 2)}`);
+        setImmediate(() => {
+            this.emit("ready", info, metadata);
+        });
     }
 
     /* istanbul ignore next */
@@ -150,8 +189,37 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
     }
 
     /* istanbul ignore next */
+    private _onRebalance(error: RDKafka.LibrdKafkaError, assignments: TopicPartition[]){
+        // rdkafka library code emits the event as it receives it from the cluster and
+        // before actually calling the assign() or unassign(), we need to wait a bit
+        // half a second is enough and this is not a performance issue
+        // https://github.com/Blizzard/node-rdkafka/blob/aba2011d6c1ae2a0ae745b5d71bef77aa42180cc/lib/kafka-consumer.js#L59
+        setTimeout(()=>{
+            this._logger?.isDebugEnabled() && this._logger?.debug(`MLRawKafkaConsumer - event.rebalance - ${JSON.stringify(assignments, null, 2)}`);
+            const type = error.code== -175 ? "assign":"revoke";
+            this.emit("rebalance", type, assignments);
+        },500);
+    }
+
+    /* istanbul ignore next */
+    private _onRebalanceError(error: Error) {
+        // same as above in _onRebalance()
+        setTimeout(() => {
+            this._logger?.isWarnEnabled() && this._logger?.warn(`MLRawKafkaConsumer - event.rebalance error - ${JSON.stringify(error, null, 2)}`);
+            this.emit("rebalance.error", error);
+        }, 500);
+    }
+
+    /* istanbul ignore next */
+    private _onEvent(eventData: any): void {
+        this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - event.event - ${JSON.stringify(eventData, null, 2)}`);
+        this.emit("event", eventData);
+    }
+
+    /* istanbul ignore next */
     private _onThrottle(eventData: any): void {
         this._logger?.isWarnEnabled() && this._logger.warn(`MLRawKafkaConsumer - event.throttle - ${JSON.stringify(eventData, null, 2)}`);
+        this.emit("throttle", eventData);
     }
 
     /* istanbul ignore next */
@@ -162,6 +230,7 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
     /* istanbul ignore next */
     private _onStats(eventData: any): void {
         this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaConsumer - event.stats - ${eventData.message}`);
+        this.emit("stats", eventData);
     }
 
     private _onDisconnect(metrics: RDKafka.ClientMetrics): void {
@@ -171,6 +240,7 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
         } else {
             this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaConsumer - event.disconnected - ${JSON.stringify(metrics, null, 2)}`);
         }
+        this.emit("disconnected");
     }
 
    /* private async _onData(kafkaMessage: RDKafka.Message): Promise<void> {
@@ -188,11 +258,11 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
     }*/
 
     private _consumeLoop():void {
-        this._client.consume(this._options.batchSize || defaultOptions.batchSize, async (err, kafkaMessages) => {
-            if (err || !kafkaMessages || kafkaMessages.length==0) {
-                if (err) {
-                    this._logger?.error(err, `MLKafkaRawConsumer got callback with err: ${err.message}`);
-                }
+        if(!this._client.isConnected()) return;
+
+        this._client.consume(this._options.batchSize || defaultOptions.batchSize, async (err: RDKafka.LibrdKafkaError, kafkaMessages: RDKafka.Message[]) => {
+            if (err) {
+                this._logger?.error(err, `MLKafkaRawConsumer got callback with err: ${err.message}`);
                 setImmediate(() => {
                     this._consumeLoop();
                 });
@@ -298,8 +368,8 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
     async connect(): Promise<void> {
         return new Promise((resolve, reject) => {
             this._client.connect({
-                topic: this._topics[0],
-                allTopics: false
+                // topic: this._topics[0],
+                // allTopics: false
             }, (err: RDKafka.LibrdKafkaError, metadata: RDKafka.Metadata) => {
                 /* istanbul ignore if */
                 if (err) {
@@ -343,22 +413,48 @@ export class MLKafkaRawConsumer implements IRawMessageConsumer {
 
             this._client.setDefaultConsumeTimeout(this._options.batchTimeoutMs || defaultOptions.batchTimeoutMs);
 
-            this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaConsumer - Subscribing to topics ${JSON.stringify(this._topics)}`);
-            if (Array.isArray(this._topics) && this._topics.length > 0) {
-                this._client.subscribe(this._topics);
+            if(!Array.isArray(this._topics) || this._topics.length == 0){
+                this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - started");
+
+                setImmediate(() => {
+                    this._consumeLoop();
+                });
+
+                resolve();
+                return;
             }
 
-            setImmediate(() => {
-                this._consumeLoop();
+            this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaConsumer - Subscribing to topics ${JSON.stringify(this._topics)}`);
+            this._client.on("subscribed", topics => {
+                this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - subscribed");
+                this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - started");
+
+                setImmediate(() => {
+                    this._consumeLoop();
+                });
+
+                resolve();
             });
 
-            this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - started");
-            resolve();
+            this._client.subscribe(this._topics);
         })
     }
 
     async stop(): Promise<void> {
         this._client.unsubscribe();
         this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - stop called, unsubscribed from previously subscribed topics");
+    }
+
+    async getMetadata():Promise<RDKafka.Metadata>{
+        return new Promise<RDKafka.Metadata>((resolve, reject)=>{
+            this._client.getMetadata({allTopics:true}, (err: LibrdKafkaError, data: Metadata)=>{
+                if(err){
+                    this._logger?.isErrorEnabled() && this._logger.error(`MLRawKafkaConsumer - error requesting metadata from RDKafka client - errorno: ${err.errno} message: ${err.message}`);
+                    return reject(err);
+                }
+                return resolve(data);
+            });
+        });
+
     }
 }

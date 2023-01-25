@@ -34,12 +34,20 @@
 
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {IMessageConsumer, IMessage} from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import {EventEmitter} from "events";
 import {
     MLKafkaRawConsumer,
     MLKafkaRawConsumerOutputType,
     MLKafkaRawConsumerOptions
 } from "./raw/rdkafka_raw_consumer";
 import {IRawMessage} from "./raw/raw_types";
+
+
+type MLKafkaJsonConsumerEvents = "rebalance";
+type MLKafkaJsonConsumerEventListenerMap = {
+    "rebalance": (type: "assign" | "revoke", assignments: { topic: string, partition: number }[]) => void;
+}
+type MLKafkaJsonConsumerEventListener<K extends string> = K extends keyof MLKafkaJsonConsumerEventListenerMap ? MLKafkaJsonConsumerEventListenerMap[K]:never;
 
 
 export class MLKafkaJsonConsumerOptions {
@@ -52,7 +60,7 @@ export class MLKafkaJsonConsumerOptions {
     batchTimeoutMs?: number;
 }
 
-export class MLKafkaJsonConsumer implements IMessageConsumer {
+export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsumer {
     private readonly _logger: ILogger | null;
     private readonly _kafkaRawConsumer: MLKafkaRawConsumer;
     private _handlerCallback: (message: IMessage) => Promise<void>
@@ -60,6 +68,7 @@ export class MLKafkaJsonConsumer implements IMessageConsumer {
     private _options: MLKafkaJsonConsumerOptions
 
     constructor(options: MLKafkaJsonConsumerOptions, logger: ILogger | null = null) {
+        super();
         this._options = options;
         this._logger = logger;
 
@@ -71,7 +80,22 @@ export class MLKafkaJsonConsumer implements IMessageConsumer {
         this._kafkaRawConsumer = new MLKafkaRawConsumer(rawOptions, logger);
         this._kafkaRawConsumer.setCallbackFn(this._internalHandler.bind(this));
 
+        this._kafkaRawConsumer.eventNames()
+
+        // hook MLKafkaRawConsumer events we care about
+        this._kafkaRawConsumer.on("rebalance", (type: "assign" | "revoke", assignments: { topic: string; partition: number }[]) => {
+            this.emit("rebalance", type, assignments);
+        });
+
         this._logger?.isInfoEnabled() && this._logger.info("MLKafkaJsonConsumer - instance created");
+    }
+
+    on(event: MLKafkaJsonConsumerEvents, listener: MLKafkaJsonConsumerEventListener<MLKafkaJsonConsumerEvents>): this {
+        return super.on(event, listener);
+    }
+
+    once(event: MLKafkaJsonConsumerEvents, listener: MLKafkaJsonConsumerEventListener<MLKafkaJsonConsumerEvents>): this {
+        return super.once(event, listener);
     }
 
     private _convertMsg(message: IRawMessage): IMessage{

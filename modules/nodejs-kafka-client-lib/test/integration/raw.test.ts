@@ -29,61 +29,90 @@
  ******/
 
 "use strict";
+import * as crypto from "crypto";
+import * as RDKafka from "node-rdkafka";
 import {ConsoleLogger, LogLevel} from "@mojaloop/logging-bc-public-types-lib";
 
 import {
     IRawMessage,
     MLKafkaRawConsumer,
-    MLKafkaRawConsumerOptions,
     MLKafkaRawConsumerOutputType,
     MLKafkaRawProducer,
     MLKafkaRawProducerOptions
 } from "../../src/";
 
-jest.setTimeout(10000); // 10 secs - change this to suit the test (ms)
+const MAX_NUMBER_OF_TOPICS = 5; // increase this if you need more topics to be created for the tests
 
-const logger: ConsoleLogger = new ConsoleLogger();
-//logger.setLogLevel(LogLevel.WARN);
-
-let kafkaProducer: MLKafkaRawProducer;
-let producerOptions: MLKafkaRawProducerOptions;
-let kafkaConsumer: MLKafkaRawConsumer;
-let consumerOptions: MLKafkaRawConsumerOptions;
-
-const TOPIC_NAME_RAW = "nodejs-rdkafka-producer-raw-test-topic";
-
+const TEST_GENERATION = crypto.randomInt(9999);
+//base name for topics and consumer groups used
+const TEST_BASE_NAME = `nodejs-kafka-client-lib-raw-test_${TEST_GENERATION}`;
 const KAFKA_URL = process.env["KAFKA_URL"] || "localhost:9092";
+const CONSUMER_SESSION_TIMEOUT_MS = 7_000;
+
+jest.setTimeout(60000); // 60 secs - change this to suit the test (ms)
+
+const logger = new ConsoleLogger();
+logger.setLogLevel(LogLevel.DEBUG);
+
+// producer needed for the tests
+let kafkaProducer: MLKafkaRawProducer;
+const producerOptions: MLKafkaRawProducerOptions = {
+    kafkaBrokerList: KAFKA_URL,
+    producerClientId: "test_producer_" + Date.now()
+};
+let adminClient: RDKafka.IAdminClient;
 
 describe("RAW - nodejs-rdkafka", () => {
 
     beforeAll(async () => {
-         // producer needed for the tests
-        producerOptions = {
-            kafkaBrokerList: KAFKA_URL,
-            producerClientId: "test_producer_" + Date.now()
-        };
+        // create topics directly
+        adminClient = RDKafka.AdminClient.create({
+            "client.id": "nodejs-rdkafka-producer-raw-test_admin_client",
+            "metadata.broker.list": KAFKA_URL
+        });
+
+        function createTopic(topic:string):Promise<void>{
+            return new Promise<void>((resolve, reject) => {
+                adminClient.createTopic({
+                    topic: topic, num_partitions: 1, replication_factor: 1
+                }, (err) => {
+                    //if(err) return reject(err);
+                    resolve();
+                });
+            });
+        }
+
+        for(const i of Array.from(Array(MAX_NUMBER_OF_TOPICS), (x, i) => i)){
+            await createTopic(`${TEST_BASE_NAME}_${i}`);
+        }
 
         kafkaProducer = new MLKafkaRawProducer(producerOptions, logger); // test with logger
         await kafkaProducer.connect();
-
-        // need to wait a bit as a consequence of the connects() and start() being called in sequence
-        await new Promise(f=> setTimeout(f, 500));
     });
 
     afterAll(async () => {
-        // Cleanup
-        //await kafkaProducer.disconnect();
+        // Cleanup - deleting created topics
+        function deleteTopic(topic: string): Promise<void> {
+            return new Promise<void>((resolve, reject) => {
+                adminClient.deleteTopic(topic, (err) => {
+                    resolve();
+                });
+            });
+        }
+
+        for (const i of Array.from(Array(MAX_NUMBER_OF_TOPICS), (x, i) => i)) {
+            await deleteTopic(`${TEST_BASE_NAME}_${i}`);
+        }
+
+        // destroy the producer
         await kafkaProducer.destroy();
-        //await kafkaConsumer.destroy(false);
+        // wait until everything is completed (logs and other events)
+        await new Promise(f => setTimeout(f, 1000));
     });
 
     afterEach(async () => {
         // Cleanup
-        if(kafkaConsumer) {
-            await kafkaConsumer.stop();
-            await kafkaConsumer.disconnect();
-            await kafkaConsumer.destroy(false);
-        }
+
     });
 
     test("RAW - constructor tests", ()=>{
@@ -113,8 +142,7 @@ describe("RAW - nodejs-rdkafka", () => {
         });
     });
 
-
-    test("RAW - produce and received delivery reports", async () => {
+    test("RAW - produce and received delivery reports - #0", async () => {
         const messageCount = 1;
         let receivedMessages = 0;
 
@@ -128,17 +156,18 @@ describe("RAW - nodejs-rdkafka", () => {
 
                     // disable this handler
                     kafkaProducer.setDeliveryReportFn(null);
-                    return resolve();
+                    setTimeout(() => {
+                        resolve();
+                    }, 500);
+                    return;
                 }
                 return;
             });
 
-            await kafkaProducer.connect();
-
             const msgs = []
             for (let i = 0; i < messageCount; i++) {
                 msgs.push({
-                    topic: TOPIC_NAME_RAW,
+                    topic: TEST_BASE_NAME+"_0",
                     value: {testProp: i},
                     key: null,
                     headers: [
@@ -148,38 +177,29 @@ describe("RAW - nodejs-rdkafka", () => {
             }
 
             await kafkaProducer.send(msgs);
-            // console.log('done sending')
         });
     });
 
-    test("RAW - produce and consume json", async () => {
-        consumerOptions = {
+    test("RAW - produce and consume json - #1", async () => {
+        const kafkaConsumer = new MLKafkaRawConsumer({
             kafkaBrokerList: KAFKA_URL,
-            kafkaGroupId: "test_consumer_group_" + Date.now(),
+            sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS, // min is 6 secs, this should about it
+            kafkaGroupId: TEST_BASE_NAME+"_1",
             outputType: MLKafkaRawConsumerOutputType.Json
-        };
-
-        kafkaConsumer = new MLKafkaRawConsumer(consumerOptions, logger);
+        }, logger);
 
         const messageCount = 10;
         let receivedMessageCount = 0;
         let receivedMessage: any = {};
-        const msgTopic = TOPIC_NAME_RAW
-        const msgValue = {testProp: Date.now(), index:-1}
+        const msgTopic = TEST_BASE_NAME + "_1";
+        const msgValue = {testProp: 123, index:-1}
         const msgHeader = {key1: Buffer.from("testStr")};
 
         return new Promise<void>(async (resolve) => {
-            async function exit(){
-                await kafkaConsumer.destroy(true);
-                return resolve();
-            }
-
             async function handler(message: IRawMessage): Promise<void> {
                 logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
                 receivedMessageCount++;
                 receivedMessage = message;
-                // resolve();
-                // return;
 
                 expect(receivedMessage.topic).toEqual(msgTopic);
                 expect(receivedMessage.value).not.toBeNull();
@@ -197,59 +217,59 @@ describe("RAW - nodejs-rdkafka", () => {
                 expect(headerObj[0]).not.toBeNull();
                 expect(headerObj[0].key1).toEqual(msgHeader.key1.toString()); // for raw consumer compare with buffer
 
-                if(receivedMessageCount == messageCount)
-                    exit();
+                if(receivedMessageCount == messageCount){
+                    // defer the resolve to after finishing this handlerFn, to allow the consumer to commit the offset
+                    setTimeout(() => {
+                        kafkaConsumer.stop();
+                        kafkaConsumer.destroy(true);
+                        resolve();
+                    }, 100);
+                }
             }
 
             kafkaConsumer.setCallbackFn(handler);
             kafkaConsumer.setTopics([msgTopic]);
 
+            //wait for the consumer to settle (to be rebalanced)
+            kafkaConsumer.on("rebalance", async (type: "assign" | "revoke", assignments) => {
+                if (type==="assign") {
+                    const msgs = []
+                    for (let i = 0; i < messageCount; i++) {
+                        msgs.push({
+                            topic: msgTopic,
+                            value: {testProp: msgValue.testProp, index: i},
+                            key: null,
+                            headers: [
+                                msgHeader
+                            ]
+                        });
+                    }
+                    await kafkaProducer.send(msgs);
+                    console.log("Sent!");
+                }
+            });
+
             await kafkaConsumer.connect();
             await kafkaConsumer.start();
 
-            // need to wait a bit as a consequence of the connects() and start() being called in sequence
-            await new Promise(f=> setTimeout(f, 500));
-
-            kafkaProducer.once("deliveryReport", (topic, partition, offset) => {
-                console.log("deliveryReport");
-            })
-
-            const msgs = []
-            for (let i = 0; i < messageCount; i++) {
-                msgs.push({
-                    topic: msgTopic,
-                    value: {testProp: msgValue.testProp, index: i},
-                    key: null,
-                    headers: [
-                        msgHeader
-                    ]
-                });
-            }
-
-            await kafkaProducer.send(msgs);
         });
     });
 
-    test("RAW - produce and consume string", async () => {
-        consumerOptions = {
+    test("RAW - produce and consume string - #2", async () => {
+        const kafkaConsumer = new MLKafkaRawConsumer({
             kafkaBrokerList: KAFKA_URL,
-            kafkaGroupId: "test_consumer_group_" + Date.now(),
+            sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS, // min is 6 secs, this should about it
+            kafkaGroupId: TEST_BASE_NAME + "_2",
             outputType: MLKafkaRawConsumerOutputType.String
-        };
+        }, logger);
 
-        kafkaConsumer = new MLKafkaRawConsumer(consumerOptions, logger);
-
-        let receivedMessageCount = 0;
-        let receivedMessage: any = {};
-        const msgTopic = TOPIC_NAME_RAW
+        const msgTopic = TEST_BASE_NAME + "_2";
         const msgValue = {testProp: Date.now()}
         const msgHeader = {key1: Buffer.from("testStr")};
 
         return new Promise<void>(async (resolve) => {
-            async function handler(message: IRawMessage): Promise<void> {
+            async function handler(receivedMessage: IRawMessage): Promise<void> {
                 logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
-                receivedMessageCount++;
-                receivedMessage = message;
 
                 expect(receivedMessage.topic).toEqual(msgTopic);
                 expect(receivedMessage.value).not.toBeNull();
@@ -262,50 +282,51 @@ describe("RAW - nodejs-rdkafka", () => {
                 expect(headerObj[0]).not.toBeNull();
                 expect(headerObj[0].key1).toEqual(msgHeader.key1.toString()); // for raw consumer compare with buffer
 
-                resolve();
+                setTimeout(() => {
+                    kafkaConsumer.stop();
+                    kafkaConsumer.destroy(true);
+                    resolve();
+                }, 100);
             }
 
-            kafkaConsumer.setCallbackFn(handler);
             kafkaConsumer.setTopics([msgTopic]);
+            kafkaConsumer.setCallbackFn(handler);
+
+            //wait for the consumer to settle (to be rebalanced)
+            kafkaConsumer.on("rebalance", async (type: "assign" | "revoke", assignments) => {
+                if (type==="assign") {
+                    await kafkaProducer.send({
+                        topic: msgTopic,
+                        value: msgValue,
+                        key: null,
+                        headers: [
+                            msgHeader
+                        ]
+                    });
+                }
+            });
 
             await kafkaConsumer.connect();
             await kafkaConsumer.start();
-
-            // need to wait a bit as a consequence of the connects() and start() being called in sequence
-            await new Promise(f=> setTimeout(f, 500));
-
-            await kafkaProducer.send({
-                topic: msgTopic,
-                value: msgValue,
-                key: null,
-                headers: [
-                    msgHeader
-                ]
-            });
         });
     });
 
-    test("RAW - produce and consume binary AND useSyncCommit", async () => {
-        consumerOptions = {
+    test("RAW - produce and consume binary AND useSyncCommit - #3", async () => {
+        const kafkaConsumer = new MLKafkaRawConsumer({
             kafkaBrokerList: KAFKA_URL,
-            kafkaGroupId: "test_consumer_group_" + Date.now(),
+            sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS, // min is 6 secs, this should about it
+            kafkaGroupId: TEST_BASE_NAME + "_3",
             outputType: MLKafkaRawConsumerOutputType.Raw,
             useSyncCommit: true
-        };
+        }, logger);
 
-        kafkaConsumer = new MLKafkaRawConsumer(consumerOptions, logger);
-
-        let receivedMessageCount = 0;
-        let receivedMessage: any = {};
-        const msgTopic = TOPIC_NAME_RAW
+        const msgTopic = TEST_BASE_NAME + "_3";
         const msgValue = {testProp: Date.now()}
         const msgHeader = {key1: Buffer.from("testStr")};
 
         return new Promise<void>(async (resolve) => {
-            async function handler(message: IRawMessage): Promise<void> {
+            async function handler(receivedMessage: IRawMessage): Promise<void> {
                 logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
-                receivedMessageCount++;
-                receivedMessage = message;
 
                 expect(receivedMessage.topic).toEqual(msgTopic);
                 expect(receivedMessage.value).not.toBeNull();
@@ -320,26 +341,32 @@ describe("RAW - nodejs-rdkafka", () => {
                 expect(headerObj[0].key1).toBeInstanceOf(Buffer);
                 expect(headerObj[0].key1).toEqual(msgHeader.key1); // for raw consumer compare with buffer
 
-                resolve();
+                setTimeout(() => {
+                    kafkaConsumer.stop();
+                    kafkaConsumer.destroy(true);
+                    resolve();
+                }, 100);
             }
 
-            kafkaConsumer.setCallbackFn(handler);
             kafkaConsumer.setTopics([msgTopic]);
+            kafkaConsumer.setCallbackFn(handler);
+
+            //wait for the consumer to settle (to be rebalanced)
+            kafkaConsumer.on("rebalance", async (type: "assign" | "revoke", assignments) => {
+                if (type==="assign") {
+                    await kafkaProducer.send({
+                        topic: msgTopic,
+                        value: msgValue,
+                        key: null,
+                        headers: [
+                            msgHeader
+                        ]
+                    });
+                }
+            });
 
             await kafkaConsumer.connect();
             await kafkaConsumer.start();
-
-            // need to wait a bit as a consequence of the connects() and start() being called in sequence
-            await new Promise(f=> setTimeout(f, 500));
-
-            await kafkaProducer.send({
-                topic: msgTopic,
-                value: msgValue,
-                key: null,
-                headers: [
-                    msgHeader
-                ]
-            });
         });
     });
 

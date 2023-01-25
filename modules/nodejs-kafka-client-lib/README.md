@@ -7,26 +7,49 @@
 
 This is the kafka library implementation of the general messaging consumer and publisher interfaces found in [here](https://www.npmjs.com/package/@mojaloop/platform-shared-lib-messaging-types-lib)  
 
-It includes JSON Message Consumer and Producer implementations.  
+It includes two a set of producer and consumer classes:
+- **RAW or low-level message consumer and producer implementations** - this is a wrapper around node-rdkafka lib to that makes most of its features available, its consumer can be configured to parse output messages as JSON objects, strings of leave it as the original binary format 
+- **JSON or high-level message consumer and producer implementations** - simpler to use with the consumer automatically parsing messages to JSON (makes use of the raw implementation)
+
+# Note on dependening/using this library
+Never use these classes as a direct dependency from pure domain code, instead, use the generic types and interfaces provided by `"@mojaloop/platform-shared-lib-messaging-types-lib"` which as implemented by the classes of this lib.
+
+Only application layer implementations should use these classes directly (or tests).
 
 ## Usage
 
 ### JSON Consumer example
 
 ```typescript
+import {ConsoleLogger} from "@mojaloop/logging-bc-public-types-lib";
+import {IMessage, MessageTypes} from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import {MLKafkaJsonConsumer, MLKafkaJsonConsumerOptions} from "@mojaloop/platform-shared-lib-nodejs-kafka-client-lib";
+	
 const logger: ConsoleLogger = new ConsoleLogger();
 
-let consumerOptions: MLKafkaJsonConsumerOptions = {
+const consumerOptions: MLKafkaJsonConsumerOptions = {
     kafkaBrokerList: "localhost:9092",
     kafkaGroupId: "test_consumer_group",
 };
 
-let kafkaConsumer: MLKafkaJsonConsumer = new MLKafkaJsonConsumer(consumerOptions, logger);
+const kafkaConsumer: MLKafkaJsonConsumer = new MLKafkaJsonConsumer(consumerOptions, logger);
 
 async function handler(message: IMessage): Promise<void> {
     logger.debug(`Got message in handler: ${JSON.stringify(message, null, 2)}`);
     return;
 }
+
+// OPTIONAL - wait for the Consumer Group this consumer instance belongs to, be rebalanced
+// Waiting for this event after the start assures that any message received after this event is sent to the custom handler above  
+kafkaConsumer.on("rebalance", async (type: "assign" | "revoke", assignments) => {
+	if (type==="assign") {
+		// Consumer group rebalance is concluded
+		//   This consumer group instance is now garanteed to start receiving messages 
+		//   from the subscribed topics and on the assinged partitions 
+	}else{
+		// Consumer topic/partition assignments were revoked (some or all)
+	}
+});
 
 kafkaConsumer.setCallbackFn(handler);
 kafkaConsumer.setTopics(["myTopic"]);
@@ -35,7 +58,8 @@ await kafkaConsumer.connect();
 // Start consuming to handler
 await kafkaConsumer.start();
 
-// NOTE make sure destroy is always called when a consumer exists, to quickly inform the Kafka cluster, so it can rebalance as soon as possible
+// NOTE make sure destroy is always called when a consumer exists, to quickly inform the Kafka cluster,
+// so it can rebalance the consumer group as soon as possible (without waiting for a timeout)
 setTimeout(async ()=>{
     await kafkaConsumer.destroy(false);
 }, 1000);
@@ -44,14 +68,18 @@ setTimeout(async ()=>{
 ### Producer example
 
 ```typescript
+import {ConsoleLogger} from "@mojaloop/logging-bc-public-types-lib";
+import {IMessage, MessageTypes} from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import {MLKafkaJsonProducer, MLKafkaJsonProducerOptions} from "@mojaloop/platform-shared-lib-nodejs-kafka-client-lib";
+
 const logger: ConsoleLogger = new ConsoleLogger();
 
-let producerOptions: MLKafkaJsonProducerOptions = {
+const producerOptions: MLKafkaJsonProducerOptions = {
     kafkaBrokerList: "localhost:9092",
     producerClientId: "test_producer"
 };
 
-let kafkaProducer: MLKafkaJsonProducer =  new MLKafkaJsonProducer(producerOptions, logger);
+const kafkaProducer: MLKafkaJsonProducer =  new MLKafkaJsonProducer(producerOptions, logger);
 
 // example to get delivery reports
 kafkaProducer.setDeliveryReportFn((topic: string, partition: number, offset: number) => {
@@ -80,7 +108,6 @@ const msg:IMessage = {
 
 await kafkaProducer.send(msg);  //Note: send() can also receiver an array of messages
 
-
 // NOTE make sure destroy is always called when finished
 setTimeout(async ()=>{
     await kafkaProducer.destroy()
@@ -89,8 +116,7 @@ setTimeout(async ()=>{
 
 ## Raw / Low-level message consumer and producer implementations
 
-This lib also provides implementations for a low-level message consumer and a low-level producer.
-These allow publishing and consuming string or buffer messages directly without heavy JSON convertions.
+These allow publishing and consuming string or buffer messages directly without heavy JSON conversions.
 
 They don't implement the generic interfaces that domain can use, so, these should only be used as base for higher level implementations.
 
@@ -139,3 +165,23 @@ export declare interface IRawMessageProducer {
 - `MLKafkaRawConsumer`
 - `MLKafkaRawProducer`
 
+### Raw consumer specific events
+
+- `"ready"` - emitted as result of a successful connect and before the connect() finishes
+- `"rebalance"` - emitted as result of a successful consumer group rebalance (either with type assing or revoke)
+- `"rebalance.error"` - emitted as result of a unsuccessful consumer group rebalance (will include the error)
+- `"disconnected"` - emitted as result of the client being disconnected from the cluster
+- `"event"` | "throttle" | "stats" - technical/debug events, emitted by the rdkafka lib
+
+### Batching
+To control batching parameters of the `MLKafkaRawConsumer` tweak the following options of the `MLKafkaRawConsumerOptions` structure:
+
+```typescript
+export class MLKafkaRawConsumerOptions {
+    // ... other options
+    batchSize?: number;           // default: 1 - maximum number of messasges to wait for in each consume loop (if not timeout)
+    batchTimeoutMs?: number;      // default: 1000 - maximum amount of time to wait for in each consume loop (if not bactch size reached)
+}
+```
+
+The consumer loop will wait for any of those parameters to be true, whichever happens first.

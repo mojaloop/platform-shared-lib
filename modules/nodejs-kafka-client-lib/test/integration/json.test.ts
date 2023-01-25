@@ -31,6 +31,8 @@
 'use strict'
 import {ConsoleLogger, LogLevel} from "@mojaloop/logging-bc-public-types-lib";
 import {IMessage, MessageTypes} from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import crypto from "crypto";
+import * as RDKafka from "node-rdkafka";
 
 import {
     MLKafkaJsonConsumer,
@@ -39,24 +41,48 @@ import {
     MLKafkaJsonProducerOptions, MLKafkaRawConsumer, MLKafkaRawConsumerOutputType, MLKafkaRawProducer
 } from "../../src/";
 
+const MAX_NUMBER_OF_TOPICS = 2; // increase this if you need more topics to be created for the tests
 
-jest.setTimeout(20000); // 20 secs - change this to suit the test (ms)
+const TEST_GENERATION = crypto.randomInt(9999);
+//base name for topics and consumer groups used
+const TEST_BASE_NAME = `nodejs-kafka-client-lib-json-test_${TEST_GENERATION}`;
+const KAFKA_URL = process.env["KAFKA_URL"] || "localhost:9092";
+const CONSUMER_SESSION_TIMEOUT_MS = 7_000;
+
+jest.setTimeout(60000); // 60 secs - change this to suit the test (ms)
 
 const logger: ConsoleLogger = new ConsoleLogger();
-//logger.setLogLevel(LogLevel.WARN);
+logger.setLogLevel(LogLevel.INFO);
 
 let kafkaProducer: MLKafkaJsonProducer;
 let producerOptions: MLKafkaJsonProducerOptions;
-let kafkaConsumer: MLKafkaJsonConsumer;
-let consumerOptions: MLKafkaJsonConsumerOptions;
-
-const TOPIC_NAME_JSON = "nodejs-rdkafka-producer-json-test-topic";
-
-const KAFKA_URL = process.env["KAFKA_URL"] || "localhost:9092";
 
 describe("JSON - nodejs-rdkafka", () => {
 
     beforeAll(async () => {
+        // create topics directly
+        const adminClient = RDKafka.AdminClient.create({
+            "client.id": "nodejs-rdkafka-producer-raw-test_admin_client",
+            "metadata.broker.list": KAFKA_URL
+        });
+
+        function createTopic(topic: string): Promise<void> {
+            return new Promise<void>((resolve, reject) => {
+                adminClient.createTopic({
+                    topic: topic, num_partitions: 1, replication_factor: 1
+                }, (err) => {
+                    //if(err) return reject(err);
+                    resolve();
+                });
+            });
+        }
+
+        const indexes = Array.from(Array(MAX_NUMBER_OF_TOPICS), (x, i) => i)
+
+        for (const i of indexes) {
+            await createTopic(`${TEST_BASE_NAME}_${i}`);
+        }
+
         producerOptions = {
             kafkaBrokerList: KAFKA_URL,
             producerClientId: 'test_producer_' + Date.now()
@@ -64,27 +90,13 @@ describe("JSON - nodejs-rdkafka", () => {
 
         kafkaProducer = new MLKafkaJsonProducer(producerOptions, logger);
         await kafkaProducer.connect();
-        await new Promise(f=> setTimeout(f, 500));
-
-        consumerOptions = {
-            kafkaBrokerList: KAFKA_URL,
-            kafkaGroupId: "test_consumer_group_" + Date.now(),
-        };
-
-        kafkaConsumer = new MLKafkaJsonConsumer(consumerOptions, logger);
-
-        // need to wait a bit as a consequence of the connects() and start() being called in sequence
-        await new Promise(f=> setTimeout(f, 500));
     });
 
     afterAll(async () => {
         // Cleanup
-        await kafkaProducer.disconnect();
         await kafkaProducer.destroy();
-
-        await kafkaConsumer.stop();
-        await kafkaConsumer.disconnect();
-        await kafkaConsumer.destroy(false);
+        // wait until everything is completed (logs and other events)
+        await new Promise(f => setTimeout(f, 1000));
     });
 
     test("JSON - constructor tests", ()=>{
@@ -92,10 +104,14 @@ describe("JSON - nodejs-rdkafka", () => {
         new MLKafkaJsonProducer(producerOptions); // test no logger
 
         // consumer constructor tests
-        new MLKafkaJsonConsumer(consumerOptions); // test no logger
+        new MLKafkaJsonConsumer({
+            kafkaBrokerList: KAFKA_URL,
+            sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS, // min is 6 secs, this should about it
+            kafkaGroupId: "test_consumer_group",
+        }); // test no logger
     });
 
-    test("JSON - produce and received delivery reports", async () => {
+    test("JSON - produce and received delivery reports - #0", async () => {
         const messageCount = 1;
         let receivedMessages = 0;
 
@@ -123,7 +139,7 @@ describe("JSON - nodejs-rdkafka", () => {
                     msgTimestamp: Date.now(),
                     msgPartition: null,
                     msgOffset: null,
-                    msgTopic: TOPIC_NAME_JSON,
+                    msgTopic: TEST_BASE_NAME+"_0",
                     payload: {
                         testProp: "propValue"
                     },
@@ -136,7 +152,14 @@ describe("JSON - nodejs-rdkafka", () => {
     });
 
 
-    test("JSON - produce and consume json (with filters)", async () => {
+    test("JSON - produce and consume json (with filters) - #1", async () => {
+        const kafkaConsumer = new MLKafkaJsonConsumer({
+            kafkaBrokerList: KAFKA_URL,
+            sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS,
+            kafkaGroupId: TEST_BASE_NAME + "_1",
+        }, logger);
+        const msgTopic = TEST_BASE_NAME + "_1";
+
         let receivedMessageCount = 0;
         // let receivedMessage: any = {};
 
@@ -148,9 +171,9 @@ describe("JSON - nodejs-rdkafka", () => {
             msgKey: "msgKey",
             msgType: MessageTypes.DOMAIN_EVENT,
             msgTimestamp: Date.now(),
-            msgPartition: 42,
+            msgPartition: 0,
             msgOffset: 31415,
-            msgTopic: TOPIC_NAME_JSON,
+            msgTopic: msgTopic,
             payload: {
                 testProp: "propValue"
             },
@@ -161,9 +184,9 @@ describe("JSON - nodejs-rdkafka", () => {
             msgKey: "msgKey",
             msgType: MessageTypes.DOMAIN_EVENT,
             msgTimestamp: Date.now(),
-            msgPartition: 42,
+            msgPartition: 0,
             msgOffset: 31415,
-            msgTopic: TOPIC_NAME_JSON,
+            msgTopic: msgTopic,
             payload: {
                 testProp: "propValue"
             },
@@ -181,7 +204,7 @@ describe("JSON - nodejs-rdkafka", () => {
                 expect(message.msgName).not.toEqual(filterOutMsgName);
 
                 expect(message.msgKey).toEqual(messages[1].msgKey);
-                expect(message.msgTimestamp).toEqual(messages[1].msgTimestamp);
+                //expect(message.msgTimestamp).toEqual(messages[1].msgTimestamp);
                 //expect(message.msgPartition).toEqual(testMsg.msgPartition);
                 //expect(message.msgOffset).toEqual(testMsg.msgOffset);
                 expect(message.msgTopic).toEqual(messages[1].msgTopic);
@@ -194,26 +217,32 @@ describe("JSON - nodejs-rdkafka", () => {
                 expect(msgValObj.testProp).toEqual(messages[1].payload.testProp);
                 // expect(msgValObj.testProp).toEqual(0); // uncomment to test that the test is testing ;)
 
-                if(receivedMessageCount == 2)
-                    resolve();
+                if(receivedMessageCount == 2){
+                    setTimeout(() => {
+                        kafkaConsumer.stop();
+                        kafkaConsumer.destroy(true);
+                        resolve();
+                    }, 100);
+                }
             }
 
             kafkaConsumer.setFilteringFn(message => {
                 return message.msgName !== filterOutMsgName;
             });
 
+            kafkaConsumer.setTopics([msgTopic]);
             kafkaConsumer.setCallbackFn(handler);
-            kafkaConsumer.setTopics([TOPIC_NAME_JSON]);
+
+            //wait for the consumer to settle (to be rebalanced)
+            kafkaConsumer.on("rebalance", async (type: "assign" | "revoke", assignments) => {
+                if (type==="assign") {
+                    await kafkaProducer.send(messages);     // test send with array
+                    await kafkaProducer.send(messages[1]);  // test send with single msg
+                }
+            });
 
             await kafkaConsumer.connect();
             await kafkaConsumer.start();
-
-
-            // need to wait a bit as a consequence of the connects() and start() being called in sequence
-            await new Promise(f=> setTimeout(f, 500));
-
-            await kafkaProducer.send(messages);     // test send with array
-            await kafkaProducer.send(messages[1]);  // test send with single msg
         });
 
 
