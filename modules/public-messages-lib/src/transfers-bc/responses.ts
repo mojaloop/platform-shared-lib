@@ -32,16 +32,23 @@
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import {TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME, TransfersBCTopics} from ".";
+import { BOUNDED_CONTEXT_NAME } from "../account-lookup-bc";
 
 
 export type TransferPreparedEvtPayload = {
 	transferId: string;
+	payeeFsp: string;
+	payerFsp: string;
 	amount: string;
-	currency: string;
-	payerId: string;
-	payeeId: string;
-	expirationTimestamp: number;
+	ilpPacket: string;
 	condition: string;
+	expiration: number;
+	extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
 }
 
 export class TransferPreparedEvt extends DomainEventMsg {
@@ -62,4 +69,78 @@ export class TransferPreparedEvt extends DomainEventMsg {
 	validatePayload(): void {
 		// TODO
 	}
+}
+
+export type TransferCommittedFulfiledEvtPayload = {
+	transferId: string;
+	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
+	fulfilment: number | null,
+	completedTimestamp: number | null,
+	extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+}
+
+export class TransferCommittedFulfiledEvt extends DomainEventMsg {
+	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+	aggregateId: string;
+	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+	msgKey: string;
+	msgTopic: string = TransfersBCTopics.DomainEvents;
+	payload: TransferCommittedFulfiledEvtPayload;
+
+	constructor(payload: TransferCommittedFulfiledEvtPayload) {
+		super();
+
+		this.aggregateId = this.msgKey = payload.transferId;
+		this.payload = payload;
+	}
+
+	validatePayload(): void {
+		// TODO
+	}
+}
+
+
+export type TransferErrorEvtPayload = {
+    requesterFspId: string | null;
+    destinationFspId: string | null;
+    transferId: string;
+    errorMsg: string;
+    sourceEvent: string;
+}
+
+export class TransferErrorEvt extends DomainEventMsg {
+    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferErrorEvtPayload;
+
+    constructor (payload: TransferErrorEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void { 
+        const { sourceEvent, transferId, errorMsg } = this.payload;
+
+        if (!transferId) {
+            throw new Error("transferId is required.");
+		}
+
+        if (!sourceEvent) {
+            throw new Error("sourceEvent is required.");
+        }
+
+		if (!errorMsg) {
+            throw new Error("errorMsg is required.");
+		}
+    }
 }

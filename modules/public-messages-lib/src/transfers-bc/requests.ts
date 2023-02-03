@@ -36,12 +36,18 @@ import { TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME, TransfersBCTo
 
 export type TransferPrepareRequestedEvtPayload = {
 	transferId: string;
+	payeeFsp: string;
+	payerFsp: string;
 	amount: string;
-	currency: string;
-	payerId: string;
-	payeeId: string;
-	expirationTimestamp: number;
+	ilpPacket: string;
 	condition: string;
+	expiration: number;
+	extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
 }
 
 export class TransferPrepareRequestedEvt extends DomainEventMsg {
@@ -53,6 +59,39 @@ export class TransferPrepareRequestedEvt extends DomainEventMsg {
 	payload: TransferPrepareRequestedEvtPayload;
 
 	constructor(payload: TransferPrepareRequestedEvtPayload) {
+		super();
+
+		this.aggregateId = this.msgKey = payload.transferId;
+		this.payload = payload;
+	}
+
+	validatePayload(): void {
+		// TODO
+	}
+}
+
+export type TransferFulfilCommittedRequestedEvtPayload = {
+	transferId: string;
+	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
+	fulfilment: number | null,
+	completedTimestamp: number | null,
+	extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+}
+
+export class TransferFulfilCommittedRequestedEvt extends DomainEventMsg {
+	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+	aggregateId: string;
+	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+	msgKey: string;
+	msgTopic: string = TransfersBCTopics.DomainRequests;
+	payload: TransferFulfilCommittedRequestedEvtPayload;
+
+	constructor(payload: TransferFulfilCommittedRequestedEvtPayload) {
 		super();
 
 		this.aggregateId = this.msgKey = payload.transferId;
