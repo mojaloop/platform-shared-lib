@@ -39,6 +39,7 @@ export type TransferPrepareRequestedEvtPayload = {
 	payeeFsp: string;
 	payerFsp: string;
 	amount: string;
+	currencyCode: string;
 	ilpPacket: string;
 	condition: string;
 	expiration: number;
