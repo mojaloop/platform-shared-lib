@@ -329,7 +329,7 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
                     return reject(new Error(`MLRawKafkaProducer - error connecting to cluster: ${err.message}`));
                 }
 
-                this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaProducer::event.ready - metadata: ${JSON.stringify(metadata, null, 2)}`);
+                //this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaProducer::event.ready - metadata: ${JSON.stringify(metadata, null, 2)}`);
                 this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaProducer - connected!");
                 resolve();
             });
