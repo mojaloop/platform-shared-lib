@@ -162,7 +162,9 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
 
     private _onReady(info: RDKafka.ReadyInfo, metadata: RDKafka.Metadata): void {
         this._logger?.isInfoEnabled() && this._logger.info(`MLRawKafkaProducer - event.ready - info: ${JSON.stringify(info, null, 2)}`);
-        this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaProducer - event.ready - metadata: ${JSON.stringify(metadata, null, 2)}`);
+
+        // this a huge
+        //this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaProducer - event.ready - metadata: ${JSON.stringify(metadata, null, 2)}`);
     }
 
     /* istanbul ignore next */
