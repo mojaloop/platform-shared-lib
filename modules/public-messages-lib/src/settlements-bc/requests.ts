@@ -30,8 +30,6 @@
 
 "use strict"
 
+import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import { SETTLEMENTS_BOUNDED_CONTEXT_NAME, SETTLEMENTS_AGGREGATE_NAME, SettlementsBCTopics } from ".";
 
-export * from "./account-lookup-bc/";
-export * from "./quoting-bc/";
-export * from "./transfers-bc/";
-export * from "./settlements-bc/";

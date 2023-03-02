@@ -32,7 +32,6 @@
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import {TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME, TransfersBCTopics} from ".";
-import { BOUNDED_CONTEXT_NAME } from "../account-lookup-bc";
 
 
 export type TransferPreparedEvtPayload = {
@@ -115,7 +114,7 @@ export type TransferErrorEvtPayload = {
 }
 
 export class TransferErrorEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;

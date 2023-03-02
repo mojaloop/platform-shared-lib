@@ -28,10 +28,17 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
+const SETTLEMENTS_BOUNDED_CONTEXT_NAME = "SettlementsBc";
+const SETTLEMENTS_AGGREGATE_NAME = "Settlements";
 
-export * from "./account-lookup-bc/";
-export * from "./quoting-bc/";
-export * from "./transfers-bc/";
-export * from "./settlements-bc/";
+enum SettlementsBCTopics {
+    "DomainEvents" = "SettlementsBcEvents",
+    "DomainRequests" = "SettlementsBcRequests"
+}
+
+export {SettlementsBCTopics , SETTLEMENTS_BOUNDED_CONTEXT_NAME, SETTLEMENTS_AGGREGATE_NAME};
+export * from "./requests";
+export * from "./responses";
+
