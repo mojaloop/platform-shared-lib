@@ -82,6 +82,13 @@ export type TransferCommittedFulfiledEvtPayload = {
             value: string;
         }[]
     } | null;
+
+	// for settlements
+	payeeFspId: string;
+	payerFspId: string;
+	amount: string;
+	currencyCode: string;
+	settlementModel: string;
 }
 
 export class TransferCommittedFulfiledEvt extends DomainEventMsg {
