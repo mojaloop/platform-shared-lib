@@ -34,16 +34,16 @@
 
 "use strict";
 
-// TODO put BC name first (see transfers)
-const BOUNDED_CONTEXT_NAME = "AccountLookupBc";
-const AGGREGATE_NAME = "Party";
+const ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME = "AccountLookupBc";
+const ACCOUNT_LOOKUP_AGGREGATE_NAME = "Party";
 
 enum AccountLookupBCTopics {
     "DomainEvents" = "AccountLookupBcEvents",
     "DomainRequests" = "AccountLookupBcRequests"
 }
 
-export { AccountLookupBCTopics , BOUNDED_CONTEXT_NAME, AGGREGATE_NAME };
+export { AccountLookupBCTopics , ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME };
 export * from "./requests";
 export * from "./responses";
+export * from "./errors";
 

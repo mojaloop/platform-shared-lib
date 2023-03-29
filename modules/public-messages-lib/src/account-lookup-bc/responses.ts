@@ -35,7 +35,7 @@
 "use strict"
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { BOUNDED_CONTEXT_NAME, AGGREGATE_NAME, AccountLookupBCTopics } from ".";
+import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, AccountLookupBCTopics } from ".";
 
 export type ParticipantAssociationCreatedEvtPayload = {
     ownerFspId: string;
@@ -45,9 +45,9 @@ export type ParticipantAssociationCreatedEvtPayload = {
 }
 
 export class ParticipantAssociationCreatedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: ParticipantAssociationCreatedEvtPayload;
@@ -75,9 +75,9 @@ export type ParticipantAssociationRemovedEvtPayload = {
 }
 
 export class ParticipantAssociationRemovedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: ParticipantAssociationRemovedEvtPayload;
@@ -108,9 +108,9 @@ export type ParticipantQueryResponseEvtPayload = {
 }
 
 export class ParticipantQueryResponseEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: ParticipantQueryResponseEvtPayload;
@@ -151,9 +151,9 @@ export type PartyInfoRequestedEvtPayload = {
 }
 
 export class PartyInfoRequestedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: PartyInfoRequestedEvtPayload;
@@ -165,7 +165,7 @@ export class PartyInfoRequestedEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { requesterFspId, destinationFspId, partyId, partyType } = this.payload;
 
         if (!requesterFspId) {
@@ -199,9 +199,9 @@ export type PartyQueryResponseEvtPayload = {
 }
 
 export class PartyQueryResponseEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: PartyQueryResponseEvtPayload;
@@ -213,7 +213,7 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { requesterFspId, ownerFspId, partyId, partyType } = this.payload;
 
         if (!requesterFspId) {
@@ -241,9 +241,9 @@ export type AccountLookUpErrorEvtPayload = {
 }
 
 export class AccountLookUpErrorEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: AccountLookUpErrorEvtPayload;
@@ -255,7 +255,7 @@ export class AccountLookUpErrorEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { partyId, errorMsg, sourceEvent } = this.payload;
 
         if (!partyId) {
@@ -263,7 +263,7 @@ export class AccountLookUpErrorEvt extends DomainEventMsg {
 		}
         if (!sourceEvent) {
             throw new Error("sourceEvent is required.");
-        }        
+        }
 		if (!errorMsg) {
             throw new Error("errorMsg is required.");
 		}

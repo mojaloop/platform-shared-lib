@@ -35,7 +35,7 @@
 "use strict"
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { BOUNDED_CONTEXT_NAME, AGGREGATE_NAME, AccountLookupBCTopics } from ".";
+import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, AccountLookupBCTopics } from ".";
 
 export type ParticipantAssociationRequestReceivedEvtPayload = {
     ownerFspId: string;
@@ -46,9 +46,9 @@ export type ParticipantAssociationRequestReceivedEvtPayload = {
 }
 
 export class ParticipantAssociationRequestReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
@@ -61,7 +61,7 @@ export class ParticipantAssociationRequestReceivedEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { ownerFspId, partyId, partyType } = this.payload;
 
 		if (!ownerFspId) {
@@ -86,9 +86,9 @@ export type ParticipantDisassociateRequestReceivedEvtPayload = {
 }
 
 export class ParticipantDisassociateRequestReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
@@ -101,7 +101,7 @@ export class ParticipantDisassociateRequestReceivedEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { ownerFspId, partyId, partyType } = this.payload;
 
 		if (!ownerFspId) {
@@ -125,9 +125,9 @@ export type ParticipantQueryReceivedEvtPayload = {
 }
 
 export class ParticipantQueryReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
     payload: ParticipantQueryReceivedEvtPayload;
@@ -139,7 +139,7 @@ export class ParticipantQueryReceivedEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { requesterFspId, partyId, partyType } = this.payload;
 
 		if (!requesterFspId) {
@@ -165,9 +165,9 @@ export type PartyQueryReceivedEvtPayload = {
 }
 
 export class PartyQueryReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
@@ -180,7 +180,7 @@ export class PartyQueryReceivedEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { requesterFspId, partyId, partyType } = this.payload;
 
 		if (!requesterFspId) {
@@ -209,9 +209,9 @@ export type PartyInfoAvailableEvtPayload = {
 }
 
 export class PartyInfoAvailableEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
     payload: PartyInfoAvailableEvtPayload;
