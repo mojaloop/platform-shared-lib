@@ -31,16 +31,16 @@
 
 "use strict";
 
-// TODO put BC name first (see transfers)
-const BOUNDED_CONTEXT_NAME_QUOTING = "QuotingBc";
-const AGGREGATE_NAME_QUOTING = "Quote";
+const QUOTING_BOUNDED_CONTEXT_NAME = "QuotingBc";
+const QUOTING_AGGREGATE_NAME = "Quote";
 
 enum QuotingBCTopics {
     "DomainEvents" = "QuotingBcEvents",
     "DomainRequests" = "QuotingBcRequests"
 }
 
-export { QuotingBCTopics , BOUNDED_CONTEXT_NAME_QUOTING, AGGREGATE_NAME_QUOTING };
+export { QuotingBCTopics , QUOTING_BOUNDED_CONTEXT_NAME, QUOTING_AGGREGATE_NAME };
 export * from "./requests";
 export * from "./responses";
+export * from "./errors";
 

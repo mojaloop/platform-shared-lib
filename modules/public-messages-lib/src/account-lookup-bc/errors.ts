@@ -37,242 +37,185 @@
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, AccountLookupBCTopics } from ".";
 
-export type AccountLookupInvalidMessagePayloadErrorEventPayload = {
+export type AccountLookupErrorPayload = {
     errorMessage: string;
+    partyId: string;
 }
 
-export class AccountLookupInvalidMessagePayloadErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupInvalidMessagePayloadErrorEventPayload;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupInvalidMessagePayloadErrorEventPayload) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
-export type AccountLookupInvalidMessageTypeErrorEventPayload = {
-    errorMessage: string;
-}
-
-export class AccountLookupInvalidMessageTypeErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCInvalidMessageTypeErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupInvalidMessageTypeErrorEventPayload;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupInvalidMessageTypeErrorEventPayload) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
-export type AccountLookupUnableToAssociateParticipantErrorEventPayload = {
-    errorMessage: string;
-    partyId: string | null;
-    partyType: string | null;
-    currency: string | null;
-}
-
-export class AccountLookupUnableToAssociateParticipantErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCUnableToAssociateParticipantErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupUnableToAssociateParticipantErrorEventPayload;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupUnableToAssociateParticipantErrorEventPayload) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
-export type AccountLookupUnableToDisassociateParticipantErrorEventPayload = {
-    errorMessage: string;
-    partyId: string | null;
-    partyType: string | null;
-    currency: string | null;
-}
-
-export class AccountLookupUnableToDisassociateParticipantErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCUnableToDisassociateParticipantErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupUnableToDisassociateParticipantErrorEventPayload;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupUnableToDisassociateParticipantErrorEventPayload) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
-export type AccountLookupNoSuchParticipantErrorEventPayload = {
-    errorMessage: string;
-    participantId: string | null;
-}
-
-export class AccountLookupNoSuchParticipantErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCNoSuchParticipantErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupNoSuchParticipantErrorEvent;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupNoSuchParticipantErrorEvent) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
-export type AccountLookupInvalidParticipantIdErrorEventPayload = {
-    errorMessage: string;
-    participantId: string | null;
-}
-
-export class AccountLookupInvalidParticipantIdErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCInvalidParticipantIdErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupInvalidParticipantIdErrorEventPayload;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupInvalidParticipantIdErrorEventPayload) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
-export type AccountLookupUnableToGetOracleFromOracleFinderErrorEventPayload = {
-    errorMessage: string;
-    partyType: string | null;
-}
-
-export class AccountLookupUnableToGetOracleFromOracleFinderErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCUnableToGetOracleFromOracleFinderErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupUnableToGetOracleFromOracleFinderErrorEventPayload;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupUnableToGetOracleFromOracleFinderErrorEventPayload) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
-export type AccountLookupNoSuchOracleErrorEventPayload = {
-    errorMessage: string;
-    oracleId: string | null;
-}
-
-export class AccountLookupNoSuchOracleErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCNoSuchOracleErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupNoSuchOracleErrorEventPayload;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupNoSuchOracleErrorEventPayload) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
-export type AccountLookupNoSuchOracleAdapterErrorEventPayload = {
-    errorMessage: string;
-    oracleId: string | null;
-}
-
-export class AccountLookupNoSuchOracleAdapterErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCNoSuchOracleAdapterErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupNoSuchOracleAdapterErrorEvent;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupNoSuchOracleAdapterErrorEvent) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
-export type AccountLookupUnableToGetParticipantFspIdErrorEventPayload = {
-    errorMessage: string;
-    partyType: string | null;
-    partyId: string | null;
-    currency: string | null;
-}
-
-export class AccountLookupUnableToGetParticipantFspIdErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCUnableToGetParticipantFspIdErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupUnableToGetParticipantFspIdErrorEvent;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupUnableToGetParticipantFspIdErrorEvent) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }
 
 
-
-export type AccountLookupNoSuchParticipantFspIdErrorEventPayload = {
-    errorMessage: string;
-    partyType: string | null;
-    partyId: string | null;
-    currency: string | null;
-}
-
-export class AccountLookupNoSuchParticipantFspIdErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCNoSuchParticipantFspIdErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: AccountLookupNoSuchParticipantFspIdErrorEvent;
+    payload: AccountLookupErrorPayload;
 
-    constructor (payload: AccountLookupNoSuchParticipantFspIdErrorEvent) {
+    constructor (payload: AccountLookupErrorPayload) {
         super();
 
-        this.aggregateId = this.msgKey;
+        this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
 }

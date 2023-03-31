@@ -35,7 +35,7 @@
 "use strict"
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { BOUNDED_CONTEXT_NAME_QUOTING, AGGREGATE_NAME_QUOTING, QuotingBCTopics } from ".";
+import { QUOTING_BOUNDED_CONTEXT_NAME, QUOTING_AGGREGATE_NAME, QuotingBCTopics } from ".";
 
 export type QuoteRequestReceivedEvtPayload = {
     quoteId: string;
@@ -54,7 +54,7 @@ export type QuoteRequestReceivedEvtPayload = {
             complexName: {
                 firstName: string | null;
                 middleName: string | null;
-                lastName: string | null;              
+                lastName: string | null;
             } | null,
             dateOfBirth: string | null
         } | null
@@ -72,7 +72,7 @@ export type QuoteRequestReceivedEvtPayload = {
             complexName: {
                 firstName: string | null;
                 middleName: string | null;
-                lastName: string | null;              
+                lastName: string | null;
             } | null,
             dateOfBirth: string | null
         } | null
@@ -112,9 +112,9 @@ export type QuoteRequestReceivedEvtPayload = {
 }
 
 export class QuoteRequestReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainRequests;
     payload: QuoteRequestReceivedEvtPayload;
@@ -157,7 +157,7 @@ export class QuoteRequestReceivedEvt extends DomainEventMsg {
             throw new Error("transactionType is required.");
 		}
 
-    }	
+    }
 }
 
 export type QuoteResponseReceivedEvtPayload = {
@@ -194,9 +194,9 @@ export type QuoteResponseReceivedEvtPayload = {
 }
 
 export class QuoteResponseReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainRequests;
     payload: QuoteResponseReceivedEvtPayload;
@@ -230,7 +230,7 @@ export class QuoteResponseReceivedEvt extends DomainEventMsg {
         if (!condition) {
             throw new Error("condition is required.");
 		}
-    }	
+    }
 }
 
 export type QuoteQueryReceivedEvtPayload = {
@@ -238,9 +238,9 @@ export type QuoteQueryReceivedEvtPayload = {
 }
 
 export class QuoteQueryReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainRequests;
 
@@ -253,7 +253,7 @@ export class QuoteQueryReceivedEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { quoteId } = this.payload;
 
         if (!quoteId) {
@@ -277,7 +277,7 @@ export type BulkQuoteRequestedEvtPayload = {
             complexName: {
                 firstName: string | null;
                 middleName: string | null;
-                lastName: string | null;              
+                lastName: string | null;
             } | null,
             dateOfBirth: string | null
         } | null
@@ -304,7 +304,7 @@ export type BulkQuoteRequestedEvtPayload = {
                 complexName: {
                     firstName: string | null;
                     middleName: string | null;
-                    lastName: string | null;              
+                    lastName: string | null;
                 } | null,
                 dateOfBirth: string | null
             } | null
@@ -346,9 +346,9 @@ export type BulkQuoteRequestedEvtPayload = {
 }
 
 export class BulkQuoteRequestedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainRequests;
 
@@ -361,7 +361,7 @@ export class BulkQuoteRequestedEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { bulkQuoteId, payer, individualQuotes } = this.payload;
 
         if (!bulkQuoteId) {
@@ -399,7 +399,7 @@ export type BulkQuotePendingReceivedEvtPayload = {
                 complexName: {
                     firstName: string | null;
                     middleName: string | null;
-                    lastName: string | null;              
+                    lastName: string | null;
                 } | null,
                 dateOfBirth: string | null
             } | null
@@ -449,9 +449,9 @@ export type BulkQuotePendingReceivedEvtPayload = {
 }
 
 export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = BOUNDED_CONTEXT_NAME_QUOTING
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
     aggregateId: string;
-    aggregateName: string = AGGREGATE_NAME_QUOTING;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainRequests;
 
@@ -464,7 +464,7 @@ export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
         this.payload = payload;
     }
 
-    validatePayload (): void { 
+    validatePayload (): void {
         const { bulkQuoteId, expiration, individualQuoteResults } = this.payload;
 
         if (!bulkQuoteId) {
