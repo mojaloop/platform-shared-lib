@@ -39,7 +39,11 @@ import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, Acc
 
 export type AccountLookupErrorPayload = {
     errorMessage: string;
+    requesterFspId: string | null;
     partyId: string;
+    partyType: string | null;
+    partySubType: string | null;
+    sourceEvent: string;
 }
 
 export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventMsg   {
@@ -210,6 +214,22 @@ export class AccountLookupBCNoSuchParticipantFspIdErrorEvent extends DomainEvent
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
+    payload: AccountLookupErrorPayload;
+
+    constructor (payload: AccountLookupErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+}
+
+export class AccountLookUpUnknownErrorEvent extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: AccountLookupErrorPayload;
 
     constructor (payload: AccountLookupErrorPayload) {

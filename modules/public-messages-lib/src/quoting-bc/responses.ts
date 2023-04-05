@@ -232,46 +232,6 @@ export class QuoteResponseAccepted extends DomainEventMsg {
     }
 }
 
-export type QuoteErrorEvtPayload = {
-    requesterFspId: string | null;
-    destinationFspId: string | null;
-    quoteId: string;
-    errorMsg: string;
-    sourceEvent: string;
-}
-
-export class QuoteErrorEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
-    aggregateId: string;
-    aggregateName: string = QUOTING_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainEvents;
-    payload: QuoteErrorEvtPayload;
-
-    constructor (payload: QuoteErrorEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.quoteId;
-        this.payload = payload;
-    }
-
-    validatePayload (): void {
-        const { sourceEvent, quoteId, errorMsg } = this.payload;
-
-        if (!quoteId) {
-            throw new Error("quoteId is required.");
-		}
-
-        if (!sourceEvent) {
-            throw new Error("sourceEvent is required.");
-        }
-
-		if (!errorMsg) {
-            throw new Error("errorMsg is required.");
-		}
-    }
-}
-
 export type QuoteQueryResponseEvtPayload = {
     quoteId: string;
     transferAmount: {

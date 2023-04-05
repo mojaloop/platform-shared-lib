@@ -231,41 +231,4 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
     }
 }
 
-export type AccountLookUpErrorEvtPayload = {
-    requesterFspId: string | null;
-    partyId: string;
-    partyType: string | null;
-    partySubType: string | null;
-    errorMsg: string;
-    sourceEvent: string;
-}
 
-export class AccountLookUpErrorEvt extends DomainEventMsg {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
-    aggregateId: string;
-    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainEvents;
-    payload: AccountLookUpErrorEvtPayload;
-
-    constructor (payload: AccountLookUpErrorEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.partyId;
-        this.payload = payload;
-    }
-
-    validatePayload (): void {
-        const { partyId, errorMsg, sourceEvent } = this.payload;
-
-        if (!partyId) {
-            throw new Error("partyId is required.");
-		}
-        if (!sourceEvent) {
-            throw new Error("sourceEvent is required.");
-        }
-		if (!errorMsg) {
-            throw new Error("errorMsg is required.");
-		}
-    }
-}
