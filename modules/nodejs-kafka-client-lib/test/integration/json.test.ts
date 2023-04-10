@@ -56,12 +56,13 @@ logger.setLogLevel(LogLevel.INFO);
 
 let kafkaProducer: MLKafkaJsonProducer;
 let producerOptions: MLKafkaJsonProducerOptions;
+let adminClient: RDKafka.IAdminClient;
 
 describe("JSON - nodejs-rdkafka", () => {
 
     beforeAll(async () => {
         // create topics directly
-        const adminClient = RDKafka.AdminClient.create({
+        adminClient = RDKafka.AdminClient.create({
             "client.id": "nodejs-rdkafka-producer-raw-test_admin_client",
             "metadata.broker.list": KAFKA_URL
         });
@@ -93,7 +94,20 @@ describe("JSON - nodejs-rdkafka", () => {
     });
 
     afterAll(async () => {
-        // Cleanup
+        // Cleanup - deleting created topics
+        function deleteTopic(topic: string): Promise<void> {
+            return new Promise<void>((resolve, reject) => {
+                adminClient.deleteTopic(topic, (err) => {
+                    resolve();
+                });
+            });
+        }
+
+        for (const i of Array.from(Array(MAX_NUMBER_OF_TOPICS), (x, i) => i)) {
+            await deleteTopic(`${TEST_BASE_NAME}_${i}`);
+        }
+
+        // destroy the producer
         await kafkaProducer.destroy();
         // wait until everything is completed (logs and other events)
         await new Promise(f => setTimeout(f, 1000));

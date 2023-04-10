@@ -403,19 +403,8 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 	}
 
 	startAndWaitForRebalance():Promise<void>{
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
-			// this._client.prependOnceListener("rebalance",  (error: RDKafka.LibrdKafkaError, assignments: TopicPartition[]) => {
-			// 	const type = error.code== -175 ? "assign":"revoke";
-			// 	if (type!=="assign") {
-			// 		throw new Error("MLRawKafkaConsumer - got revoke in first rebalance event")
-			// 	}
-			//
-			// 	this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - got rebalance on startAndWaitForRebalance()");
-			// 	setImmediate(() => {
-			// 		this._consumeLoop();
-			// 	});
-			// 	resolve();
-			// });
 
 			this.prependOnceListener("rebalance", (type, assignments) => {
 				if (type!=="assign") {
@@ -429,8 +418,8 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 				resolve();
 			});
 
-
-			await this.start();
+			// manually reject (so we don't lose this because of the async executor function
+			await this.start().catch(reason => reject(reason));
 		});
 	}
 

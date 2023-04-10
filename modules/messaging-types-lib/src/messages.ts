@@ -82,21 +82,38 @@ export abstract class DomainMsg implements IDomainMessage {
     abstract payload: any
 
     abstract fspiopOpaqueState: any;
+
+    //abstract validatePayload(): void
+
+    // static fromIDomainMessage(msg: IDomainMessage): DomainMsg | undefined {
+    //     const obj: DomainMsg = Reflect.construct(this, [{}])
+    //
+    //     Object.assign(obj, msg)
+    //
+    //     obj.validatePayload()
+    //
+    //     return obj
+    // }
 }
 
 export abstract class StateEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.STATE_EVENT;
     fspiopOpaqueState:any = null;
+    //abstract validatePayload(): void
 }
 
 export abstract class DomainEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.DOMAIN_EVENT;
     fspiopOpaqueState:any = null;
+
+    //abstract validatePayload(): void
 }
 
 export abstract class CommandMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.COMMAND;
     fspiopOpaqueState:any = null;
+
+    //abstract validatePayload(): void
 }
 
 // export abstract class StateSnapshotMsg extends DomainMsg {
