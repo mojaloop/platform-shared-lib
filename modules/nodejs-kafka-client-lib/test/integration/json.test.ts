@@ -41,7 +41,7 @@ import {
     MLKafkaJsonProducerOptions, MLKafkaRawConsumer, MLKafkaRawConsumerOutputType, MLKafkaRawProducer
 } from "../../src/";
 
-const MAX_NUMBER_OF_TOPICS = 2; // increase this if you need more topics to be created for the tests
+const MAX_NUMBER_OF_TOPICS = 5; // increase this if you need more topics to be created for the tests
 
 const TEST_GENERATION = crypto.randomInt(9999);
 //base name for topics and consumer groups used
@@ -151,14 +151,104 @@ describe("JSON - nodejs-rdkafka", () => {
         });
     });
 
-
-    test("JSON - produce and consume json (with filters) - #1", async () => {
+    test("JSON - produce and consume json (with filters) - startAndWaitForRebalance() - #1", async () => {
         const kafkaConsumer = new MLKafkaJsonConsumer({
             kafkaBrokerList: KAFKA_URL,
             sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS,
             kafkaGroupId: TEST_BASE_NAME + "_1",
         }, logger);
         const msgTopic = TEST_BASE_NAME + "_1";
+
+        let receivedMessageCount = 0;
+        // let receivedMessage: any = {};
+
+        const filterOutMsgName = "badMessageName";
+
+        const messages: IMessage[] = [{
+            msgId: "msgId",
+            msgName: filterOutMsgName,
+            msgKey: "msgKey",
+            msgType: MessageTypes.DOMAIN_EVENT,
+            msgTimestamp: Date.now(),
+            msgPartition: 0,
+            msgOffset: 31415,
+            msgTopic: msgTopic,
+            payload: {
+                testProp: "propValue"
+            },
+            fspiopOpaqueState: {}
+        }, {
+            msgId: "msgId",
+            msgName: "msgName",
+            msgKey: "msgKey",
+            msgType: MessageTypes.DOMAIN_EVENT,
+            msgTimestamp: Date.now(),
+            msgPartition: 0,
+            msgOffset: 31415,
+            msgTopic: msgTopic,
+            payload: {
+                testProp: "propValue"
+            },
+            fspiopOpaqueState: {}
+        }];
+
+        return new Promise<void>(async (resolve) => {
+            async function handler(message: IMessage): Promise<void> {
+                logger.debug(`Got message in handler: ${JSON.stringify(message, null, 2)}`)
+                receivedMessageCount++;
+
+                expect(message.msgId).toEqual(messages[1].msgId);
+                expect(message.msgName).toEqual(messages[1].msgName);
+
+                expect(message.msgName).not.toEqual(filterOutMsgName);
+
+                expect(message.msgKey).toEqual(messages[1].msgKey);
+                //expect(message.msgTimestamp).toEqual(messages[1].msgTimestamp);
+                //expect(message.msgPartition).toEqual(testMsg.msgPartition);
+                //expect(message.msgOffset).toEqual(testMsg.msgOffset);
+                expect(message.msgTopic).toEqual(messages[1].msgTopic);
+
+                expect(message.payload).not.toBeNull();
+                expect(message.payload).toBeInstanceOf(Object);
+                expect(message.payload).toHaveProperty("testProp");
+
+                const msgValObj: { testProp: string } = message.payload as { testProp: string };
+                expect(msgValObj.testProp).toEqual(messages[1].payload.testProp);
+                // expect(msgValObj.testProp).toEqual(0); // uncomment to test that the test is testing ;)
+
+                if (receivedMessageCount==2) {
+                    setTimeout(() => {
+                        kafkaConsumer.stop();
+                        kafkaConsumer.destroy(true);
+                        resolve();
+                    }, 100);
+                }
+            }
+
+            kafkaConsumer.setFilteringFn(message => {
+                return message.msgName!==filterOutMsgName;
+            });
+
+            kafkaConsumer.setTopics([msgTopic]);
+            kafkaConsumer.setCallbackFn(handler);
+
+            await kafkaConsumer.connect();
+            await kafkaConsumer.startAndWaitForRebalance();
+
+            await kafkaProducer.send(messages);     // test send with array
+            await kafkaProducer.send(messages[1]);  // test send with single msg
+        });
+
+
+    })
+
+    test("JSON - produce and consume json (with filters) - #2", async () => {
+        const kafkaConsumer = new MLKafkaJsonConsumer({
+            kafkaBrokerList: KAFKA_URL,
+            sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS,
+            kafkaGroupId: TEST_BASE_NAME + "_2",
+        }, logger);
+        const msgTopic = TEST_BASE_NAME + "_2";
 
         let receivedMessageCount = 0;
         // let receivedMessage: any = {};

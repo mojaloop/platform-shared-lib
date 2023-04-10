@@ -149,6 +149,10 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
         return this._kafkaRawConsumer.start();
     }
 
+    startAndWaitForRebalance(): Promise<void> {
+        return this._kafkaRawConsumer.startAndWaitForRebalance();
+    }
+
     async stop(): Promise<void> {
         return this._kafkaRawConsumer.stop();
     }

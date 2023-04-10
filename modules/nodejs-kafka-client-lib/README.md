@@ -39,24 +39,15 @@ async function handler(message: IMessage): Promise<void> {
     return;
 }
 
-// OPTIONAL - wait for the Consumer Group this consumer instance belongs to, be rebalanced
-// Waiting for this event after the start assures that any message received after this event is sent to the custom handler above  
-kafkaConsumer.on("rebalance", async (type: "assign" | "revoke", assignments) => {
-	if (type==="assign") {
-		// Consumer group rebalance is concluded
-		//   This consumer group instance is now garanteed to start receiving messages 
-		//   from the subscribed topics and on the assinged partitions 
-	}else{
-		// Consumer topic/partition assignments were revoked (some or all)
-	}
-});
-
 kafkaConsumer.setCallbackFn(handler);
 kafkaConsumer.setTopics(["myTopic"]);
 await kafkaConsumer.connect();
 
-// Start consuming to handler
-await kafkaConsumer.start();
+// Start consuming to handler - waiting for the consumer to be fully rebalanced before proceeding
+await kafkaConsumer.startAndWaitForRebalance();
+
+// OPTIONAL - don't wait for the Consumer Group this consumer instance belongs to be rebalanced
+// await kafkaConsumer.start();
 
 // NOTE make sure destroy is always called when a consumer exists, to quickly inform the Kafka cluster,
 // so it can rebalance the consumer group as soon as possible (without waiting for a timeout)

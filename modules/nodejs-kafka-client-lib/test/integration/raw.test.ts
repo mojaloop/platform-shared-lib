@@ -49,7 +49,7 @@ const TEST_BASE_NAME = `nodejs-kafka-client-lib-raw-test_${TEST_GENERATION}`;
 const KAFKA_URL = process.env["KAFKA_URL"] || "localhost:9092";
 const CONSUMER_SESSION_TIMEOUT_MS = 7_000;
 
-jest.setTimeout(60000); // 60 secs - change this to suit the test (ms)
+jest.setTimeout(120000); // 60 secs - change this to suit the test (ms)
 
 const logger = new ConsoleLogger();
 logger.setLogLevel(LogLevel.DEBUG);
@@ -231,7 +231,7 @@ describe("RAW - nodejs-rdkafka", () => {
             kafkaConsumer.setTopics([msgTopic]);
 
             //wait for the consumer to settle (to be rebalanced)
-            kafkaConsumer.on("rebalance", async (type: "assign" | "revoke", assignments) => {
+            kafkaConsumer.once("rebalance", async (type: "assign" | "revoke", assignments) => {
                 if (type==="assign") {
                     const msgs = []
                     for (let i = 0; i < messageCount; i++) {
@@ -293,7 +293,7 @@ describe("RAW - nodejs-rdkafka", () => {
             kafkaConsumer.setCallbackFn(handler);
 
             //wait for the consumer to settle (to be rebalanced)
-            kafkaConsumer.on("rebalance", async (type: "assign" | "revoke", assignments) => {
+            kafkaConsumer.once("rebalance", async (type: "assign" | "revoke", assignments) => {
                 if (type==="assign") {
                     await kafkaProducer.send({
                         topic: msgTopic,
@@ -308,19 +308,71 @@ describe("RAW - nodejs-rdkafka", () => {
 
             await kafkaConsumer.connect();
             await kafkaConsumer.start();
+            debugger;
         });
     });
 
-    test("RAW - produce and consume binary AND useSyncCommit - #3", async () => {
+    test("RAW - produce and consume string - with startAndWaitForRebalance() - #3", async () => {
         const kafkaConsumer = new MLKafkaRawConsumer({
             kafkaBrokerList: KAFKA_URL,
             sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS, // min is 6 secs, this should about it
             kafkaGroupId: TEST_BASE_NAME + "_3",
+            outputType: MLKafkaRawConsumerOutputType.String
+        }, logger);
+
+        const msgTopic = TEST_BASE_NAME + "_3";
+        const msgValue = {testProp: Date.now()}
+        const msgHeader = {key1: Buffer.from("testStr")};
+
+        return new Promise<void>(async (resolve) => {
+            async function handler(receivedMessage: IRawMessage): Promise<void> {
+                logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
+
+                expect(receivedMessage.topic).toEqual(msgTopic);
+                expect(receivedMessage.value).not.toBeNull();
+                expect(receivedMessage.value).toEqual(JSON.stringify(msgValue));
+
+                expect(receivedMessage.headers).not.toBeNull();
+                expect(receivedMessage.headers).toBeInstanceOf(Array);
+                const headerObj: { key1: Buffer }[] = receivedMessage.headers as { key1: Buffer }[];
+
+                expect(headerObj[0]).not.toBeNull();
+                expect(headerObj[0].key1).toEqual(msgHeader.key1.toString()); // for raw consumer compare with buffer
+
+                setTimeout(() => {
+                    kafkaConsumer.stop();
+                    kafkaConsumer.destroy(true);
+                    resolve();
+                }, 100);
+            }
+
+            kafkaConsumer.setTopics([msgTopic]);
+            kafkaConsumer.setCallbackFn(handler);
+
+            await kafkaConsumer.connect();
+            await kafkaConsumer.startAndWaitForRebalance();
+
+            await kafkaProducer.send({
+                topic: msgTopic,
+                value: msgValue,
+                key: null,
+                headers: [
+                    msgHeader
+                ]
+            });
+        });
+    });
+
+    test("RAW - produce and consume binary AND useSyncCommit - #4", async () => {
+        const kafkaConsumer = new MLKafkaRawConsumer({
+            kafkaBrokerList: KAFKA_URL,
+            sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS, // min is 6 secs, this should about it
+            kafkaGroupId: TEST_BASE_NAME + "_4",
             outputType: MLKafkaRawConsumerOutputType.Raw,
             useSyncCommit: true
         }, logger);
 
-        const msgTopic = TEST_BASE_NAME + "_3";
+        const msgTopic = TEST_BASE_NAME + "_4";
         const msgValue = {testProp: Date.now()}
         const msgHeader = {key1: Buffer.from("testStr")};
 
@@ -352,7 +404,7 @@ describe("RAW - nodejs-rdkafka", () => {
             kafkaConsumer.setCallbackFn(handler);
 
             //wait for the consumer to settle (to be rebalanced)
-            kafkaConsumer.on("rebalance", async (type: "assign" | "revoke", assignments) => {
+            kafkaConsumer.once("rebalance", async (type: "assign" | "revoke", assignments) => {
                 if (type==="assign") {
                     await kafkaProducer.send({
                         topic: msgTopic,
