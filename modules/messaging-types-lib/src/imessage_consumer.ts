@@ -43,5 +43,6 @@ export interface IMessageConsumer {
   connect: () => Promise<void>
   disconnect: (force: boolean) => Promise<void>
   start: () => Promise<void>
+  startAndWaitForRebalance: () => Promise<void>
   stop: () => Promise<void>
 }
