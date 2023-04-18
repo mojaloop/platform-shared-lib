@@ -41,6 +41,7 @@ import { QuotingBCTopics, QUOTING_AGGREGATE_NAME, QUOTING_BOUNDED_CONTEXT_NAME }
 export type QuotingBCInvalidIdErrorPayload = {
     requesterFspId: string;
     quoteId: string;
+    errorDescription: string;
 }
 
 export class QuotingBCInvalidIdErrorEvent extends DomainEventMsg {
@@ -64,6 +65,7 @@ export class QuotingBCInvalidIdErrorEvent extends DomainEventMsg {
 export type QuotingBCDuplicateQuoteErrorPayload = {
     requesterFspId: string;
     quoteId: string;
+    errorDescription: string;
 }
 
 export class QuotingBCDuplicateQuoteErrorEvent extends DomainEventMsg {
@@ -85,7 +87,9 @@ export class QuotingBCDuplicateQuoteErrorEvent extends DomainEventMsg {
 export type QuotingBCNoSuchQuoteErrorPayload = {
     requesterFspId: string;
     quoteId: string;
+    errorDescription: string;
 }
+
 export class QuotingBCNoSuchQuoteErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
@@ -106,6 +110,7 @@ export class QuotingBCNoSuchQuoteErrorEvent extends DomainEventMsg {
 export type QuotingBCNoSuchBulkQuoteErrorPayload = {
     requesterFspId: string;
     bulkQuoteId: string;
+    errorDescription: string;
 }
 
 export class QuotingBCNoSuchBulkQuoteErrorEvent extends DomainEventMsg {
@@ -129,6 +134,7 @@ export type QuotingBCInvalidMessagePayloadErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 
 export class QuotingBCInvalidMessagePayloadErrorEvent extends DomainEventMsg {
@@ -151,6 +157,7 @@ export type QuotingBCInvalidMessageTypeErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 export class QuotingBCInvalidMessageTypeErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
@@ -172,6 +179,7 @@ export type QuotingBCUnableToProcessMessageErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 
 export class QuotingBCUnableToProcessMessageErrorEvent extends DomainEventMsg {
@@ -194,6 +202,7 @@ export type QuotingBCNoSuchParticipantErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 
 export class QuotingBCNoSuchParticipantErrorEvent extends DomainEventMsg {
@@ -216,6 +225,7 @@ export type QuotingBCInvalidParticipantIdErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 
 export class QuotingBCInvalidParticipantIdErrorEvent extends DomainEventMsg {
@@ -238,6 +248,7 @@ export type QuotingBCRequiredParticipantIsNotActiveErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 
 export class QuotingBCRequiredParticipantIsNotActiveErrorEvent extends DomainEventMsg {
@@ -260,6 +271,7 @@ export type QuotingBCInvalidRequesterFspIdErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 
 export class QuotingBCInvalidRequesterFspIdErrorEvent extends DomainEventMsg {
@@ -282,6 +294,7 @@ export type QuotingBCInvalidDestinationFspIdErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 
 export class QuotingBCInvalidDestinationFspIdErrorEvent extends DomainEventMsg {
@@ -305,6 +318,7 @@ export type QuotingBCInvalidDestinationPartyInformationErrorPayload = {
     destinationFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 
 export class QuotingBCInvalidDestinationPartyInformationErrorEvent extends DomainEventMsg {
@@ -327,6 +341,7 @@ export type QuotingBCUnknownErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
+    errorDescription: string;
 }
 export class QuotingBCUnknownErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME

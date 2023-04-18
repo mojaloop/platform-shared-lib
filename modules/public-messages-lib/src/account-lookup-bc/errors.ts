@@ -42,6 +42,7 @@ export type AccountLookupBCInvalidMessageErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventMsg   {
@@ -65,6 +66,7 @@ export type AccountLookupBCInvalidMessageTypeErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCInvalidMessageTypeErrorEvent extends DomainEventMsg   {
@@ -88,6 +90,7 @@ export type AccountLookupBCUnableToAssociateParticipantErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCUnableToAssociateParticipantErrorEvent extends DomainEventMsg   {
@@ -111,6 +114,7 @@ export type AccountLookupBCUnableToDisassociateParticipantErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCUnableToDisassociateParticipantErrorEvent extends DomainEventMsg   {
@@ -134,6 +138,7 @@ export type AccountLookupBCNoSuchParticipantErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCNoSuchParticipantErrorEvent extends DomainEventMsg   {
@@ -157,6 +162,7 @@ export type AccountLookupBCInvalidParticipantIdErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCInvalidParticipantIdErrorEvent extends DomainEventMsg   {
@@ -180,6 +186,7 @@ export type AccountLookupBCUnableToGetOracleFromOracleFinderErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCUnableToGetOracleFromOracleFinderErrorEvent extends DomainEventMsg   {
@@ -203,6 +210,7 @@ export type AccountLookupBCNoSuchOracleErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCNoSuchOracleErrorEvent extends DomainEventMsg   {
@@ -226,6 +234,7 @@ export type AccountLookupBCNoSuchOracleAdapterErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCNoSuchOracleAdapterErrorEvent extends DomainEventMsg   {
@@ -249,6 +258,7 @@ export type AccountLookupBCUnableToGetParticipantFspIdErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
 
 export class AccountLookupBCUnableToGetParticipantFspIdErrorEvent extends DomainEventMsg   {
@@ -272,8 +282,8 @@ export type AccountLookupBCNoSuchParticipantFspIdErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     partySubType: string | null;
+    errorDescription: string;
 }
-
 
 export class AccountLookupBCNoSuchParticipantFspIdErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
