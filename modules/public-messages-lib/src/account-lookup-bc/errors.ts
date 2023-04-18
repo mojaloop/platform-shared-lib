@@ -49,7 +49,7 @@ export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventM
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCInvalidMessageErrorPayload;
 
@@ -72,7 +72,7 @@ export class AccountLookupBCInvalidMessageTypeErrorEvent extends DomainEventMsg 
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCInvalidMessageTypeErrorPayload;
 
@@ -95,7 +95,7 @@ export class AccountLookupBCUnableToAssociateParticipantErrorEvent extends Domai
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCUnableToAssociateParticipantErrorPayload;
 
@@ -118,7 +118,7 @@ export class AccountLookupBCUnableToDisassociateParticipantErrorEvent extends Do
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCUnableToDisassociateParticipantErrorPayload;
 
@@ -141,7 +141,7 @@ export class AccountLookupBCNoSuchParticipantErrorEvent extends DomainEventMsg  
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCNoSuchParticipantErrorPayload;
 
@@ -164,7 +164,7 @@ export class AccountLookupBCInvalidParticipantIdErrorEvent extends DomainEventMs
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCInvalidParticipantIdErrorPayload;
 
@@ -187,7 +187,7 @@ export class AccountLookupBCUnableToGetOracleFromOracleFinderErrorEvent extends 
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCUnableToGetOracleFromOracleFinderErrorPayload;
 
@@ -210,7 +210,7 @@ export class AccountLookupBCNoSuchOracleErrorEvent extends DomainEventMsg   {
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCNoSuchOracleErrorPayload;
 
@@ -233,7 +233,7 @@ export class AccountLookupBCNoSuchOracleAdapterErrorEvent extends DomainEventMsg
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCNoSuchOracleAdapterErrorPayload;
 
@@ -256,7 +256,7 @@ export class AccountLookupBCUnableToGetParticipantFspIdErrorEvent extends Domain
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCUnableToGetParticipantFspIdErrorPayload;
 
@@ -280,7 +280,7 @@ export class AccountLookupBCNoSuchParticipantFspIdErrorEvent extends DomainEvent
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
     payload: AccountLookupBCNoSuchParticipantFspIdErrorPayload;
 
