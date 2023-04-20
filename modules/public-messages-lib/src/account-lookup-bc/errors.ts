@@ -40,7 +40,7 @@ import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, Acc
 export type AccountLookupBCInvalidMessageErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -64,7 +64,7 @@ export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventM
 export type AccountLookupBCInvalidMessageTypeErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -88,7 +88,7 @@ export class AccountLookupBCInvalidMessageTypeErrorEvent extends DomainEventMsg 
 export type AccountLookupBCUnableToAssociateParticipantErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -112,7 +112,7 @@ export class AccountLookupBCUnableToAssociateParticipantErrorEvent extends Domai
 export type AccountLookupBCUnableToDisassociateParticipantErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -136,7 +136,7 @@ export class AccountLookupBCUnableToDisassociateParticipantErrorEvent extends Do
 export type AccountLookupBCNoSuchParticipantErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -160,7 +160,7 @@ export class AccountLookupBCNoSuchParticipantErrorEvent extends DomainEventMsg  
 export type AccountLookupBCInvalidParticipantIdErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -184,7 +184,7 @@ export class AccountLookupBCInvalidParticipantIdErrorEvent extends DomainEventMs
 export type AccountLookupBCUnableToGetOracleFromOracleFinderErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -208,7 +208,7 @@ export class AccountLookupBCUnableToGetOracleFromOracleFinderErrorEvent extends 
 export type AccountLookupBCNoSuchOracleErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -232,7 +232,7 @@ export class AccountLookupBCNoSuchOracleErrorEvent extends DomainEventMsg   {
 export type AccountLookupBCNoSuchOracleAdapterErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -256,7 +256,7 @@ export class AccountLookupBCNoSuchOracleAdapterErrorEvent extends DomainEventMsg
 export type AccountLookupBCUnableToGetParticipantFspIdErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -280,7 +280,7 @@ export class AccountLookupBCUnableToGetParticipantFspIdErrorEvent extends Domain
 export type AccountLookupBCNoSuchParticipantFspIdErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
@@ -305,7 +305,7 @@ export class AccountLookupBCNoSuchParticipantFspIdErrorEvent extends DomainEvent
 export type AccountLookUpUnknownErrorPayload = {
     partyId: string;
     partyType: string | null;
-    requesterFspId: string | null;
+    fspId: string | null;
     partySubType: string | null;
     errorDescription: string;
 }
