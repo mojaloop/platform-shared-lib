@@ -4,8 +4,8 @@
 
 ## Packages / Libraries included
 
-- [messaging-types-lib](https://github.com/mojaloop/platform-shared-lib/tree/main/modules/messaging-types-lib) - Generic Messaging Types Library for the vNext Mojaloop platform.
-- [nodejs-kafka-client-lib](https://github.com/mojaloop/platform-shared-lib/tree/main/modules/nodejs-kafka-client-lib) - Kafka library implementation of the general messaging consumer and publisher interfaces.
+- [messaging-types-lib](https://github.com/mojaloop/platform-shared-lib/tree/main/packages/messaging-types-lib) - Generic Messaging Types Library for the vNext Mojaloop platform.
+- [nodejs-kafka-client-lib](https://github.com/mojaloop/platform-shared-lib/tree/main/packages/nodejs-kafka-client-lib) - Kafka library implementation of the general messaging consumer and publisher interfaces.
 
 ## Usage
 

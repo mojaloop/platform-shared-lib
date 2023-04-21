@@ -59,6 +59,10 @@ export class QuotingBCInvalidIdErrorEvent extends DomainEventMsg {
         this.aggregateId = this.msgKey = payload.quoteId;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 
@@ -82,6 +86,10 @@ export class QuotingBCDuplicateQuoteErrorEvent extends DomainEventMsg {
         this.aggregateId = this.msgKey = payload.quoteId;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type QuotingBCNoSuchQuoteErrorPayload = {
@@ -103,6 +111,10 @@ export class QuotingBCNoSuchQuoteErrorEvent extends DomainEventMsg {
         super();
         this.aggregateId = this.msgKey = payload.quoteId;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -126,6 +138,10 @@ export class QuotingBCNoSuchBulkQuoteErrorEvent extends DomainEventMsg {
         super();
         this.aggregateId = this.msgKey = payload.bulkQuoteId;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -151,6 +167,10 @@ export class QuotingBCInvalidMessagePayloadErrorEvent extends DomainEventMsg {
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type QuotingBCInvalidMessageTypeErrorPayload = {
@@ -172,6 +192,10 @@ export class QuotingBCInvalidMessageTypeErrorEvent extends DomainEventMsg {
         super();
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -196,6 +220,10 @@ export class QuotingBCUnableToProcessMessageErrorEvent extends DomainEventMsg {
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type QuotingBCNoSuchParticipantErrorPayload = {
@@ -218,6 +246,10 @@ export class QuotingBCNoSuchParticipantErrorEvent extends DomainEventMsg {
         super();
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -242,6 +274,10 @@ export class QuotingBCInvalidParticipantIdErrorEvent extends DomainEventMsg {
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type QuotingBCRequiredParticipantIsNotActiveErrorPayload = {
@@ -264,6 +300,10 @@ export class QuotingBCRequiredParticipantIsNotActiveErrorEvent extends DomainEve
         super();
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -288,6 +328,10 @@ export class QuotingBCInvalidRequesterFspIdErrorEvent extends DomainEventMsg {
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type QuotingBCInvalidDestinationFspIdErrorPayload = {
@@ -310,6 +354,10 @@ export class QuotingBCInvalidDestinationFspIdErrorEvent extends DomainEventMsg {
         super();
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -335,6 +383,10 @@ export class QuotingBCInvalidDestinationPartyInformationErrorEvent extends Domai
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type QuotingBCUnknownErrorPayload = {
@@ -356,6 +408,10 @@ export class QuotingBCUnknownErrorEvent extends DomainEventMsg {
 
         this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 

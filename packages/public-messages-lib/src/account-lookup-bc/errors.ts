@@ -59,6 +59,10 @@ export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventM
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
+
+    validatePayload(): void{
+        // NOT IMPLEMENTED
+    }
 }
 
 export type AccountLookupBCInvalidMessageTypeErrorPayload = {
@@ -82,6 +86,10 @@ export class AccountLookupBCInvalidMessageTypeErrorEvent extends DomainEventMsg 
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -107,6 +115,10 @@ export class AccountLookupBCUnableToAssociateParticipantErrorEvent extends Domai
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type AccountLookupBCUnableToDisassociateParticipantErrorPayload = {
@@ -130,6 +142,10 @@ export class AccountLookupBCUnableToDisassociateParticipantErrorEvent extends Do
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -155,6 +171,10 @@ export class AccountLookupBCNoSuchParticipantErrorEvent extends DomainEventMsg  
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type AccountLookupBCInvalidParticipantIdErrorPayload = {
@@ -178,6 +198,10 @@ export class AccountLookupBCInvalidParticipantIdErrorEvent extends DomainEventMs
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -203,6 +227,10 @@ export class AccountLookupBCUnableToGetOracleFromOracleFinderErrorEvent extends 
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type AccountLookupBCNoSuchOracleErrorPayload = {
@@ -226,6 +254,10 @@ export class AccountLookupBCNoSuchOracleErrorEvent extends DomainEventMsg   {
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -251,6 +283,10 @@ export class AccountLookupBCNoSuchOracleAdapterErrorEvent extends DomainEventMsg
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type AccountLookupBCUnableToGetParticipantFspIdErrorPayload = {
@@ -274,6 +310,10 @@ export class AccountLookupBCUnableToGetParticipantFspIdErrorEvent extends Domain
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 
@@ -300,6 +340,10 @@ export class AccountLookupBCNoSuchParticipantFspIdErrorEvent extends DomainEvent
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
     }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
 }
 
 export type AccountLookUpUnknownErrorPayload = {
@@ -323,6 +367,10 @@ export class AccountLookUpUnknownErrorEvent extends DomainEventMsg {
 
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
     }
 }
 

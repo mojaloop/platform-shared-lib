@@ -83,7 +83,7 @@ export abstract class DomainMsg implements IDomainMessage {
 
     abstract fspiopOpaqueState: any;
 
-    //abstract validatePayload(): void
+    abstract validatePayload(): void
 
     // static fromIDomainMessage(msg: IDomainMessage): DomainMsg | undefined {
     //     const obj: DomainMsg = Reflect.construct(this, [{}])
@@ -99,21 +99,21 @@ export abstract class DomainMsg implements IDomainMessage {
 export abstract class StateEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.STATE_EVENT;
     fspiopOpaqueState:any = null;
-    //abstract validatePayload(): void
+    abstract validatePayload(): void
 }
 
 export abstract class DomainEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.DOMAIN_EVENT;
     fspiopOpaqueState:any = null;
 
-    //abstract validatePayload(): void
+    abstract validatePayload(): void
 }
 
 export abstract class CommandMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.COMMAND;
     fspiopOpaqueState:any = null;
 
-    //abstract validatePayload(): void
+    abstract validatePayload(): void
 }
 
 // export abstract class StateSnapshotMsg extends DomainMsg {
