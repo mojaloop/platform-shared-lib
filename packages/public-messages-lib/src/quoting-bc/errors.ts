@@ -416,10 +416,9 @@ export class QuotingBCUnknownErrorEvent extends DomainEventMsg {
 }
 
 export type QuotingBCOperatorErrorPayload = {
-    partyId: string;
-    partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    fspId: string;
+    quoteId: string | null;
+    bulkQuoteId: string | null;
     errorDescription: string;
 }
 
@@ -435,7 +434,7 @@ export class QuotingBCOperatorErrorEvent extends DomainEventMsg {
     constructor (payload: QuotingBCOperatorErrorPayload) {
         super();
 
-        this.aggregateId = this.msgKey = payload.partyId;
+        this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
         this.payload = payload;
     }
 
