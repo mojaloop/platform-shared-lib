@@ -36,7 +36,8 @@ const QUOTING_AGGREGATE_NAME = "Quote";
 
 enum QuotingBCTopics {
     "DomainEvents" = "QuotingBcEvents",
-    "DomainRequests" = "QuotingBcRequests"
+    "DomainRequests" = "QuotingBcRequests",
+    "DomainErrors" = "QuotingBcErrors"
 }
 
 export { QuotingBCTopics , QUOTING_BOUNDED_CONTEXT_NAME, QUOTING_AGGREGATE_NAME };

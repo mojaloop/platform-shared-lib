@@ -375,5 +375,33 @@ export class AccountLookUpUnknownErrorEvent extends DomainEventMsg {
 }
 
 
+export type AccountLookUpBCOperatorErrorPayload = {
+    partyId: string;
+    partyType: string | null;
+    fspId: string | null;
+    partySubType: string | null;
+    errorDescription: string;
+}
+
+
+export class AccountLookUpBCOperatorErrorEvent extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainErrors;
+    payload: AccountLookUpBCOperatorErrorPayload;
+
+    constructor (payload: AccountLookUpBCOperatorErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
 
 

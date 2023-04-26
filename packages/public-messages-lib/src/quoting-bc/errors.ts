@@ -415,3 +415,31 @@ export class QuotingBCUnknownErrorEvent extends DomainEventMsg {
     }
 }
 
+export type QuotingBCOperatorErrorPayload = {
+    partyId: string;
+    partyType: string | null;
+    fspId: string | null;
+    partySubType: string | null;
+    errorDescription: string;
+}
+
+
+export class QuotingBCOperatorErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainErrors;
+    payload: QuotingBCOperatorErrorPayload;
+
+    constructor (payload: QuotingBCOperatorErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
