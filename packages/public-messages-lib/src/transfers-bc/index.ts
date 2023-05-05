@@ -35,10 +35,11 @@ const TRANSFERS_AGGREGATE_NAME = "Transfers";
 
 enum TransfersBCTopics {
     "DomainEvents" = "TransfersBcEvents",
-    "DomainRequests" = "TransfersBcRequests"
+    "DomainRequests" = "TransfersBcRequests",
+    "DomainErrors" = "TransfersBcErrors"
 }
 
 export {TransfersBCTopics , TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME};
 export * from "./requests";
 export * from "./responses";
-
+export * from "./errors";

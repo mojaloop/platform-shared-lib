@@ -109,45 +109,4 @@ export class TransferCommittedFulfiledEvt extends DomainEventMsg {
 	validatePayload(): void {
 		// TODO
 	}
-}
-
-
-export type TransferErrorEvtPayload = {
-    requesterFspId: string | null;
-    destinationFspId: string | null;
-    transferId: string;
-    errorMsg: string;
-    sourceEvent: string;
-}
-
-export class TransferErrorEvt extends DomainEventMsg {
-    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
-    aggregateId: string;
-    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferErrorEvtPayload;
-
-    constructor (payload: TransferErrorEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.transferId;
-        this.payload = payload;
-    }
-
-    validatePayload (): void { 
-        const { sourceEvent, transferId, errorMsg } = this.payload;
-
-        if (!transferId) {
-            throw new Error("transferId is required.");
-		}
-
-        if (!sourceEvent) {
-            throw new Error("sourceEvent is required.");
-        }
-
-		if (!errorMsg) {
-            throw new Error("errorMsg is required.");
-		}
-    }
-}
+} 
