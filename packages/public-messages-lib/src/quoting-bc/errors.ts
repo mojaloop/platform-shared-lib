@@ -44,7 +44,7 @@ export type QuoteBCInvalidIdErrorPayload = {
     errorDescription: string;
 }
 
-export class QuoteBCInvalidIdErrorPayloadEvent extends DomainEventMsg {
+export class QuoteBCInvalidIdErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
