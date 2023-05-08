@@ -34,7 +34,6 @@ import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-li
 import { SETTLEMENTS_BOUNDED_CONTEXT_NAME, SETTLEMENTS_AGGREGATE_NAME, SettlementsBCTopics } from ".";
 
 export type SettlementMatrixSettledParticipantEvtPayload = {
-  accountExtId: string;
   participantId: string;
   currencyCode: string;
   settledDebitBalance: string;
