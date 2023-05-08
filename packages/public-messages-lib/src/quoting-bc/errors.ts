@@ -38,33 +38,6 @@ import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-li
 import { QuotingBCTopics, QUOTING_AGGREGATE_NAME, QUOTING_BOUNDED_CONTEXT_NAME } from ".";
 
 // Quotes
-export type QuoteBCInvalidIdErrorPayload = {
-    fspId: string;
-    quoteId: string;
-    errorDescription: string;
-}
-
-export class QuoteBCInvalidIdErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
-    aggregateId: string;
-    aggregateName: string = QUOTING_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainEvents;
-
-    payload: QuoteBCInvalidIdErrorPayload;
-
-    constructor (payload: QuoteBCInvalidIdErrorPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.quoteId;
-        this.payload = payload;
-    }
-
-    validatePayload(): void {
-        // NOT IMPLEMENTED
-    }
-}
-
 
 export type QuoteBCDuplicateQuoteErrorPayload = {
     fspId: string;
@@ -153,7 +126,7 @@ export type QuoteBCInvalidMessagePayloadErrorPayload = {
     errorDescription: string;
 }
 
-export class QuoteBCInvalidMessageErrorEvent extends DomainEventMsg {
+export class QuoteBCInvalidMessagePayloadErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
