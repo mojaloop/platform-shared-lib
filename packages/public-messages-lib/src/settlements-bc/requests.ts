@@ -33,18 +33,18 @@
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { SETTLEMENTS_BOUNDED_CONTEXT_NAME, SETTLEMENTS_AGGREGATE_NAME, SettlementsBCTopics } from ".";
 
+export type SettlementMatrixSettledParticipantEvtPayload = {
+  accountExtId: string;
+  participantId: string;
+  currencyCode: string;
+  settledDebitBalance: string;
+  settledCreditBalance: string;
+}
+
 export type SettlementMatrixSettledEvtPayload = {
   settlementMatrixId: string;
   settledTimestamp: number,
-  participantList: {
-    participant: {
-      accountExtId: string;
-      participantId: string;
-      currencyCode: string;
-      settledDebitBalance: string;
-      settledCreditBalance: string;
-    }[]
-  } | null;
+  participantList: SettlementMatrixSettledParticipantEvtPayload[];
 }
 
 export class SettlementMatrixSettledEvt extends DomainEventMsg {
