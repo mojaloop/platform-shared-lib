@@ -103,3 +103,32 @@ export class TransferFulfilCommittedRequestedEvt extends DomainEventMsg {
 		// TODO
 	}
 }
+
+export type TransferRejectRequestedEvtPayload = {
+	transferId: string;
+	errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+	}
+}
+
+export class TransferRejectRequestedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+
+    payload: TransferRejectRequestedEvtPayload;
+
+    constructor (payload: TransferRejectRequestedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}

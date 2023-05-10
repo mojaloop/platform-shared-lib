@@ -49,7 +49,7 @@ export class TransferPrepareDuplicateCheckFailedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainErrors;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferPrepareDuplicateCheckFailedPayload;
 
@@ -76,7 +76,7 @@ export class TransferPrepareLiquidityCheckFailedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainErrors;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferPrepareLiquidityCheckFailedPayload;
 
@@ -103,7 +103,7 @@ export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainErrors;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferPrepareInvalidPayerCheckFailedPayload;
 
@@ -130,7 +130,7 @@ export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainErrors;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferPrepareInvalidPayeeCheckFailedPayload;
 
