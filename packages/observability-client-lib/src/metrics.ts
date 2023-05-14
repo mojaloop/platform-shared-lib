@@ -56,6 +56,7 @@ export class PrometheusMetrics implements IMetrics{
     private _summaries: summariesType = {};
 
     private static _instance:PrometheusMetrics | null = null;
+    // eslint-disable-next-line
     private constructor(){}
 
     /**
@@ -70,6 +71,7 @@ export class PrometheusMetrics implements IMetrics{
         }
         this._instance = new PrometheusMetrics();
 
+        this._instance._logger = logger;
         this._instance._options = options;
 
         if (this._instance._options.defaultLabels) {
@@ -144,7 +146,7 @@ export class PrometheusMetrics implements IMetrics{
     /**
      * Get the summary for given name or create new
      */
-    getSummary(name: string, help?: string, labelNames: string[] = [], percentiles: number[] = [0.01, 0.05, 0.5, 0.9, 0.95, 0.99, 0.999], maxAgeSeconds: number = 600, ageBuckets: number = 5): ISummary{ // <-- required for Prom-Client v11.x
+    getSummary(name: string, help?: string, labelNames: string[] = [], percentiles: number[] = [0.01, 0.05, 0.5, 0.9, 0.95, 0.99, 0.999], maxAgeSeconds = 600, ageBuckets = 5): ISummary{ // <-- required for Prom-Client v11.x
         try {
             if (this._summaries[name] != null) {
                 return this._summaries[name];
@@ -169,13 +171,6 @@ export class PrometheusMetrics implements IMetrics{
      */
     async getMetricsForPrometheusScrapper(): Promise<string>{
         return PromClient.register.metrics();
-    }
-
-    /**
-     * Get string representation for all prometheus metrics in an array representation
-     */
-    async getMetricsAsArray(): Promise<PromClient.metric[]>{
-        return PromClient.register.getMetricsAsArray();
     }
 
     /**
