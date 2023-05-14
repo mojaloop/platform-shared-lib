@@ -43,17 +43,17 @@ export type PrometheusMetricsOptions = {
     register?: PromClient.Registry
 }
 
-export interface histogramsType { [key: string]: PromClient.Histogram<string> }
-export interface summariesType { [key: string]: PromClient.Summary<string> }
-export interface gaugesType { [key: string]: PromClient.Gauge<string> }
+interface HistogramsType { [key: string]: PromClient.Histogram<string> }
+interface SummariesType { [key: string]: PromClient.Summary<string> }
+interface GaugesType { [key: string]: PromClient.Gauge<string> }
 
 export class PrometheusMetrics implements IMetrics{
     private _logger:ILogger;
     private _options: PrometheusMetricsOptions = {};
     private _register: PromClient.Registry = PromClient.register;
-    private _histograms: histogramsType = {};
-    private _gauges: gaugesType = {};
-    private _summaries: summariesType = {};
+    private _histograms: HistogramsType = {};
+    private _gauges: GaugesType = {};
+    private _summaries: SummariesType = {};
 
     private static _instance:PrometheusMetrics | null = null;
     // eslint-disable-next-line
