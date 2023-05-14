@@ -1,4 +1,5 @@
 const slugPrefix = "gh/mojaloop/";
+const ciUsername = "mojaloopci";
 let debug = false;
 let user;// = "0d7c20153dcb2e4805b49d4a207eafed923dd53b";
 let projectslug;
@@ -104,14 +105,16 @@ async function startLoop() {
         for (const pipeline of pipelineList) {
             if (pipeline.state==="errored") continue;
 
-            const workflowList = await getPipelineWorkflows(pipeline.id);
+            const workflowList = await getPipelineWorkflows(pipeline.id) || [];
+            if (debug) console.log(`Pipeline with num: ${pipeline.number} state: ${pipeline.state} created at: ${pipeline.created_at} vcs_revision: ${pipeline.vcs.revision} - workflow count: ${workflowList.length} by user: ${pipeline.trigger.actor.login}`);
+
             if (!workflowList)
                 continue; // didn't run
 
             let anyFailedWorkflow = false;
             for(const workflow of workflowList){
                 if (debug)
-                    console.log(`Pipeline with num: ${pipeline.number} created at: ${pipeline.created_at} vcs_revision: ${pipeline.vcs.revision} - workflow name: ${workflow.name} status: ${workflow.status}`);
+                    console.log(`\tWorkflow name: ${workflow.name} status: ${workflow.status}`);
 
                 // all must be success to be considered a successful build
                 // if we are on the current build, it should have running status, so not success and get s ignored
@@ -121,7 +124,7 @@ async function startLoop() {
                 }
             }
 
-            if(!anyFailedWorkflow){
+            if((!anyFailedWorkflow && workflowList.length) || (!anyFailedWorkflow && pipeline.state==="created" && pipeline.trigger.actor.login === ciUsername)){
                 if (debug) {
                     console.log(`Last successful build commit sha is: ${pipeline.vcs.revision}`);
                 } else {

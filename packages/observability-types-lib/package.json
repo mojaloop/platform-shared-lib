@@ -10,7 +10,7 @@
   "contributors": [
     "Pedro Sousa Barreto <pedrosousabarreto@gmail.com>"
   ],
-  "private": true,
+  "private": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
