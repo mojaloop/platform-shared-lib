@@ -108,9 +108,6 @@ async function startLoop() {
             const workflowList = await getPipelineWorkflows(pipeline.id) || [];
             if (debug) console.log(`Pipeline with num: ${pipeline.number} state: ${pipeline.state} created at: ${pipeline.created_at} vcs_revision: ${pipeline.vcs.revision} - workflow count: ${workflowList.length} by user: ${pipeline.trigger.actor.login}`);
 
-            if (!workflowList)
-                continue; // didn't run
-
             let anyFailedWorkflow = false;
             for(const workflow of workflowList){
                 if (debug)
@@ -118,13 +115,13 @@ async function startLoop() {
 
                 // all must be success to be considered a successful build
                 // if we are on the current build, it should have running status, so not success and get s ignored
-                if(workflow.status !== "success"){
+                if(workflow.status !== "success" || workflow.status !== "not_run"){
                     anyFailedWorkflow = true;
                     break;
                 }
             }
 
-            if((!anyFailedWorkflow && workflowList.length) || (!anyFailedWorkflow && pipeline.state==="created" && pipeline.trigger.actor.login === ciUsername)){
+            if(!anyFailedWorkflow && (workflowList.length || (pipeline.state==="created" && pipeline.trigger.actor.login === ciUsername))){
                 if (debug) {
                     console.log(`Last successful build commit sha is: ${pipeline.vcs.revision}`);
                 } else {
