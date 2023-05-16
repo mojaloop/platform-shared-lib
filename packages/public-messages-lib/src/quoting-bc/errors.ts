@@ -463,21 +463,21 @@ export class QuoteBCUnableToUpdateQuoteInDatabaseErrorEvent extends DomainEventM
     }
 }
 
-export type QuoteBCeUnableToUpdateBulkQuoteInDatabaseErrorPayload = {
+export type QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorPayload = {
     fspId: string;
     bulkQuoteId: string;
     errorDescription: string;
 }
 
-export class QuoteBCeUnableToUpdateBulkQuoteInDatabaseErrorEvent extends DomainEventMsg {
+export class QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainErrors;
-    payload: QuoteBCeUnableToUpdateBulkQuoteInDatabaseErrorPayload;
+    payload: QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorPayload;
 
-    constructor (payload: QuoteBCeUnableToUpdateBulkQuoteInDatabaseErrorPayload) {
+    constructor (payload: QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorPayload) {
         super();
 
         this.aggregateId = this.msgKey = (payload.bulkQuoteId) as string;
