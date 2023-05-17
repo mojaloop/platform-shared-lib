@@ -524,6 +524,306 @@ export class TransferFulfilPostCommittedRequestedTimedoutEvt extends DomainEvent
     }
 }
 
+export type TransferCancelReservationAndCommitFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferCancelReservationAndCommitFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferCancelReservationAndCommitFailedEvtPayload;
+
+    constructor (payload: TransferCancelReservationAndCommitFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPayerParticipantNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPayerParticipantNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPayerParticipantNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPayerParticipantNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPayeeParticipantNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPayeeParticipantNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPayeeParticipantNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPayeeParticipantNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferHubParticipantNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferHubParticipantNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferHubParticipantNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferHubParticipantNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPreparePayerNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayerNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayerNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPreparePayerNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPreparePayeeNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayeeNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayeeNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPreparePayeeNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPrepareHubNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPrepareHubNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPrepareHubNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPrepareHubNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type TransferPrepareHubAccountNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPrepareHubAccountNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPrepareHubAccountNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPrepareHubAccountNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPreparePayerPositionAccountNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayerPositionAccountNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayerPositionAccountNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPreparePayerPositionAccountNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPreparePayerLiquidityAccountNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayerLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayerLiquidityAccountNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPreparePayerLiquidityAccountNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPreparePayeePositionAccountNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayeePositionAccountNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayeePositionAccountNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPreparePayeePositionAccountNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPreparePayeeLiquidityAccountNotFoundFailedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayeeLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayeeLiquidityAccountNotFoundFailedEvtPayload;
+
+    constructor (payload: TransferPreparePayeeLiquidityAccountNotFoundFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
 
 export type TransfersBCUnknownErrorPayload = {
     fspId: string;
