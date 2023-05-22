@@ -850,6 +850,106 @@ export class TransferPreparePayeeLiquidityAccountNotFoundFailedEvt extends Domai
     }
 }
 
+export type TransferPreparePayerNotActiveEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayerNotActiveEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayerNotActiveEvtPayload;
+
+    constructor (payload: TransferPreparePayerNotActiveEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPreparePayerNotApprovedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayerNotApprovedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayerNotApprovedEvtPayload;
+
+    constructor (payload: TransferPreparePayerNotApprovedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPreparePayeeNotActiveEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayeeNotActiveEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayeeNotActiveEvtPayload;
+
+    constructor (payload: TransferPreparePayeeNotActiveEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPreparePayeeNotApprovedEvtPayload = {
+    fspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPreparePayeeNotApprovedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPreparePayeeNotApprovedEvtPayload;
+
+    constructor (payload: TransferPreparePayeeNotApprovedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 export type TransfersBCUnknownErrorPayload = {
     fspId: string;
     transferId: string;
