@@ -515,21 +515,21 @@ export class QuoteBCInvalidBulkQuoteLengthErrorEvent extends DomainEventMsg {
     }
 }
 
-export type QuoteBCQuoteRuleSchemeViolatedErrorPayload = {
+export type QuoteBCQuoteRuleSchemeViolatedRequestErrorPayload = {
     fspId: string;
     quoteId: string;
     errorDescription: string;
 }
 
-export class QuoteBCQuoteRuleSchemeViolatedErrorEvent extends DomainEventMsg {
+export class QuoteBCQuoteRuleSchemeViolatedRequestErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     msgKey: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgTopic: string = QuotingBCTopics.DomainErrors;
-    payload: QuoteBCQuoteRuleSchemeViolatedErrorPayload;
+    payload: QuoteBCQuoteRuleSchemeViolatedRequestErrorPayload;
 
-    constructor (payload: QuoteBCQuoteRuleSchemeViolatedErrorPayload) {
+    constructor (payload: QuoteBCQuoteRuleSchemeViolatedRequestErrorPayload) {
         super();
 
         this.aggregateId = this.msgKey = (payload.quoteId) as string;
@@ -541,3 +541,28 @@ export class QuoteBCQuoteRuleSchemeViolatedErrorEvent extends DomainEventMsg {
     }
 }
 
+export type QuoteBCQuoteRuleSchemeViolatedResponseErrorPayload = {
+    fspId: string;
+    quoteId: string;
+    errorDescription: string;
+}
+
+export class QuoteBCQuoteRuleSchemeViolatedResponseErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    msgKey: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgTopic: string = QuotingBCTopics.DomainErrors;
+    payload: QuoteBCQuoteRuleSchemeViolatedResponseErrorPayload;
+
+    constructor (payload: QuoteBCQuoteRuleSchemeViolatedResponseErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = (payload.quoteId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
