@@ -118,6 +118,8 @@ export class TransferPrepareDuplicateCheckFailedEvt extends DomainEventMsg {
 export type TransferPrepareLiquidityCheckFailedPayload = {
     fspId: string;
     transferId: string;
+    amount: string;
+    currency: string;
     errorDescription: string;
 }
 
