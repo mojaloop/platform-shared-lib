@@ -39,7 +39,7 @@ import { TransfersBCTopics, TRANSFERS_AGGREGATE_NAME, TRANSFERS_BOUNDED_CONTEXT_
 
 // Transfers
 export type TransferInvalidMessagePayloadEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -64,7 +64,7 @@ export class TransferInvalidMessagePayloadEvt extends DomainEventMsg {
 }
 
 export type TransferInvalidMessageTypeEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -88,22 +88,22 @@ export class TransferInvalidMessageTypeEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPrepareDuplicateCheckFailedEvtPayload = {
-    fspId: string;
+export type TransferDuplicateCheckFailedEvtPayload = {
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
 
-export class TransferPrepareDuplicateCheckFailedEvt extends DomainEventMsg {
+export class TransferDuplicateCheckFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
 
-    payload: TransferPrepareDuplicateCheckFailedEvtPayload;
+    payload: TransferDuplicateCheckFailedEvtPayload;
 
-    constructor (payload: TransferPrepareDuplicateCheckFailedEvtPayload) {
+    constructor (payload: TransferDuplicateCheckFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -116,7 +116,7 @@ export class TransferPrepareDuplicateCheckFailedEvt extends DomainEventMsg {
 }
 
 export type TransferPrepareLiquidityCheckFailedPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     amount: string;
     currency: string;
@@ -144,22 +144,23 @@ export class TransferPrepareLiquidityCheckFailedEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPrepareInvalidPayerCheckFailedPayload = {
-    fspId: string;
+export type TransferUnableToGetParticipantsInfoEvtPayload = {
+    payerFspId: string;
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
 
-export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainEventMsg {
+export class TransferUnableToGetParticipantsInfoEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
 
-    payload: TransferPrepareInvalidPayerCheckFailedPayload;
+    payload: TransferUnableToGetParticipantsInfoEvtPayload;
 
-    constructor (payload: TransferPrepareInvalidPayerCheckFailedPayload) {
+    constructor (payload: TransferUnableToGetParticipantsInfoEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -171,8 +172,35 @@ export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPrepareInvalidPayeeCheckFailedPayload = {
-    fspId: string;
+export type TransferInvalidPayerCheckFailedEvtPayload = {
+    payerFspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+
+export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+
+    payload: TransferInvalidPayerCheckFailedEvtPayload;
+
+    constructor (payload: TransferInvalidPayerCheckFailedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPrepareInvalidPayeeCheckFailedEvtPayload = {
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -184,9 +212,9 @@ export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainEventMsg {
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
 
-    payload: TransferPrepareInvalidPayeeCheckFailedPayload;
+    payload: TransferPrepareInvalidPayeeCheckFailedEvtPayload;
 
-    constructor (payload: TransferPrepareInvalidPayeeCheckFailedPayload) {
+    constructor (payload: TransferPrepareInvalidPayeeCheckFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -199,7 +227,7 @@ export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainEventMsg {
 }
 
 export type TransferPrepareRequestTimedoutEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -226,7 +254,7 @@ export class TransferPrepareRequestTimedoutEvt extends DomainEventMsg {
 }
 
 export type TransferQueryInvalidPayerCheckFailedEvtPayload = {
-    fspId: string | null;
+    payerFspId: string | null;
     transferId: string;
     errorDescription: string;
 }
@@ -251,7 +279,7 @@ export class TransferQueryInvalidPayerCheckFailedEvt extends DomainEventMsg {
 }
 
 export type TransferQueryPayerNotFoundFailedEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -276,7 +304,7 @@ export class TransferQueryPayerNotFoundFailedEvt extends DomainEventMsg {
 }
 
 export type TransferQueryPayeeNotFoundFailedEvtPayload = {
-    fspId: string;
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -301,7 +329,7 @@ export class TransferQueryPayeeNotFoundFailedEvt extends DomainEventMsg {
 }
 
 export type TransferQueryInvalidPayeeCheckFailedEvtPayload = {
-    fspId: string | null;
+    payeeFspId: string | null;
     transferId: string;
     errorDescription: string;
 }
@@ -326,7 +354,7 @@ export class TransferQueryInvalidPayeeCheckFailedEvt extends DomainEventMsg {
 }
 
 export type TransferQueryInvalidPayerParticipantIdEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -351,7 +379,7 @@ export class TransferQueryInvalidPayerParticipantIdEvt extends DomainEventMsg {
 }
 
 export type TransferQueryInvalidPayeeParticipantIdEvtPayload = {
-    fspId: string;
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -376,7 +404,6 @@ export class TransferQueryInvalidPayeeParticipantIdEvt extends DomainEventMsg {
 }
 
 export type TransferUnableToGetTransferByIdEvtPayload = {
-    fspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -402,7 +429,6 @@ export class TransferUnableToGetTransferByIdEvt extends DomainEventMsg {
 
 
 export type TransferNotFoundEvtPayload = {
-    fspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -427,7 +453,7 @@ export class TransferNotFoundEvt extends DomainEventMsg {
 }
 
 export type TransferUnableToAddEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -452,7 +478,7 @@ export class TransferUnableToAddEvt extends DomainEventMsg {
 }
 
 export type TransferUnableToUpdateEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -477,7 +503,8 @@ export class TransferUnableToUpdateEvt extends DomainEventMsg {
 }
 
 export type TransferFulfilCommittedRequestedTimedoutEvtPayload = {
-    fspId: string;
+    payerFspId: string;
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -502,7 +529,8 @@ export class TransferFulfilCommittedRequestedTimedoutEvt extends DomainEventMsg 
 }
 
 export type TransferFulfilPostCommittedRequestedTimedoutEvtPayload = {
-    fspId: string;
+    payerFspId: string;
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -527,7 +555,7 @@ export class TransferFulfilPostCommittedRequestedTimedoutEvt extends DomainEvent
 }
 
 export type TransferCancelReservationFailedEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -552,7 +580,7 @@ export class TransferCancelReservationFailedEvt extends DomainEventMsg {
 }
 
 export type TransferCancelReservationAndCommitFailedEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -577,7 +605,7 @@ export class TransferCancelReservationAndCommitFailedEvt extends DomainEventMsg 
 }
 
 export type TransferPayerParticipantNotFoundFailedEvtPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -602,7 +630,7 @@ export class TransferPayerParticipantNotFoundFailedEvt extends DomainEventMsg {
 }
 
 export type TransferPayeeParticipantNotFoundFailedEvtPayload = {
-    fspId: string;
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -627,7 +655,6 @@ export class TransferPayeeParticipantNotFoundFailedEvt extends DomainEventMsg {
 }
 
 export type TransferHubParticipantNotFoundFailedEvtPayload = {
-    fspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -651,20 +678,20 @@ export class TransferHubParticipantNotFoundFailedEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPreparePayerNotFoundFailedEvtPayload = {
-    fspId: string;
+export type TransferPayerNotFoundFailedEvtPayload = {
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayerNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayerNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayerNotFoundFailedEvtPayload;
+    payload: TransferPayerNotFoundFailedEvtPayload;
 
-    constructor (payload: TransferPreparePayerNotFoundFailedEvtPayload) {
+    constructor (payload: TransferPayerNotFoundFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -676,20 +703,20 @@ export class TransferPreparePayerNotFoundFailedEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPreparePayeeNotFoundFailedEvtPayload = {
-    fspId: string;
+export type TransferPayeeNotFoundFailedEvtPayload = {
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayeeNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayeeNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayeeNotFoundFailedEvtPayload;
+    payload: TransferPayeeNotFoundFailedEvtPayload;
 
-    constructor (payload: TransferPreparePayeeNotFoundFailedEvtPayload) {
+    constructor (payload: TransferPayeeNotFoundFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -701,20 +728,19 @@ export class TransferPreparePayeeNotFoundFailedEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPrepareHubNotFoundFailedEvtPayload = {
-    fspId: string;
+export type TransferHubNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPrepareHubNotFoundFailedEvt extends DomainEventMsg {
+export class TransferHubNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPrepareHubNotFoundFailedEvtPayload;
+    payload: TransferHubNotFoundFailedEvtPayload;
 
-    constructor (payload: TransferPrepareHubNotFoundFailedEvtPayload) {
+    constructor (payload: TransferHubNotFoundFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -727,20 +753,19 @@ export class TransferPrepareHubNotFoundFailedEvt extends DomainEventMsg {
 }
 
 
-export type TransferPrepareHubAccountNotFoundFailedEvtPayload = {
-    fspId: string;
+export type TransferHubAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPrepareHubAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferHubAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPrepareHubAccountNotFoundFailedEvtPayload;
+    payload: TransferHubAccountNotFoundFailedEvtPayload;
 
-    constructor (payload: TransferPrepareHubAccountNotFoundFailedEvtPayload) {
+    constructor (payload: TransferHubAccountNotFoundFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -752,20 +777,20 @@ export class TransferPrepareHubAccountNotFoundFailedEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPreparePayerPositionAccountNotFoundFailedEvtPayload = {
-    fspId: string;
+export type TransferPayerPositionAccountNotFoundFailedEvtPayload = {
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayerPositionAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayerPositionAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayerPositionAccountNotFoundFailedEvtPayload;
+    payload: TransferPayerPositionAccountNotFoundFailedEvtPayload;
 
-    constructor (payload: TransferPreparePayerPositionAccountNotFoundFailedEvtPayload) {
+    constructor (payload: TransferPayerPositionAccountNotFoundFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -777,20 +802,20 @@ export class TransferPreparePayerPositionAccountNotFoundFailedEvt extends Domain
     }
 }
 
-export type TransferPreparePayerLiquidityAccountNotFoundFailedEvtPayload = {
-    fspId: string;
+export type TransferPayerLiquidityAccountNotFoundFailedEvtPayload = {
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayerLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayerLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayerLiquidityAccountNotFoundFailedEvtPayload;
+    payload: TransferPayerLiquidityAccountNotFoundFailedEvtPayload;
 
-    constructor (payload: TransferPreparePayerLiquidityAccountNotFoundFailedEvtPayload) {
+    constructor (payload: TransferPayerLiquidityAccountNotFoundFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -802,20 +827,20 @@ export class TransferPreparePayerLiquidityAccountNotFoundFailedEvt extends Domai
     }
 }
 
-export type TransferPreparePayeePositionAccountNotFoundFailedEvtPayload = {
-    fspId: string;
+export type TransferPayeePositionAccountNotFoundFailedEvtPayload = {
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayeePositionAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayeePositionAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayeePositionAccountNotFoundFailedEvtPayload;
+    payload: TransferPayeePositionAccountNotFoundFailedEvtPayload;
 
-    constructor (payload: TransferPreparePayeePositionAccountNotFoundFailedEvtPayload) {
+    constructor (payload: TransferPayeePositionAccountNotFoundFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -827,20 +852,20 @@ export class TransferPreparePayeePositionAccountNotFoundFailedEvt extends Domain
     }
 }
 
-export type TransferPreparePayeeLiquidityAccountNotFoundFailedEvtPayload = {
-    fspId: string;
+export type TransferPayeeLiquidityAccountNotFoundFailedEvtPayload = {
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayeeLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayeeLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayeeLiquidityAccountNotFoundFailedEvtPayload;
+    payload: TransferPayeeLiquidityAccountNotFoundFailedEvtPayload;
 
-    constructor (payload: TransferPreparePayeeLiquidityAccountNotFoundFailedEvtPayload) {
+    constructor (payload: TransferPayeeLiquidityAccountNotFoundFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -852,20 +877,20 @@ export class TransferPreparePayeeLiquidityAccountNotFoundFailedEvt extends Domai
     }
 }
 
-export type TransferPreparePayerNotActiveEvtPayload = {
-    fspId: string;
+export type TransferPayerNotActiveEvtPayload = {
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayerNotActiveEvt extends DomainEventMsg {
+export class TransferPayerNotActiveEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayerNotActiveEvtPayload;
+    payload: TransferPayerNotActiveEvtPayload;
 
-    constructor (payload: TransferPreparePayerNotActiveEvtPayload) {
+    constructor (payload: TransferPayerNotActiveEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -877,20 +902,20 @@ export class TransferPreparePayerNotActiveEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPreparePayerNotApprovedEvtPayload = {
-    fspId: string;
+export type TransferPayerNotApprovedEvtPayload = {
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayerNotApprovedEvt extends DomainEventMsg {
+export class TransferPayerNotApprovedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayerNotApprovedEvtPayload;
+    payload: TransferPayerNotApprovedEvtPayload;
 
-    constructor (payload: TransferPreparePayerNotApprovedEvtPayload) {
+    constructor (payload: TransferPayerNotApprovedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -902,20 +927,20 @@ export class TransferPreparePayerNotApprovedEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPreparePayeeNotActiveEvtPayload = {
-    fspId: string;
+export type TransferPayeeNotActiveEvtPayload = {
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayeeNotActiveEvt extends DomainEventMsg {
+export class TransferPayeeNotActiveEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayeeNotActiveEvtPayload;
+    payload: TransferPayeeNotActiveEvtPayload;
 
-    constructor (payload: TransferPreparePayeeNotActiveEvtPayload) {
+    constructor (payload: TransferPayeeNotActiveEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -927,20 +952,20 @@ export class TransferPreparePayeeNotActiveEvt extends DomainEventMsg {
     }
 }
 
-export type TransferPreparePayeeNotApprovedEvtPayload = {
-    fspId: string;
+export type TransferPayeeNotApprovedEvtPayload = {
+    payeeFspId: string;
     transferId: string;
     errorDescription: string;
 }
-export class TransferPreparePayeeNotApprovedEvt extends DomainEventMsg {
+export class TransferPayeeNotApprovedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferPreparePayeeNotApprovedEvtPayload;
+    payload: TransferPayeeNotApprovedEvtPayload;
 
-    constructor (payload: TransferPreparePayeeNotApprovedEvtPayload) {
+    constructor (payload: TransferPayeeNotApprovedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
@@ -953,7 +978,7 @@ export class TransferPreparePayeeNotApprovedEvt extends DomainEventMsg {
 }
 
 export type TransfersBCUnknownErrorPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
@@ -978,7 +1003,7 @@ export class TransfersBCUnknownErrorEvent extends DomainEventMsg {
 }
 
 export type TransfersBCOperatorErrorPayload = {
-    fspId: string;
+    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
