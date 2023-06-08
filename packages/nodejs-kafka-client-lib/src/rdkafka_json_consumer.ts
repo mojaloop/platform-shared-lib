@@ -63,7 +63,8 @@ export class MLKafkaJsonConsumerOptions {
 export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsumer {
     private readonly _logger: ILogger | null;
     private readonly _kafkaRawConsumer: MLKafkaRawConsumer;
-    private _handlerCallback: (message: IMessage) => Promise<void>
+    private _handlerCallback: ((message: IMessage) => Promise<void>) | null = null;
+    private _batchHandlerCallback: ((messages: IMessage[]) => Promise<void>) | null = null;
     private _filterFn: (message: IMessage) => boolean
     private _options: MLKafkaJsonConsumerOptions
 
@@ -78,7 +79,12 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
         };
 
         this._kafkaRawConsumer = new MLKafkaRawConsumer(rawOptions, logger);
-        this._kafkaRawConsumer.setCallbackFn(this._internalHandler.bind(this));
+
+        if (this._options.batchSize && this._options.batchSize > 1) {
+            this._kafkaRawConsumer.setBatchCallbackFn(this._internalBatchHandler.bind(this));
+        } else {
+            this._kafkaRawConsumer.setCallbackFn(this._internalHandler.bind(this));
+        }
 
         this._kafkaRawConsumer.eventNames()
 
@@ -109,8 +115,9 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
     }
 
     private async _internalHandler(rawMessage: IRawMessage): Promise<void> {
-        // convert raw message to IMessage
+        if(!this._handlerCallback) return;
 
+        // convert raw message to IMessage
         const msg = this._convertMsg(rawMessage);
 
         if (this._filterFn && !this._filterFn(msg)) {
@@ -121,8 +128,31 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
         await this._handlerCallback(msg);
     }
 
+    private async _internalBatchHandler(rawMessages: IRawMessage[]): Promise<void> {
+        if(!this._batchHandlerCallback) return;
+
+        // convert raw message to IMessage and filter
+        const msgs:IMessage[] = [];
+        rawMessages.forEach(rawMsg =>{
+            const msg = this._convertMsg(rawMsg);
+            if (this._filterFn && !this._filterFn(msg)) {
+                this._logger?.isDebugEnabled() && this._logger.debug("MLKafkaConsumer - ignoring message filtered out by filterFunction");
+            }else{
+                msgs.push(msg);
+            }
+        });
+
+        await this._batchHandlerCallback(msgs);
+    }
+
     setCallbackFn(handlerCallback: (message: IMessage) => Promise<void>): void {
+        this._batchHandlerCallback = null;
         this._handlerCallback = handlerCallback;
+    }
+
+    setBatchCallbackFn(batchHandlerCallback: (messages: IMessage[]) => Promise<void>): void{
+        this._handlerCallback = null;
+        this._batchHandlerCallback = batchHandlerCallback;
     }
 
     setFilteringFn(filterFn: (message: IMessage) => boolean): void {

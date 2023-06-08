@@ -49,6 +49,7 @@ export interface IRawMessage {
 
 export interface IRawMessageConsumer {
   setCallbackFn: (handlerCallback: (message: IRawMessage) => Promise<void>) => void;
+  setBatchCallbackFn: (batchHandlerCallback: (messages: IRawMessage[]) => Promise<void>) => void;
   setTopics: (topics: string[]) => void;
 
   destroy: (force: boolean) => Promise<void>;

@@ -93,7 +93,9 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 	private _topicConfig: RDKafka.ConsumerTopicConfig;
 	private _topics: string[];
 	private readonly _client: RDKafka.KafkaConsumer;
-	private _handlerCallback: (message: IRawMessage) => Promise<void>;
+	private _handlerCallback: ((message: IRawMessage) => Promise<void>) | null = null;
+	private _batchHandlerCallback: ((messages: IRawMessage[]) => Promise<void>) | null = null;
+	private _batchSize = defaultOptions.batchSize;
 
 	constructor(options: MLKafkaRawConsumerOptions, logger: ILogger | null = null) {
 		super();
@@ -178,6 +180,9 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 
 		// global client options
 		this._globalConfig ["metadata.broker.list"] = this._options.kafkaBrokerList;
+
+		// local helper vars
+		this._batchSize = this._options.batchSize;
 	}
 
 	private _onReady(info: RDKafka.ReadyInfo, metadata: RDKafka.Metadata): void {
@@ -255,10 +260,11 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		this.emit("disconnected");
 	}
 
+	private _consuming = false;
 	private _consumeLoop(): void {
-		if (!this._client.isConnected()) return;
+		if (!this._client.isConnected() || this._consuming) return;
 
-		this._client.consume(this._options.batchSize || defaultOptions.batchSize, async (err: RDKafka.LibrdKafkaError, kafkaMessages: RDKafka.Message[]) => {
+		this._client.consume(this._batchSize, async (err: RDKafka.LibrdKafkaError, kafkaMessages: RDKafka.Message[]) => {
 			if (err) {
 				if (!this._client.isConnected() || err.code == -172 /* not connected or wrong state */ || err.code == 3 /* Broker: Unknown topic or partition */) return;
 				this._logger?.error(err, `MLKafkaRawConsumer got callback with err: ${err.message}`);
@@ -268,13 +274,31 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 				return;
 			}
 
-			for (const kafkaMessage of kafkaMessages) {
-				const msg = this._toIMessage(kafkaMessage);
-				// call the provided handler and then commit
-				await this._handlerCallback(msg);
-				this._commitMsg(kafkaMessage);
+			if(kafkaMessages.length<=0){
+				setImmediate(() => {
+					this._consumeLoop();
+				});
+				return;
 			}
 
+			this._consuming = true;
+			
+			// use the batch handler if batchSize > 1 and we have a batchHandlerCallback
+			if(this._batchSize > 1 && this._batchHandlerCallback){
+				const msgs = kafkaMessages.map(this._toIMessage.bind(this));
+				await this._batchHandlerCallback(msgs);
+				this._commitMsg(kafkaMessages);
+			}else if(this._handlerCallback){
+				for (const kafkaMessage of kafkaMessages) {
+					const msg = this._toIMessage(kafkaMessage);
+					// call the provided handler and then commit
+					await this._handlerCallback(msg);
+					this._commitMsg(kafkaMessage);
+				}
+			}
+
+			this._consuming = false;
+			
 			setImmediate(() => {
 				this._consumeLoop();
 			});
@@ -339,21 +363,36 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		return msg;
 	}
 
-	private _commitMsg(kafkaMessage: RDKafka.Message): void {
-		if (this._globalConfig["enable.auto.commit"]!==true) {
-			if (this._options.useSyncCommit) {
-				this._client.commitMessageSync(kafkaMessage);
-			} else {
-				this._client.commitMessage(kafkaMessage);
-			}
+/*	// commit all read offsets
+	private _commitMessages(kafkaMessages: RDKafka.Message[]): void {
+		if (this._globalConfig["enable.auto.commit"]===true) return;
+
+		if (this._options.useSyncCommit) {
+			this._client.commitSync(kafkaMessages);
+		} else {
+			this._client.commit(kafkaMessages);
+		}
+	}*/
+
+	private _commitMsg(kafkaMessage: RDKafka.Message | RDKafka.Message[]): void {
+		if (this._globalConfig["enable.auto.commit"]===true) return;
+
+		if (this._options.useSyncCommit) {
+			this._client.commitSync(kafkaMessage);
+		} else {
+			this._client.commit(kafkaMessage);
 		}
 	}
 
 
 	setCallbackFn(handlerCallback: (message: IRawMessage) => Promise<void>): void {
+		this._batchHandlerCallback = null;
 		this._handlerCallback = handlerCallback;
 	}
 
+	setBatchCallbackFn(batchHandlerCallback: (messages: IRawMessage[]) => Promise<void>): void{
+		this._batchHandlerCallback = batchHandlerCallback;
+	}
 
 	setTopics(topics: string[]): void {
 		this._topics = topics;

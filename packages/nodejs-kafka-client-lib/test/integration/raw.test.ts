@@ -41,7 +41,7 @@ import {
     MLKafkaRawProducerOptions
 } from "../../src/";
 
-const MAX_NUMBER_OF_TOPICS = 5; // increase this if you need more topics to be created for the tests
+const MAX_NUMBER_OF_TOPICS = 6; // increase this if you need more topics to be created for the tests
 
 const TEST_GENERATION = crypto.randomInt(9999);
 //base name for topics and consumer groups used
@@ -421,6 +421,98 @@ describe("RAW - nodejs-rdkafka", () => {
             await kafkaConsumer.start();
         });
     });
+
+    test("RAW - consume batch syncCommit - #5", async()=>{
+        const batchSize = 10;
+        const kafkaConsumer = new MLKafkaRawConsumer({
+            kafkaBrokerList: KAFKA_URL,
+            sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS, // min is 6 secs, this should about it
+            kafkaGroupId: TEST_BASE_NAME + "_5",
+            outputType: MLKafkaRawConsumerOutputType.Json,
+            useSyncCommit: true,
+            batchSize: batchSize
+        }, logger);
+
+        const messageCount = 12; // has to be > batchSize and < than 2x batchSize
+
+        const msgTopic = TEST_BASE_NAME + "_5";
+        const msgValue = {testProp: Date.now(), index:0}
+        const msgHeader = {key1: Buffer.from("testStr")};
+        let firstCall=true;
+
+        return new Promise<void>(async (mainResolve) => {
+            async function handler(receivedMessage: IRawMessage[]): Promise<void> {
+                return new Promise<void>((handerResolve) => {
+                    //logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
+
+                    // size
+                    if(firstCall) {
+                        expect(receivedMessage.length).toBe(batchSize);
+
+                        // order
+                        const msg2 = receivedMessage[2].value as any;
+                        expect(msg2).not.toBeNull();
+                        expect(msg2).toHaveProperty("index");
+                        expect(msg2.index).toBe(2);
+
+                        const msg5 = receivedMessage[5].value as any;
+                        expect(msg5).not.toBeNull();
+                        expect(msg5).toHaveProperty("index");
+                        expect(msg5.index).toBe(5);
+
+                        const msg8 = receivedMessage[8].value as any;
+                        expect(msg8).not.toBeNull();
+                        expect(msg8).toHaveProperty("index");
+                        expect(msg8.index).toBe(8);
+
+                        firstCall = false;
+                    }else{
+                        expect(receivedMessage.length).toBe(messageCount - batchSize);
+
+                        // order
+                        const msg10 = receivedMessage[0].value as any;
+                        expect(msg10).not.toBeNull();
+                        expect(msg10).toHaveProperty("index");
+                        expect(msg10.index).toBe(10);
+
+                        const msg11 = receivedMessage[1].value as any;
+                        expect(msg11).not.toBeNull();
+                        expect(msg11).toHaveProperty("index");
+                        expect(msg11.index).toBe(11);
+
+                        setTimeout(() => {
+                            kafkaConsumer.stop();
+                            kafkaConsumer.destroy(true);
+                            mainResolve();
+                        }, 100);
+                    }
+
+                    handerResolve();
+                });
+            }
+
+            kafkaConsumer.setTopics([msgTopic]);
+            kafkaConsumer.setBatchCallbackFn(handler);
+
+            await kafkaConsumer.connect();
+            await kafkaConsumer.startAndWaitForRebalance();
+
+            const msgs = []
+            for (let i = 0; i < messageCount; i++) {
+                msgs.push({
+                    topic: msgTopic,
+                    value: {testProp: msgValue.testProp, index: i},
+                    key: null,
+                    headers: [
+                        msgHeader
+                    ]
+                });
+            }
+            await kafkaProducer.send(msgs);
+            console.log("Sent!");
+        });
+    });
+
 
    /* test("RAW - produce with custom partitioner", async () => {
         const options:MLKafkaRawProducerOptions = {

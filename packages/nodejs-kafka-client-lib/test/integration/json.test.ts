@@ -31,10 +31,11 @@
 'use strict'
 import {ConsoleLogger, LogLevel} from "@mojaloop/logging-bc-public-types-lib";
 import {IMessage, MessageTypes} from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import crypto from "crypto";
+import {randomInt} from "crypto";
 import * as RDKafka from "node-rdkafka";
 
 import {
+    IRawMessage,
     MLKafkaJsonConsumer,
     MLKafkaJsonConsumerOptions,
     MLKafkaJsonProducer,
@@ -43,7 +44,7 @@ import {
 
 const MAX_NUMBER_OF_TOPICS = 5; // increase this if you need more topics to be created for the tests
 
-const TEST_GENERATION = crypto.randomInt(9999);
+const TEST_GENERATION = randomInt(9999);
 //base name for topics and consumer groups used
 const TEST_BASE_NAME = `nodejs-kafka-client-lib-json-test_${TEST_GENERATION}`;
 const KAFKA_URL = process.env["KAFKA_URL"] || "localhost:9092";
@@ -350,5 +351,100 @@ describe("JSON - nodejs-rdkafka", () => {
         });
 
 
+    })
+
+    test("JSON - consume batch syncCommit - #3", async()=>{
+        const batchSize = 10;
+        const kafkaConsumer = new MLKafkaJsonConsumer({
+            kafkaBrokerList: KAFKA_URL,
+            sessionTimeoutMs: CONSUMER_SESSION_TIMEOUT_MS, // min is 6 secs, this should about it
+            kafkaGroupId: TEST_BASE_NAME + "_3",
+            useSyncCommit: true,
+            batchSize: batchSize
+        }, logger);
+
+        const messageCount = 12; // has to be > batchSize and < than 2x batchSize
+
+        const msgTopic = TEST_BASE_NAME + "_3";
+        const msgValue = {testProp: Date.now(), index:0}
+        let firstCall=true;
+
+        return new Promise<void>(async (mainResolve) => {
+            async function handler(receivedMessage: IMessage[]): Promise<void> {
+                return new Promise<void>((handlerResolve) => {
+                    //logger.debug(`Got message in handler: ${JSON.stringify(receivedMessage, null, 2)}`)
+
+                    // size
+                    if(firstCall) {
+                        expect(receivedMessage.length).toBe(batchSize);
+
+                        // order
+                        const msg2 = receivedMessage[2].payload as any;
+                        expect(msg2).not.toBeNull();
+                        expect(msg2).toHaveProperty("index");
+                        expect(msg2.index).toBe(2);
+
+                        const msg5 = receivedMessage[5].payload as any;
+                        expect(msg5).not.toBeNull();
+                        expect(msg5).toHaveProperty("index");
+                        expect(msg5.index).toBe(5);
+
+                        const msg8 = receivedMessage[8].payload as any;
+                        expect(msg8).not.toBeNull();
+                        expect(msg8).toHaveProperty("index");
+                        expect(msg8.index).toBe(8);
+
+                        firstCall = false;
+                    }else{
+                        expect(receivedMessage.length).toBe(messageCount - batchSize);
+
+                        // order
+                        const msg10 = receivedMessage[0].payload as any;
+                        expect(msg10).not.toBeNull();
+                        expect(msg10).toHaveProperty("index");
+                        expect(msg10.index).toBe(10);
+
+                        const msg11 = receivedMessage[1].payload as any;
+                        expect(msg11).not.toBeNull();
+                        expect(msg11).toHaveProperty("index");
+                        expect(msg11.index).toBe(11);
+
+                        setTimeout(() => {
+                            kafkaConsumer.stop();
+                            kafkaConsumer.destroy(true);
+                            mainResolve();
+                        }, 100);
+                    }
+
+                    handlerResolve();
+                });
+            }
+
+            kafkaConsumer.setTopics([msgTopic]);
+            kafkaConsumer.setBatchCallbackFn(handler);
+
+            await kafkaConsumer.connect();
+            await kafkaConsumer.startAndWaitForRebalance();
+
+            const msgs = []
+            for (let i = 0; i < messageCount; i++) {
+                msgs.push({
+                    msgId: "msgId",
+                    msgName: "msgName",
+                    msgKey: "msgKey",
+                    msgType: MessageTypes.DOMAIN_EVENT,
+                    msgTimestamp: Date.now(),
+                    msgPartition: 0,
+                    msgOffset: 31415,
+                    msgTopic: msgTopic,
+                    payload: {
+                        testProp: msgValue.testProp, index: i
+                    },
+                    fspiopOpaqueState: {}
+                });
+            }
+            await kafkaProducer.send(msgs);
+            console.log("Sent!");
+        });
     })
 })
