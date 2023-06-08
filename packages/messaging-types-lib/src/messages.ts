@@ -35,10 +35,11 @@
 import * as Crypto from "crypto";
 
 export enum MessageTypes{
-    'STATE_EVENT' =0,           // for private event-sourcing events
-    'STATE_SNAPSHOT',       // for private event-sourcing snapshot events
-    'DOMAIN_EVENT',         // public domain events
-    'COMMAND',              // for internal/private BC commands
+    "STATE_EVENT" = 0,          // for private event-sourcing events
+    "STATE_SNAPSHOT" = 1,       // for private event-sourcing snapshot events
+    "DOMAIN_EVENT" = 2,         // public domain events
+    "COMMAND" = 3,              // for internal/private BC commands
+    "DOMAIN_ERROR_EVENT"    // for domain errors, this includes the source message name being processed when the error happened
 }
 
 export interface IMessage{
@@ -109,12 +110,23 @@ export abstract class DomainEventMsg extends DomainMsg {
     abstract validatePayload(): void
 }
 
+export abstract class DomainErrorEventMsg extends DomainMsg {
+    msgType: MessageTypes = MessageTypes.DOMAIN_ERROR_EVENT;
+    fspiopOpaqueState:any = null;
+
+    sourceMessageName: string; // this should include the name of the message being processed when the error happened
+
+    abstract validatePayload(): void
+}
+
+
 export abstract class CommandMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.COMMAND;
     fspiopOpaqueState:any = null;
 
     abstract validatePayload(): void
 }
+
 
 // export abstract class StateSnapshotMsg extends DomainMsg {
 //     msgType: MessageTypes = MessageTypes.STATE_SNAPSHOT
