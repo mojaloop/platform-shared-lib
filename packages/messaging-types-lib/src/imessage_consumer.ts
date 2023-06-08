@@ -32,13 +32,14 @@
 
 
 import {IMessage} from "./messages";
-import {IRawMessage} from "@mojaloop/platform-shared-lib-nodejs-kafka-client-lib";
 
 export interface IMessageConsumer {
   setCallbackFn: (handlerCallback: (message: IMessage) => Promise<void>) => void
   setBatchCallbackFn: (batchHandlerCallback: (messages: IMessage[]) => Promise<void>) => void;
   setFilteringFn: (filterFn: (message: IMessage) => boolean) => void
   setTopics: (topics: string[]) => void
+
+  setBatchSize(size: number):void;
 
   destroy: (force: boolean) => Promise<void>
 

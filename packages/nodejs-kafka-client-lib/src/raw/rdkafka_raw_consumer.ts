@@ -384,6 +384,9 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		}
 	}
 
+	setBatchSize(size: number):void{
+		this._batchSize = size;
+	}
 
 	setCallbackFn(handlerCallback: (message: IRawMessage) => Promise<void>): void {
 		this._batchHandlerCallback = null;
