@@ -229,7 +229,7 @@ export type QuoteBCInvalidRequesterFspIdErrorPayload = {
     errorDescription: string;
 }
 
-export class QuoteBCInvalidPayerIdErrorEvent extends DomainEventMsg {
+export class QuoteBCInvalidRequesterFspIdErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
