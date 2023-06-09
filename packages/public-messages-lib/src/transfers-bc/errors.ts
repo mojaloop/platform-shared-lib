@@ -34,7 +34,7 @@
 
 "use strict";
 
-import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import { DomainErrorEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { TransfersBCTopics, TRANSFERS_AGGREGATE_NAME, TRANSFERS_BOUNDED_CONTEXT_NAME } from ".";
 
 // Transfers
@@ -43,7 +43,7 @@ export type TransferInvalidMessagePayloadEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferInvalidMessagePayloadEvt extends DomainEventMsg {
+export class TransferInvalidMessagePayloadEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -68,7 +68,7 @@ export type TransferInvalidMessageTypeEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferInvalidMessageTypeEvt extends DomainEventMsg {
+export class TransferInvalidMessageTypeEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -94,7 +94,7 @@ export type TransferDuplicateCheckFailedEvtPayload = {
     errorDescription: string;
 }
 
-export class TransferDuplicateCheckFailedEvt extends DomainEventMsg {
+export class TransferDuplicateCheckFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -123,7 +123,7 @@ export type TransferPrepareLiquidityCheckFailedPayload = {
     errorDescription: string;
 }
 
-export class TransferPrepareLiquidityCheckFailedEvt extends DomainEventMsg {
+export class TransferPrepareLiquidityCheckFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -151,7 +151,7 @@ export type TransferUnableToGetParticipantsInfoEvtPayload = {
     errorDescription: string;
 }
 
-export class TransferUnableToGetParticipantsInfoEvt extends DomainEventMsg {
+export class TransferUnableToGetParticipantsInfoEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -178,7 +178,7 @@ export type TransferInvalidPayerCheckFailedEvtPayload = {
     errorDescription: string;
 }
 
-export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainEventMsg {
+export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -205,7 +205,7 @@ export type TransferPrepareInvalidPayeeCheckFailedEvtPayload = {
     errorDescription: string;
 }
 
-export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainEventMsg {
+export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -232,7 +232,7 @@ export type TransferPrepareRequestTimedoutEvtPayload = {
     errorDescription: string;
 }
 
-export class TransferPrepareRequestTimedoutEvt extends DomainEventMsg {
+export class TransferPrepareRequestTimedoutEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -258,7 +258,7 @@ export type TransferQueryInvalidPayerCheckFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferQueryInvalidPayerCheckFailedEvt extends DomainEventMsg {
+export class TransferQueryInvalidPayerCheckFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -283,7 +283,7 @@ export type TransferQueryPayerNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferQueryPayerNotFoundFailedEvt extends DomainEventMsg {
+export class TransferQueryPayerNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -308,7 +308,7 @@ export type TransferQueryPayeeNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferQueryPayeeNotFoundFailedEvt extends DomainEventMsg {
+export class TransferQueryPayeeNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -333,7 +333,7 @@ export type TransferQueryInvalidPayeeCheckFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferQueryInvalidPayeeCheckFailedEvt extends DomainEventMsg {
+export class TransferQueryInvalidPayeeCheckFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -358,7 +358,7 @@ export type TransferQueryInvalidPayerParticipantIdEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferQueryInvalidPayerParticipantIdEvt extends DomainEventMsg {
+export class TransferQueryInvalidPayerParticipantIdEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -383,7 +383,7 @@ export type TransferQueryInvalidPayeeParticipantIdEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferQueryInvalidPayeeParticipantIdEvt extends DomainEventMsg {
+export class TransferQueryInvalidPayeeParticipantIdEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -407,7 +407,7 @@ export type TransferUnableToGetTransferByIdEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferUnableToGetTransferByIdEvt extends DomainEventMsg {
+export class TransferUnableToGetTransferByIdEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -432,7 +432,7 @@ export type TransferNotFoundEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferNotFoundEvt extends DomainEventMsg {
+export class TransferNotFoundEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -457,7 +457,7 @@ export type TransferUnableToAddEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferUnableToAddEvt extends DomainEventMsg {
+export class TransferUnableToAddEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -482,7 +482,7 @@ export type TransferUnableToUpdateEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferUnableToUpdateEvt extends DomainEventMsg {
+export class TransferUnableToUpdateEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -508,7 +508,7 @@ export type TransferFulfilCommittedRequestedTimedoutEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferFulfilCommittedRequestedTimedoutEvt extends DomainEventMsg {
+export class TransferFulfilCommittedRequestedTimedoutEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -534,7 +534,7 @@ export type TransferFulfilPostCommittedRequestedTimedoutEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferFulfilPostCommittedRequestedTimedoutEvt extends DomainEventMsg {
+export class TransferFulfilPostCommittedRequestedTimedoutEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -559,7 +559,7 @@ export type TransferCancelReservationFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferCancelReservationFailedEvt extends DomainEventMsg {
+export class TransferCancelReservationFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -584,7 +584,7 @@ export type TransferCancelReservationAndCommitFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferCancelReservationAndCommitFailedEvt extends DomainEventMsg {
+export class TransferCancelReservationAndCommitFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -609,7 +609,7 @@ export type TransferPayerParticipantNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayerParticipantNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayerParticipantNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -634,7 +634,7 @@ export type TransferPayeeParticipantNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayeeParticipantNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayeeParticipantNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -658,7 +658,7 @@ export type TransferHubParticipantNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferHubParticipantNotFoundFailedEvt extends DomainEventMsg {
+export class TransferHubParticipantNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -683,7 +683,7 @@ export type TransferPayerNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayerNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayerNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -708,7 +708,7 @@ export type TransferPayeeNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayeeNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayeeNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -732,7 +732,7 @@ export type TransferHubNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferHubNotFoundFailedEvt extends DomainEventMsg {
+export class TransferHubNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -757,7 +757,7 @@ export type TransferHubAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferHubAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferHubAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -782,7 +782,7 @@ export type TransferPayerPositionAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayerPositionAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayerPositionAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -807,7 +807,7 @@ export type TransferPayerLiquidityAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayerLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayerLiquidityAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -832,7 +832,7 @@ export type TransferPayeePositionAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayeePositionAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayeePositionAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -857,7 +857,7 @@ export type TransferPayeeLiquidityAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayeeLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
+export class TransferPayeeLiquidityAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -882,7 +882,7 @@ export type TransferPayerNotActiveEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayerNotActiveEvt extends DomainEventMsg {
+export class TransferPayerNotActiveEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -907,7 +907,7 @@ export type TransferPayerNotApprovedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayerNotApprovedEvt extends DomainEventMsg {
+export class TransferPayerNotApprovedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -932,7 +932,7 @@ export type TransferPayeeNotActiveEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayeeNotActiveEvt extends DomainEventMsg {
+export class TransferPayeeNotActiveEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -957,7 +957,7 @@ export type TransferPayeeNotApprovedEvtPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransferPayeeNotApprovedEvt extends DomainEventMsg {
+export class TransferPayeeNotApprovedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -982,7 +982,7 @@ export type TransfersBCUnknownErrorPayload = {
     transferId: string;
     errorDescription: string;
 }
-export class TransfersBCUnknownErrorEvent extends DomainEventMsg {
+export class TransfersBCUnknownErrorEvent extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -1008,7 +1008,7 @@ export type TransfersBCOperatorErrorPayload = {
     errorDescription: string;
 }
 
-export class TransfersBCOperatorErrorEvent extends DomainEventMsg {
+export class TransfersBCOperatorErrorEvent extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
