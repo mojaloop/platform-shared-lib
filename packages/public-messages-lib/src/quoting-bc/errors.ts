@@ -176,7 +176,7 @@ export type QuoteBCDestinationParticipantNotFoundErrorPayload = {
     errorDescription: string;
 }
 
-export class QuoteBCPPayeeParticipantNotFoundErrorEvent extends DomainEventMsg {
+export class QuoteBCDestinationParticipantNotFoundErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
@@ -196,13 +196,66 @@ export class QuoteBCPPayeeParticipantNotFoundErrorEvent extends DomainEventMsg {
     }
 }
 
+export type QuoteBCRequesterParticipantNotFoundErrorPayload = {
+    requesterFspId: string;
+    quoteId: string | null;
+    bulkQuoteId: string | null;
+    errorDescription: string;
+}
+
+export class QuoteBCRequesterParticipantNotFoundErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+
+    payload: QuoteBCRequesterParticipantNotFoundErrorPayload;
+
+    constructor (payload: QuoteBCRequesterParticipantNotFoundErrorPayload) {
+        super();
+        this.aggregateId = this.msgKey = (payload.requesterFspId ?? payload.requesterFspId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 export type QuoteBCRequiredDestinationParticipantIsNotActiveErrorPayload = {
     destinationFspId: string;
     errorDescription: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
 }
-export class QuoteBCRequiredParticipantIsNotActiveErrorEvent extends DomainEventMsg {
+export class QuoteBCRequiredDestinationParticipantIsNotActiveErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+
+    payload: QuoteBCRequiredDestinationParticipantIsNotActiveErrorPayload;
+
+    constructor (payload: QuoteBCRequiredDestinationParticipantIsNotActiveErrorPayload) {
+        super();
+        this.aggregateId = this.msgKey = (payload.destinationFspId ?? payload.destinationFspId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type QuoteBCRequiredRequesterParticipantIsNotActiveErrorPayload = {
+    requesterFspId: string;
+    errorDescription: string;
+    quoteId: string | null;
+    bulkQuoteId: string | null;
+}
+export class QuoteBCRequiredRequesterParticipantIsNotActiveErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
