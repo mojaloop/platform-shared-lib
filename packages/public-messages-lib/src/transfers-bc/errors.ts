@@ -977,6 +977,62 @@ export class TransferPayeeNotApprovedEvt extends DomainErrorEventMsg {
     }
 }
 
+export type TransferUnableToGetSettlementModelEvtPayload = {
+    transferId: string;
+    amount: string;
+    payerCurrency: string;
+    payeeCurrency: string;
+    extensionList: string | null;
+    errorDescription: string
+}
+export class TransferUnableToGetSettlementModelEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferUnableToGetSettlementModelEvtPayload;
+
+    constructor (payload: TransferUnableToGetSettlementModelEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferSettlementModelNotFoundEvtPayload = {
+    transferId: string;
+    amount: string;
+    payerCurrency: string;
+    payeeCurrency: string;
+    extensionList: string | null;
+    errorDescription: string
+}
+export class TransferSettlementModelNotFoundEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferSettlementModelNotFoundEvtPayload;
+
+    constructor (payload: TransferSettlementModelNotFoundEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 export type TransfersBCUnknownErrorPayload = {
     payerFspId: string;
     transferId: string;
