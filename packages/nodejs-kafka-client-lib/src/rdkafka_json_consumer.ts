@@ -80,11 +80,11 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
 
         this._kafkaRawConsumer = new MLKafkaRawConsumer(rawOptions, logger);
 
-        if (this._options.batchSize && this._options.batchSize > 1) {
-            this._kafkaRawConsumer.setBatchCallbackFn(this._internalBatchHandler.bind(this));
-        } else {
-            this._kafkaRawConsumer.setCallbackFn(this._internalHandler.bind(this));
-        }
+        // if (this._options.batchSize && this._options.batchSize > 1) {
+        //     this._kafkaRawConsumer.setBatchCallbackFn(this._internalBatchHandler.bind(this));
+        // } else {
+        //     this._kafkaRawConsumer.setCallbackFn(this._internalHandler.bind(this));
+        // }
 
         this._kafkaRawConsumer.eventNames()
 
@@ -148,11 +148,15 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
     setCallbackFn(handlerCallback: (message: IMessage) => Promise<void>): void {
         this._batchHandlerCallback = null;
         this._handlerCallback = handlerCallback;
+
+        this._kafkaRawConsumer.setCallbackFn(this._internalHandler.bind(this));
     }
 
     setBatchCallbackFn(batchHandlerCallback: (messages: IMessage[]) => Promise<void>): void{
         this._handlerCallback = null;
         this._batchHandlerCallback = batchHandlerCallback;
+
+        this._kafkaRawConsumer.setBatchCallbackFn(this._internalBatchHandler.bind(this));
     }
 
     setFilteringFn(filterFn: (message: IMessage) => boolean): void {
