@@ -164,7 +164,7 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
     }
 
     setBatchSize(size: number):void{
-        this.setBatchSize(size);
+        this._kafkaRawConsumer.setBatchSize(size);
     }
 
     async destroy(force: boolean): Promise<void> {
