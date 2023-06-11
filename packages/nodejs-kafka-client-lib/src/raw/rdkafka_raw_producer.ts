@@ -257,6 +257,8 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
     }
 
     async send(message: IRawMessage | IRawMessage[] | any): Promise<void> {
+        if(!message || (message instanceof Array && message.length<=0)) return Promise.resolve();
+
         return new Promise((resolve, reject) => {
             const messages: IRawMessage[] = Array.isArray(message) ? message:[message] as IRawMessage[];
 
