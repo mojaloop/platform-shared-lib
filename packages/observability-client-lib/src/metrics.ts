@@ -29,7 +29,7 @@
  ******/
 "use strict";
 
-import {IGauge, IHistogram, ISummary, IMetrics} from "@mojaloop/platform-shared-lib-observability-types-lib";
+import {IGauge, IHistogram, ISummary, IMetrics, ICounter} from "@mojaloop/platform-shared-lib-observability-types-lib";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import * as PromClient from "prom-client";
 
@@ -40,12 +40,13 @@ export type PrometheusMetricsOptions = {
     timeout?: number
     prefix?: string
     defaultLabels?: Map<string, string>
-    register?: PromClient.Registry
+    //register?: PromClient.Registry
 }
 
 interface HistogramsType { [key: string]: PromClient.Histogram<string> }
 interface SummariesType { [key: string]: PromClient.Summary<string> }
 interface GaugesType { [key: string]: PromClient.Gauge<string> }
+interface CountersType { [key: string]: PromClient.Counter<string> }
 
 export class PrometheusMetrics implements IMetrics{
     private _logger:ILogger;
@@ -54,6 +55,7 @@ export class PrometheusMetrics implements IMetrics{
     private _histograms: HistogramsType = {};
     private _gauges: GaugesType = {};
     private _summaries: SummariesType = {};
+    private _counter: CountersType = {};
 
     private static _instance:PrometheusMetrics | null = null;
     // eslint-disable-next-line
@@ -75,16 +77,21 @@ export class PrometheusMetrics implements IMetrics{
         this._instance._options = options;
 
         if (this._instance._options.defaultLabels) {
-            PromClient.register.setDefaultLabels(this._instance._options.defaultLabels);
+            const labelsObj:any = {};
+            this._instance._options.defaultLabels.forEach((value, key) => {
+                labelsObj[key] = value;
+            });
+            PromClient.register.setDefaultLabels(labelsObj);
         }
 
-        const normalisedOptions:any = {
-            prefix: this._instance._options.prefix,
-            timeout: this._instance._options.timeout
-        };
 
-        // configure default metrics
-        PromClient.collectDefaultMetrics(normalisedOptions);
+
+        // configure default node and process metrics
+        PromClient.collectDefaultMetrics({
+            prefix: this._instance._options.prefix,
+            labels: this._instance._options.defaultLabels ? this._instance._options.defaultLabels : [],
+            register: PromClient.register
+        });
 
         // set default registry
         this._instance._register = PromClient.register;
@@ -163,6 +170,27 @@ export class PrometheusMetrics implements IMetrics{
         } catch (e) {
             this._logger.error(e);
             throw new Error(`Couldn't get summary for ${name}`);
+        }
+    }
+
+    /**
+     * Get the counter for given name or create new
+     */
+    getCounter(name: string, help?: string, labelNames: string[] = []): ICounter{ // <-- required for Prom-Client v11.x
+        try {
+            if (this._counter[name] != null) {
+                return this._counter[name];
+            }
+
+            this._counter[name] = new PromClient.Counter({
+                name: `${this.getOptions().prefix}${name}`,
+                help: (help != null ? help : `${name}_counter`),
+                labelNames
+            });
+            return this._counter[name];
+        } catch (e) {
+            this._logger.error(e);
+            throw new Error(`Couldn't get counter for ${name}`);
         }
     }
 

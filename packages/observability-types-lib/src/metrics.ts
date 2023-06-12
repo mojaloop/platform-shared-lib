@@ -51,10 +51,16 @@ export interface IGauge{
     dec(value?:number):void;
 }
 
+export interface ICounter{
+    inc(amount?:number):void;
+    inc(labels: LabelValues<string>, value: number, amount?:number):void;
+}
+
 export interface IMetrics {
     getHistogram(name: string, help?: string, labelNames?: string[], buckets?: number[]): IHistogram;
     getSummary(name: string, help?: string, labelNames?: string[], percentiles?: number[], maxAgeSeconds?: number, ageBuckets?: number): ISummary;
     getGauge(name: string, help?: string, labelNames?: string[]): IGauge;
+    getCounter(name: string, help?: string, labelNames?: string[]): ICounter;
     // getMetricsForPrometheus(): Promise<string>;
     // getDefaultRegister(): client.Registry;
 }
