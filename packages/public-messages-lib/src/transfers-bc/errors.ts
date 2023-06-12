@@ -1033,6 +1033,32 @@ export class TransferSettlementModelNotFoundEvt extends DomainErrorEventMsg {
     }
 }
 
+export type TransferPayerNetDebitCapCurrencyNotFoundEvtPayload = {
+    transferId: string;
+    payerFspId: string;
+    currencyCode: string;
+    errorDescription: string
+}
+export class TransferPayerNetDebitCapCurrencyNotFoundEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPayerNetDebitCapCurrencyNotFoundEvtPayload;
+
+    constructor (payload: TransferPayerNetDebitCapCurrencyNotFoundEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 export type TransfersBCUnknownErrorPayload = {
     payerFspId: string;
     transferId: string;
