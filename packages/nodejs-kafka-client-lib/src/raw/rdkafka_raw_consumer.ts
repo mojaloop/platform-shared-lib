@@ -107,6 +107,9 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 
 		this._client = new RDKafka.KafkaConsumer(this._globalConfig, this._topicConfig);
 
+		if(this._options.batchTimeoutMs)
+			this._client.setDefaultConsumeTimeout(this._options.batchTimeoutMs);
+
 		this._client.on("ready", this._onReady.bind(this));
 		this._client.on("rebalance", this._onRebalance.bind(this));
 		this._client.on("rebalance.error", this._onRebalanceError.bind(this));
@@ -139,39 +142,41 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		// we want to always receive the event events
 		this._globalConfig.event_cb = true;
 
-		if (this._options.useSyncCommit===undefined) {
+		// apply local defaults
+		if (this._options.useSyncCommit === undefined) {
 			this._options.useSyncCommit = defaultOptions.useSyncCommit;
 		}
 
-		if (this._options.outputType===undefined) {
+		if (this._options.outputType === undefined) {
 			this._options.outputType = defaultOptions.outputType;
 		}
 
-		if (this._options.batchSize===undefined) {
+		if (this._options.batchSize === undefined) {
 			this._options.batchSize = defaultOptions.batchSize;
 		}
 
-		if (this._options.batchTimeoutMs===undefined) {
-			this._options.batchTimeoutMs = defaultOptions.batchTimeoutMs;
-		}
-
-		if (this._options.autoOffsetReset===undefined) {
+		if (this._options.autoOffsetReset === undefined) {
 			this._options.autoOffsetReset = "latest";
 		}
 
-		if (this._options.consumerClientId!==undefined) {
+		if (this._options.batchTimeoutMs === undefined) {
+			this._options.batchTimeoutMs = defaultOptions.batchTimeoutMs;
+		}
+
+		// apply rddkafka required
+		if (this._options.consumerClientId !== undefined) {
 			this._globalConfig["client.id"] = this._options.consumerClientId;
 		}
 
-		if (this._options.kafkaGroupId!==undefined) {
+		if (this._options.kafkaGroupId !== undefined) {
 			this._globalConfig["group.id"] = this._options.kafkaGroupId;
 		}
 
-		if (this._options.messageMaxBytes!==undefined) {
+		if (this._options.messageMaxBytes !== undefined) {
 			this._globalConfig["message.max.bytes"] = this._options.messageMaxBytes;
 		}
 
-		if (this._options.sessionTimeoutMs!==undefined) {
+		if (this._options.sessionTimeoutMs !== undefined) {
 			this._globalConfig["session.timeout.ms"] = this._options.sessionTimeoutMs;
 		}
 
@@ -179,9 +184,10 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		this._topicConfig["auto.offset.reset"] = this._options.autoOffsetReset;
 
 		// global client options
-		this._globalConfig ["metadata.broker.list"] = this._options.kafkaBrokerList;
+		this._globalConfig["metadata.broker.list"] = this._options.kafkaBrokerList;
+		this._globalConfig["fetch.wait.max.ms"] = this._options.batchTimeoutMs;
 
-		// local helper vars
+		// apply local defaults
 		this._batchSize = this._options.batchSize;
 	}
 
