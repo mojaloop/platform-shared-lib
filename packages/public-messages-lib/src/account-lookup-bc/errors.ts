@@ -153,7 +153,7 @@ export type AccountLookupBCUnableToGetOracleAdapterErrorPayload = {
     errorDescription: string;
 }
 
-export class AccountLookupBCUnableToGetAdapterErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCUnableToGetOracleAdapterErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
