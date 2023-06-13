@@ -311,7 +311,7 @@ export type AccountLookUpUnknownErrorPayload = {
     partyId: string;
     partyType: string | null;
     fspId: string | null;
-    partySubType: string | null;
+    currency: string | null;
     errorDescription: string;
 }
 
@@ -340,7 +340,7 @@ export type AccountLookUpBCOperatorErrorPayload = {
     partyId: string;
     partyType: string | null;
     fspId: string | null;
-    partySubType: string | null;
+    currency: string | null;
     errorDescription: string;
 }
 
