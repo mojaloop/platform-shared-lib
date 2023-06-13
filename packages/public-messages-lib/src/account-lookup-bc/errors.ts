@@ -39,9 +39,7 @@ import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, Acc
 
 export type AccountLookupBCInvalidMessageErrorPayload = {
     partyId: string;
-    partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    requesterFspId: string | null;
     errorDescription: string;
 }
 
@@ -66,10 +64,8 @@ export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventM
 }
 
 export type AccountLookupBCInvalidMessageTypeErrorPayload = {
+    requesterFspId: string | null;
     partyId: string;
-    partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
     errorDescription: string;
 }
 
@@ -96,8 +92,8 @@ export class AccountLookupBCInvalidMessageTypeErrorEvent extends DomainEventMsg 
 export type AccountLookupBCUnableToAssociateParticipantErrorPayload = {
     partyId: string;
     partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    fspIdToAssociate: string | null;
+    currency: string | null;
     errorDescription: string;
 }
 
@@ -124,8 +120,8 @@ export class AccountLookupBCUnableToAssociateParticipantErrorEvent extends Domai
 export type AccountLookupBCUnableToDisassociateParticipantErrorPayload = {
     partyId: string;
     partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    fspIdToDisassociate: string | null;
+    currency: string | null;
     errorDescription: string;
 }
 
@@ -149,24 +145,24 @@ export class AccountLookupBCUnableToDisassociateParticipantErrorEvent extends Do
     }
 }
 
-export type AccountLookupBCParticipantNotFoundErrorPayload = {
+
+export type AccountLookupBCUnableToGetOracleAdapterErrorPayload = {
     partyId: string;
     partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    currency: string | null;
     errorDescription: string;
 }
 
-export class AccountLookupBCParticipantNotFoundErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCUnableToGetAdapterErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
-    payload: AccountLookupBCParticipantNotFoundErrorPayload;
+    payload: AccountLookupBCUnableToGetOracleAdapterErrorPayload;
 
-    constructor (payload: AccountLookupBCParticipantNotFoundErrorPayload) {
+    constructor (payload: AccountLookupBCUnableToGetOracleAdapterErrorPayload) {
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
@@ -177,24 +173,24 @@ export class AccountLookupBCParticipantNotFoundErrorEvent extends DomainEventMsg
     }
 }
 
-export type AccountLookupBCInvalidParticipantIdErrorPayload = {
+
+export type AccountLookUpUnableToGetParticipantFromOracleErrorPayload = {
     partyId: string;
     partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    currency: string | null;
     errorDescription: string;
 }
 
-export class AccountLookupBCInvalidParticipantIdErrorEvent extends DomainEventMsg   {
+export class AccountLookUpUnableToGetParticipantFromOracleErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
-    payload: AccountLookupBCInvalidParticipantIdErrorPayload;
+    payload: AccountLookUpUnableToGetParticipantFromOracleErrorPayload;
 
-    constructor (payload: AccountLookupBCInvalidParticipantIdErrorPayload) {
+    constructor (payload: AccountLookUpUnableToGetParticipantFromOracleErrorPayload) {
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
@@ -205,24 +201,23 @@ export class AccountLookupBCInvalidParticipantIdErrorEvent extends DomainEventMs
     }
 }
 
-export type AccountLookupBCUnableToGetOracleFromOracleFinderErrorPayload = {
+
+export type AccountLookupBCDestinationParticipantNotFoundErrorPayload = {
     partyId: string;
-    partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    destinationFspId: string | null;
     errorDescription: string;
 }
 
-export class AccountLookupBCUnableToGetOracleFromOracleFinderErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCDestinationParticipantNotFoundErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
-    payload: AccountLookupBCUnableToGetOracleFromOracleFinderErrorPayload;
+    payload: AccountLookupBCDestinationParticipantNotFoundErrorPayload;
 
-    constructor (payload: AccountLookupBCUnableToGetOracleFromOracleFinderErrorPayload) {
+    constructor (payload: AccountLookupBCDestinationParticipantNotFoundErrorPayload) {
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
@@ -233,24 +228,22 @@ export class AccountLookupBCUnableToGetOracleFromOracleFinderErrorEvent extends 
     }
 }
 
-export type AccountLookupBCOracleNotFoundErrorPayload = {
+export type AccountLookupBCInvalidDestinationParticipantErrorPayload = {
     partyId: string;
-    partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    destinationFspId: string | null;
     errorDescription: string;
 }
 
-export class AccountLookupBCOracleNotFoundErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCInvalidDestinationParticipantErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
-    payload: AccountLookupBCOracleNotFoundErrorPayload;
+    payload: AccountLookupBCInvalidDestinationParticipantErrorPayload;
 
-    constructor (payload: AccountLookupBCOracleNotFoundErrorPayload) {
+    constructor (payload: AccountLookupBCInvalidDestinationParticipantErrorPayload) {
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
@@ -261,24 +254,22 @@ export class AccountLookupBCOracleNotFoundErrorEvent extends DomainEventMsg   {
     }
 }
 
-export type AccountLookupBCOracleAdapterNotFoundErrorPayload = {
+export type AccountLookupBCRequesterParticipantNotFoundErrorPayload = {
     partyId: string;
-    partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    requesterFspId: string | null;
     errorDescription: string;
 }
 
-export class AccountLookupBCOracleAdapterNotFoundErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCRequesterParticipantNotFoundErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
-    payload: AccountLookupBCOracleAdapterNotFoundErrorPayload;
+    payload: AccountLookupBCRequesterParticipantNotFoundErrorPayload;
 
-    constructor (payload: AccountLookupBCOracleAdapterNotFoundErrorPayload) {
+    constructor (payload: AccountLookupBCRequesterParticipantNotFoundErrorPayload) {
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
@@ -289,24 +280,22 @@ export class AccountLookupBCOracleAdapterNotFoundErrorEvent extends DomainEventM
     }
 }
 
-export type AccountLookupBCUnableToGetParticipantFspIdErrorPayload = {
+export type AccountLookupBCInvalidRequesterParticipantErrorPayload = {
     partyId: string;
-    partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
+    requesterFspId: string | null;
     errorDescription: string;
 }
 
-export class AccountLookupBCUnableToGetParticipantFspIdErrorEvent extends DomainEventMsg   {
+export class AccountLookupBCInvalidRequesterParticipantErrorEvent extends DomainEventMsg   {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
 
-    payload: AccountLookupBCUnableToGetParticipantFspIdErrorPayload;
+    payload: AccountLookupBCInvalidRequesterParticipantErrorPayload;
 
-    constructor (payload: AccountLookupBCUnableToGetParticipantFspIdErrorPayload) {
+    constructor (payload: AccountLookupBCInvalidRequesterParticipantErrorPayload) {
         super();
         this.aggregateId = this.msgKey = payload.partyId;
         this.payload = payload;
@@ -317,34 +306,6 @@ export class AccountLookupBCUnableToGetParticipantFspIdErrorEvent extends Domain
     }
 }
 
-export type AccountLookupBCParticipantFspIdNotFoundErrorPayload = {
-    partyId: string;
-    partyType: string | null;
-    fspId: string | null;
-    partySubType: string | null;
-    errorDescription: string;
-}
-
-export class AccountLookupBCParticipantFspIdNotFoundErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
-    aggregateId: string;
-    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainEvents;
-
-    payload: AccountLookupBCParticipantFspIdNotFoundErrorPayload;
-
-    constructor (payload: AccountLookupBCParticipantFspIdNotFoundErrorPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.partyId;
-        this.payload = payload;
-    }
-
-    validatePayload(): void {
-        // NOT IMPLEMENTED
-    }
-}
 
 export type AccountLookUpUnknownErrorPayload = {
     partyId: string;
