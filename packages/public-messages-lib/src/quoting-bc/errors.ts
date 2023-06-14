@@ -410,6 +410,7 @@ export class QuoteBCQuoteExpiredErrorEvent extends DomainEventMsg {
 
 export type QuoteBCBulkQuoteExpiredErrorPayload = {
     bulkQuoteId: string;
+    expirationDate: string;
     errorDescription: string;
 }
 
