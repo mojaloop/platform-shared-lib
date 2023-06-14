@@ -74,7 +74,7 @@ export class TransferPrepareRequestedEvt extends DomainEventMsg {
 export type TransferFulfilCommittedRequestedEvtPayload = {
 	transferId: string;
 	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
-	fulfilment: number | null,
+	fulfilment: string | null,
 	completedTimestamp: number | null,
 	extensionList: {
         extension: {
