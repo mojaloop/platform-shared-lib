@@ -310,7 +310,7 @@ export class AccountLookupBCInvalidRequesterParticipantErrorEvent extends Domain
 export type AccountLookUpUnknownErrorPayload = {
     partyId: string;
     partyType: string | null;
-    fspId: string | null;
+    requesterFspId: string | null;
     currency: string | null;
     errorDescription: string;
 }

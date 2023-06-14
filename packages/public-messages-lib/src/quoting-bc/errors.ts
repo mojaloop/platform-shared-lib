@@ -384,6 +384,7 @@ export class QuoteBCOperatorErrorEvent extends DomainEventMsg {
 
 export type QuoteBCQuoteExpiredErrorPayload = {
     quoteId: string;
+    expirationDate: string;
     errorDescription: string;
 }
 
