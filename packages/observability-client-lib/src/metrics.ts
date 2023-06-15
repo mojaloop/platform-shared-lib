@@ -89,7 +89,7 @@ export class PrometheusMetrics implements IMetrics{
         // configure default node and process metrics
         PromClient.collectDefaultMetrics({
             prefix: this._instance._options.prefix,
-            labels: this._instance._options.defaultLabels ? this._instance._options.defaultLabels : [],
+            //labels: this._instance._options.defaultLabels ? this._instance._options.defaultLabels : [],
             register: PromClient.register
         });
 

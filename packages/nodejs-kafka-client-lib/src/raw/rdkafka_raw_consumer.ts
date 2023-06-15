@@ -270,44 +270,49 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 	private _consumeLoop(): void {
 		if (!this._client.isConnected() || this._consuming) return;
 
-		this._client.consume(this._batchSize, async (err: RDKafka.LibrdKafkaError, kafkaMessages: RDKafka.Message[]) => {
+		const callContinue = ()=>{
+			setImmediate(() => {
+				this._consumeLoop();
+			});
+			this._consuming = false;
+		}
+
+		this._client.consume(this._batchSize, (err: RDKafka.LibrdKafkaError, kafkaMessages: RDKafka.Message[]) => {
+			this._consuming = true;
+
 			if (err) {
 				if (!this._client.isConnected() || err.code == -172 /* not connected or wrong state */ || err.code == 3 /* Broker: Unknown topic or partition */) return;
 				this._logger?.error(err, `MLKafkaRawConsumer got callback with err: ${err.message}`);
-				setImmediate(() => {
-					this._consumeLoop();
-				});
-				return;
+				return callContinue();
 			}
 
-			if(kafkaMessages.length<=0){
-				setImmediate(() => {
-					this._consumeLoop();
-				});
-				return;
-			}
+			if(kafkaMessages.length<=0) return callContinue();
 
-			this._consuming = true;
-			
 			// use the batch handler if batchSize > 1 and we have a batchHandlerCallback
 			if(this._batchSize > 1 && this._batchHandlerCallback){
+				const commitAndContinue = (msgs: IRawMessage[])=>{
+					this._commitMsg(kafkaMessages);
+					return callContinue();
+				}
+
 				const msgs = kafkaMessages.map(this._toIMessage.bind(this));
-				await this._batchHandlerCallback(msgs);
-				this._commitMsg(kafkaMessages);
+
+				this._batchHandlerCallback(msgs).finally(()=>{
+					return commitAndContinue(msgs);
+				});
 			}else if(this._handlerCallback){
 				for (const kafkaMessage of kafkaMessages) {
 					const msg = this._toIMessage(kafkaMessage);
 					// call the provided handler and then commit
-					await this._handlerCallback(msg);
-					this._commitMsg(kafkaMessage);
+					this._handlerCallback(msg).finally(() => {
+						this._commitMsg(kafkaMessage);
+					});
 				}
+				return callContinue();
+			}else{
+				// maybe no handler was set yet
+				return callContinue();
 			}
-
-			this._consuming = false;
-			
-			setImmediate(() => {
-				this._consumeLoop();
-			});
 		});
 	}
 
