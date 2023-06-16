@@ -555,7 +555,6 @@ export class TransferFulfilPostCommittedRequestedTimedoutEvt extends DomainError
 }
 
 export type TransferCancelReservationFailedEvtPayload = {
-    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
