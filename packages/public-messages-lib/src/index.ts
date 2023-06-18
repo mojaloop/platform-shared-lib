@@ -35,3 +35,4 @@ export * from "./account-lookup-bc/";
 export * from "./quoting-bc/";
 export * from "./transfers-bc/";
 export * from "./settlements-bc/";
+export * from "./platform-configuration/";
