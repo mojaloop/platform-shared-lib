@@ -27,7 +27,7 @@
 
  --------------
  ******/
-
+/* eslint-disable */
 "use strict";
 
 import {ICounter, IGauge, IHistogram, IMetrics, ISummary, LabelValues} from "./metrics";
