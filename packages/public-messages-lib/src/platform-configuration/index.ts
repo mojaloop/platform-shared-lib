@@ -36,7 +36,7 @@ const PLATFORMCONFIGURATION_BOUNDED_CONTEXT_NAME = "PlatformConfigurationBc";
 const PLATFORMCONFIGURATION_AGGREGATE_NAME = "PlatformConfiguration";
 
 enum PlatformConfigurationBCTopics {
-    "DomainEvents" = "TransfersBcEvents"
+    "DomainEvents" = "PlatformConfigurationBcEvents"
 }
 
 export {PlatformConfigurationBCTopics , PLATFORMCONFIGURATION_BOUNDED_CONTEXT_NAME, PLATFORMCONFIGURATION_AGGREGATE_NAME};
