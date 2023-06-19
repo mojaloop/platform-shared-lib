@@ -579,7 +579,6 @@ export class TransferCancelReservationFailedEvt extends DomainErrorEventMsg {
 }
 
 export type TransferCancelReservationAndCommitFailedEvtPayload = {
-    payerFspId: string;
     transferId: string;
     errorDescription: string;
 }
