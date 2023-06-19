@@ -72,26 +72,24 @@ export class PlatformConfigGlobalConfigsChangedEvt extends DomainEventMsg {
     }
 }
 
-export type PlatformConfigAppConfigsChangedEvtPayload = {
+export type PlatformConfigBoundedContextConfigsChangedEvtPayload = {
     environmentName: string;                        // target environment name
     schemaVersion: string;                          // config schema version (semver format)
     iterationNumber: number;                        // monotonic integer - increases on every configuration/values change
 
     boundedContextName: string;                     // target bounded context
-    applicationName: string;                        // target application name
-    applicationVersion: string;                     // target app version (semver format)
 }
 
 
-export class PlatformConfigAppConfigsChangedEvt extends DomainEventMsg {
+export class PlatformConfigBoundedContextConfigsChangedEvt extends DomainEventMsg {
     boundedContextName: string = PLATFORMCONFIGURATION_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = PLATFORMCONFIGURATION_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = PlatformConfigurationBCTopics.DomainEvents;
-    payload: PlatformConfigAppConfigsChangedEvtPayload;
+    payload: PlatformConfigBoundedContextConfigsChangedEvtPayload;
 
-    constructor(payload: PlatformConfigAppConfigsChangedEvtPayload) {
+    constructor(payload: PlatformConfigBoundedContextConfigsChangedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.iterationNumber.toString();
