@@ -46,11 +46,9 @@ Note: move events to its own file when there are more
 */
 
 export type PlatformConfigGlobalConfigsChangedEvtPayload = {
-    environmentName: string;                        // target environment name
     schemaVersion: string;                          // config schema version (semver format)
     iterationNumber: number;                        // monotonic integer - increases on every configuration/values change
 }
-
 
 export class PlatformConfigGlobalConfigsChangedEvt extends DomainEventMsg {
     boundedContextName: string = PLATFORMCONFIGURATION_BOUNDED_CONTEXT_NAME
@@ -73,7 +71,6 @@ export class PlatformConfigGlobalConfigsChangedEvt extends DomainEventMsg {
 }
 
 export type PlatformConfigBoundedContextConfigsChangedEvtPayload = {
-    environmentName: string;                        // target environment name
     schemaVersion: string;                          // config schema version (semver format)
     iterationNumber: number;                        // monotonic integer - increases on every configuration/values change
 
