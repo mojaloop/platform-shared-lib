@@ -243,3 +243,38 @@ export class PartyInfoAvailableEvt extends DomainEventMsg {
 		}
      }
 }
+
+export type GetPartyQueryRejectedPayload = {
+    partyId: string;
+    partyType: string;
+    partySubType: string | null;
+    currency: string | null;            // optional currency, ISO format
+}
+
+export class GetPartyQueryRejected extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+
+    payload: GetPartyQueryRejectedPayload;
+
+    constructor (payload: GetPartyQueryRejectedPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { partyId, partyType } = this.payload;
+
+		if (!partyId) {
+            throw new Error("partyId is required.");
+		}
+        if (!partyType) {
+            throw new Error("partyType is required.");
+		}
+    }
+}
