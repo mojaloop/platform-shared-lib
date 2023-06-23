@@ -233,7 +233,10 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
 
 
 export type GetPartyQueryRejectedResponseEvtPayload = {
-	transferId: string;
+    partyId: string;
+    partyType: string;
+    partySubType: string | null;
+    currency: string | null;
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
@@ -250,7 +253,7 @@ export class GetPartyQueryRejectedResponseEvt extends DomainEventMsg {
 	constructor(payload: GetPartyQueryRejectedResponseEvtPayload) {
 		super();
 
-		this.aggregateId = this.msgKey = payload.transferId;
+		this.aggregateId = this.msgKey = payload.partyId;
 		this.payload = payload;
 	}
 

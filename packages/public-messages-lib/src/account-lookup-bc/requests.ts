@@ -245,10 +245,16 @@ export class PartyInfoAvailableEvt extends DomainEventMsg {
 }
 
 export type GetPartyQueryRejectedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string | null;
     partyId: string;
     partyType: string;
     partySubType: string | null;
-    currency: string | null;            // optional currency, ISO format
+    currency: string | null;
+    errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+	}
 }
 
 export class GetPartyQueryRejectedEvt extends DomainEventMsg {
