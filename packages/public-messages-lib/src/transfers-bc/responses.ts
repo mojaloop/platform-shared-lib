@@ -74,7 +74,7 @@ export class TransferPreparedEvt extends DomainEventMsg {
 export type TransferCommittedFulfiledEvtPayload = {
 	transferId: string;
 	fulfilment: string | null,
-	completedTimestamp: number | null,
+	completedTimestamp: number,
 	extensionList: {
         extension: {
             key: string;
@@ -141,7 +141,7 @@ export type TransferQueryResponseEvtPayload = {
 	transferId: string;
 	transferState: string;
 	fulfilment: string | null;
-	completedTimestamp: number;
+	completedTimestamp: number | null;
     extensionList: {
         extension: {
             key: string;
