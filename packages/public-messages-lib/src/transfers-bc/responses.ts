@@ -81,7 +81,6 @@ export type TransferCommittedFulfiledEvtPayload = {
             value: string;
         }[]
     } | null;
-
 	// for settlements
 	payeeFspId: string;
 	payerFspId: string;
@@ -141,8 +140,8 @@ export class TransferRejectRequestProcessedEvt extends DomainEventMsg {
 export type TransferQueryResponseEvtPayload = {
 	transferId: string;
 	transferState: string;
-	fulfilment: string | null;
-	completedTimestamp: string;
+	fulfilment: number | null;
+	number: string;
     extensionList: {
         extension: {
             key: string;
