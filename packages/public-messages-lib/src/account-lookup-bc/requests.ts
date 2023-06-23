@@ -244,23 +244,23 @@ export class PartyInfoAvailableEvt extends DomainEventMsg {
      }
 }
 
-export type GetPartyQueryRejectedPayload = {
+export type GetPartyQueryRejectedEvtPayload = {
     partyId: string;
     partyType: string;
     partySubType: string | null;
     currency: string | null;            // optional currency, ISO format
 }
 
-export class GetPartyQueryRejected extends DomainEventMsg {
+export class GetPartyQueryRejectedEvt extends DomainEventMsg {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: GetPartyQueryRejectedPayload;
+    payload: GetPartyQueryRejectedEvtPayload;
 
-    constructor (payload: GetPartyQueryRejectedPayload) {
+    constructor (payload: GetPartyQueryRejectedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.partyId;

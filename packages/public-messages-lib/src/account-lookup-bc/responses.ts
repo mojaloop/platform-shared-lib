@@ -232,3 +232,29 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
 }
 
 
+export type GetPartyQueryRejectedResponseEvtPayload = {
+	transferId: string;
+	errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+	}
+}
+export class GetPartyQueryRejectedResponseEvt extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+	payload: GetPartyQueryRejectedResponseEvtPayload;
+
+	constructor(payload: GetPartyQueryRejectedResponseEvtPayload) {
+		super();
+
+		this.aggregateId = this.msgKey = payload.transferId;
+		this.payload = payload;
+	}
+
+	validatePayload(): void {
+		// TODO
+	}
+}
