@@ -75,7 +75,7 @@ export type TransferFulfilCommittedRequestedEvtPayload = {
 	transferId: string;
 	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
 	fulfilment: string | null,
-	completedTimestamp: number | null,
+	completedTimestamp: number,
 	extensionList: {
         extension: {
             key: string;
