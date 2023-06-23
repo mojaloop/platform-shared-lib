@@ -140,8 +140,8 @@ export class TransferRejectRequestProcessedEvt extends DomainEventMsg {
 export type TransferQueryResponseEvtPayload = {
 	transferId: string;
 	transferState: string;
-	fulfilment: string | null;
-	number: string;
+	fulfilment: number | null;
+	completedTimestamp: number;
     extensionList: {
         extension: {
             key: string;
