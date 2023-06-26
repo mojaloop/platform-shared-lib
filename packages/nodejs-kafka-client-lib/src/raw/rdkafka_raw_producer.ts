@@ -202,7 +202,7 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
             this._logger?.isErrorEnabled() && this._logger.error(err, "MLRawKafkaProducer - delivery-report error");
             return;
         }
-        this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaProducer - delivery-report - ${JSON.stringify(eventData, null, 2)}`);
+        //this._logger?.isDebugEnabled() && this._logger.debug(`MLRawKafkaProducer - delivery-report - ${JSON.stringify(eventData, null, 2)}`);
         if(this._deliveryReportHandlerFn){
             this._deliveryReportHandlerFn(eventData.topic, eventData.partition, eventData.offset);
         }
