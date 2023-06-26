@@ -28,8 +28,40 @@
  --------------
  ******/
 
-"use strict";
+"use strict"
 
-import {DomainEventMsg} from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import {SETTLEMENTS_BOUNDED_CONTEXT_NAME, SETTLEMENTS_AGGREGATE_NAME, SettlementsBCTopics} from ".";
+import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import { SETTLEMENTS_BOUNDED_CONTEXT_NAME, SETTLEMENTS_AGGREGATE_NAME, SettlementsBCTopics } from ".";
 
+export type SettlementMatrixSettledEvtPayloadParticipantItem = {
+  participantId: string;
+  currencyCode: string;
+  settledDebitBalance: string;
+  settledCreditBalance: string;
+}
+
+export type SettlementMatrixSettledEvtPayload = {
+  settlementMatrixId: string;
+  settledTimestamp: number,
+  participantList: SettlementMatrixSettledEvtPayloadParticipantItem[];
+}
+
+export class SettlementMatrixSettledEvt extends DomainEventMsg {
+  boundedContextName: string = SETTLEMENTS_BOUNDED_CONTEXT_NAME
+  aggregateId: string;
+  aggregateName: string = SETTLEMENTS_AGGREGATE_NAME;
+  msgKey: string;
+  msgTopic: string = SettlementsBCTopics.DomainEvents;
+  payload: SettlementMatrixSettledEvtPayload;
+
+  constructor(payload: SettlementMatrixSettledEvtPayload) {
+    super();
+
+    this.aggregateId = this.msgKey = payload.settlementMatrixId;
+    this.payload = payload;
+  }
+
+  validatePayload(): void {
+    // TODO
+  }
+}

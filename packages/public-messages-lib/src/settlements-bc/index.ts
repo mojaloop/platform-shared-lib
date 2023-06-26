@@ -34,11 +34,9 @@ const SETTLEMENTS_BOUNDED_CONTEXT_NAME = "SettlementsBc";
 const SETTLEMENTS_AGGREGATE_NAME = "Settlements";
 
 enum SettlementsBCTopics {
-    "DomainEvents" = "SettlementsBcEvents",
-    "DomainRequests" = "SettlementsBcRequests"
+    "DomainEvents" = "SettlementsBcEvents"
 }
 
 export {SettlementsBCTopics , SETTLEMENTS_BOUNDED_CONTEXT_NAME, SETTLEMENTS_AGGREGATE_NAME};
-export * from "./requests";
-export * from "./responses";
+export * from "./events";
 
