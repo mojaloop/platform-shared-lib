@@ -30,13 +30,13 @@
 
 "use strict";
 
-const SETTLEMENTS_BOUNDED_CONTEXT_NAME = "SettlementsBc";
-const SETTLEMENTS_AGGREGATE_NAME = "Settlements";
+export const SETTLEMENTS_BOUNDED_CONTEXT_NAME = "SettlementsBc";
+export const SETTLEMENTS_AGGREGATE_NAME = "Settlements";
 
-enum SettlementsBCTopics {
-    "DomainEvents" = "SettlementsBcEvents"
+export enum SettlementsBCTopics {
+    "DomainEvents" = "SettlementsBcEvents",
+    "Commands" = "SettlementsBcCommands"
 }
 
-export {SettlementsBCTopics , SETTLEMENTS_BOUNDED_CONTEXT_NAME, SETTLEMENTS_AGGREGATE_NAME};
 export * from "./events";
 
