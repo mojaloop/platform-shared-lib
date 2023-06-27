@@ -204,7 +204,11 @@ export type PartyInfoAvailableEvtPayload = {
     destinationFspId: string | null;
     currency: string | null;            // optional currency, ISO format
     // actual party info
-    partyName: string;
+    merchantClassificationCode: string;
+    name: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
     partyDoB: Date | null;
 }
 
@@ -224,7 +228,7 @@ export class PartyInfoAvailableEvt extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        const { requesterFspId, ownerFspId, partyId, partyType, partyName } = this.payload;
+        const { requesterFspId, ownerFspId, partyId, partyType } = this.payload;
 
 		if (!requesterFspId) {
             throw new Error("requesterFspId is required.");
@@ -238,10 +242,7 @@ export class PartyInfoAvailableEvt extends DomainEventMsg {
         if (!partyType) {
             throw new Error("partyType is required.");
 		}
-        if (!partyName) {
-            throw new Error("partyName is required.");
-		}
-     }
+    }
 }
 
 export type GetPartyQueryRejectedEvtPayload = {

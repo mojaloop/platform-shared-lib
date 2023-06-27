@@ -194,7 +194,11 @@ export type PartyQueryResponseEvtPayload = {
     currency: string | null;            // optional currency, ISO format
     destinationFspId: string,
     // actual party info
-    partyName: string;
+    merchantClassificationCode: string;
+    name: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
     partyDoB: Date | null;
 }
 
