@@ -36,6 +36,7 @@ const TRANSFERS_AGGREGATE_NAME = "Transfers";
 enum TransfersBCTopics {
     "DomainEvents" = "TransfersBcEvents",
     "DomainRequests" = "TransfersBcRequests",
+    "DomainCommands" = "TransfersBcCommands",
     "DomainErrors" = "TransfersBcErrors"
 }
 
