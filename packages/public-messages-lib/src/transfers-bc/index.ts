@@ -37,7 +37,8 @@ enum TransfersBCTopics {
     "DomainEvents" = "TransfersBcEvents",
     "DomainRequests" = "TransfersBcRequests",
     "DomainCommands" = "TransfersBcCommands",
-    "DomainErrors" = "TransfersBcErrors"
+    "DomainErrors" = "TransfersBcErrors",
+    "TimeoutEvents" = "TransfersBcTimeouts",
 }
 
 export {TransfersBCTopics , TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME};

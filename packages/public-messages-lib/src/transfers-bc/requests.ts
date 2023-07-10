@@ -157,3 +157,28 @@ export class TransferQueryReceivedEvt extends DomainEventMsg {
         // NOT IMPLEMENTED
     }
 }
+
+export type TransferTimeoutEvtPayload = {
+	transferId: string;
+}
+
+export class TransferTimeoutEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+
+    payload: TransferTimeoutEvtPayload;
+
+    constructor (payload: TransferTimeoutEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
