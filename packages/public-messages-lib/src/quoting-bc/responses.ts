@@ -31,8 +31,9 @@
 
 "use strict";
 
+import { QUOTING_AGGREGATE_NAME, QUOTING_BOUNDED_CONTEXT_NAME, QuotingBCTopics } from ".";
+
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { QUOTING_BOUNDED_CONTEXT_NAME, QUOTING_AGGREGATE_NAME, QuotingBCTopics } from ".";
 import crypto from "crypto";
 
 export type QuoteRequestAcceptedEvtPayload = {
@@ -525,4 +526,31 @@ export class BulkQuoteAcceptedEvt extends DomainEventMsg {
             throw new Error("individualQuoteResults needs at least one element.");
 		}
     }
+}
+
+export type GetQuoteQueryRejectedResponseEvtPayload = {
+    quoteId: string;
+	errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+	}
+}
+export class GetQuoteQueryRejectedResponseEvt extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+	payload: GetQuoteQueryRejectedResponseEvtPayload;
+
+	constructor(payload: GetQuoteQueryRejectedResponseEvtPayload) {
+		super();
+
+		this.aggregateId = this.msgKey = payload.quoteId;
+		this.payload = payload;
+	}
+
+	validatePayload(): void {
+		// TODO
+	}
 }
