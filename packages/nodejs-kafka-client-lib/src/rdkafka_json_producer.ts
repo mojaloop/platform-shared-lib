@@ -28,7 +28,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 import { ILogger } from "@mojaloop/logging-bc-public-types-lib";
 import { IMessage, IMessageProducer } from "@mojaloop/platform-shared-lib-messaging-types-lib";

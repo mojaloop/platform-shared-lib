@@ -28,7 +28,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 export * from "./rdkafka_json_consumer";
 export * from "./rdkafka_json_producer";

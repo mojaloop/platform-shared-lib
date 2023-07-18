@@ -51,7 +51,7 @@ export type PlatformConfigGlobalConfigsChangedEvtPayload = {
 }
 
 export class PlatformConfigGlobalConfigsChangedEvt extends DomainEventMsg {
-    boundedContextName: string = PLATFORMCONFIGURATION_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = PLATFORMCONFIGURATION_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = PLATFORMCONFIGURATION_AGGREGATE_NAME;
     msgKey: string;
@@ -79,7 +79,7 @@ export type PlatformConfigBoundedContextConfigsChangedEvtPayload = {
 
 
 export class PlatformConfigBoundedContextConfigsChangedEvt extends DomainEventMsg {
-    boundedContextName: string = PLATFORMCONFIGURATION_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = PLATFORMCONFIGURATION_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = PLATFORMCONFIGURATION_AGGREGATE_NAME;
     msgKey: string;

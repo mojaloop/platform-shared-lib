@@ -32,10 +32,11 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
+
+import { QUOTING_AGGREGATE_NAME, QUOTING_BOUNDED_CONTEXT_NAME, QuotingBCTopics } from ".";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { QUOTING_BOUNDED_CONTEXT_NAME, QUOTING_AGGREGATE_NAME, QuotingBCTopics } from ".";
 
 export type QuoteRequestReceivedEvtPayload = {
     quoteId: string;
@@ -112,7 +113,7 @@ export type QuoteRequestReceivedEvtPayload = {
 }
 
 export class QuoteRequestReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -194,7 +195,7 @@ export type QuoteResponseReceivedEvtPayload = {
 }
 
 export class QuoteResponseReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -238,7 +239,7 @@ export type QuoteQueryReceivedEvtPayload = {
 }
 
 export class QuoteQueryReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -346,7 +347,7 @@ export type BulkQuoteRequestedEvtPayload = {
 }
 
 export class BulkQuoteRequestedEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -449,7 +450,7 @@ export type BulkQuotePendingReceivedEvtPayload = {
 }
 
 export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -482,5 +483,45 @@ export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
         if (individualQuoteResults.length < 0) {
             throw new Error("individualQuoteResults needs at least one element.");
 		}
+    }
+}
+
+export type GetQuoteQueryRejectedEvtPayload = {
+    quoteId: string,
+    errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+	}
+}
+
+export class GetQuoteQueryRejectedEvt extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainRequests;
+
+    payload: GetQuoteQueryRejectedEvtPayload;
+
+    constructor (payload: GetQuoteQueryRejectedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.quoteId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { quoteId } = this.payload;
+
+		if (!quoteId) {
+            throw new Error("quoteId is required.");
+		}
+
     }
 }

@@ -336,7 +336,7 @@ export type QuoteBCUnknownErrorPayload = {
     errorDescription: string;
 }
 export class QuoteBCUnknownErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -363,7 +363,7 @@ export type QuoteBCOperatorErrorPayload = {
 }
 
 export class QuoteBCOperatorErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -389,7 +389,7 @@ export type QuoteBCQuoteExpiredErrorPayload = {
 }
 
 export class QuoteBCQuoteExpiredErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -415,7 +415,7 @@ export type QuoteBCBulkQuoteExpiredErrorPayload = {
 }
 
 export class QuoteBCBulkQuoteExpiredErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -440,7 +440,7 @@ export type QuoteBCUnableToAddQuoteToDatabaseErrorPayload = {
 }
 
 export class QuoteBCUnableToAddQuoteToDatabaseErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -465,7 +465,7 @@ export type QuoteBCUnableToAddBulkQuoteToDatabaseErrorPayload = {
     errorDescription: string;
 }
 export class QuoteBCUnableToAddBulkQuoteToDatabaseErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -490,7 +490,7 @@ export type QuoteBCUnableToUpdateQuoteInDatabaseErrorPayload = {
 }
 
 export class QuoteBCUnableToUpdateQuoteInDatabaseErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -515,7 +515,7 @@ export type QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorPayload = {
 }
 
 export class QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -540,7 +540,7 @@ export type QuoteBCInvalidBulkQuoteLengthErrorPayload = {
 }
 
 export class QuoteBCInvalidBulkQuoteLengthErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     msgKey: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
@@ -565,7 +565,7 @@ export type QuoteBCQuoteRuleSchemeViolatedRequestErrorPayload = {
 }
 
 export class QuoteBCQuoteRuleSchemeViolatedRequestErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     msgKey: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
@@ -590,7 +590,7 @@ export type QuoteBCQuoteRuleSchemeViolatedResponseErrorPayload = {
 }
 
 export class QuoteBCQuoteRuleSchemeViolatedResponseErrorEvent extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     msgKey: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;

@@ -44,7 +44,7 @@ export type AccountLookupBCInvalidMessageErrorPayload = {
 }
 
 export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -70,7 +70,7 @@ export type AccountLookupBCInvalidMessageTypeErrorPayload = {
 }
 
 export class AccountLookupBCInvalidMessageTypeErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -98,7 +98,7 @@ export type AccountLookupBCUnableToAssociateParticipantErrorPayload = {
 }
 
 export class AccountLookupBCUnableToAssociateParticipantErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -126,7 +126,7 @@ export type AccountLookupBCUnableToDisassociateParticipantErrorPayload = {
 }
 
 export class AccountLookupBCUnableToDisassociateParticipantErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -154,7 +154,7 @@ export type AccountLookupBCUnableToGetOracleAdapterErrorPayload = {
 }
 
 export class AccountLookupBCUnableToGetOracleAdapterErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -182,7 +182,7 @@ export type AccountLookUpUnableToGetParticipantFromOracleErrorPayload = {
 }
 
 export class AccountLookUpUnableToGetParticipantFromOracleErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -209,7 +209,7 @@ export type AccountLookupBCDestinationParticipantNotFoundErrorPayload = {
 }
 
 export class AccountLookupBCDestinationParticipantNotFoundErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -235,7 +235,7 @@ export type AccountLookupBCInvalidDestinationParticipantErrorPayload = {
 }
 
 export class AccountLookupBCInvalidDestinationParticipantErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -261,7 +261,7 @@ export type AccountLookupBCRequesterParticipantNotFoundErrorPayload = {
 }
 
 export class AccountLookupBCRequesterParticipantNotFoundErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -287,7 +287,7 @@ export type AccountLookupBCInvalidRequesterParticipantErrorPayload = {
 }
 
 export class AccountLookupBCInvalidRequesterParticipantErrorEvent extends DomainEventMsg   {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -316,7 +316,7 @@ export type AccountLookUpUnknownErrorPayload = {
 }
 
 export class AccountLookUpUnknownErrorEvent extends DomainEventMsg {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -346,7 +346,7 @@ export type AccountLookUpBCOperatorErrorPayload = {
 
 
 export class AccountLookUpBCOperatorErrorEvent extends DomainEventMsg {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;

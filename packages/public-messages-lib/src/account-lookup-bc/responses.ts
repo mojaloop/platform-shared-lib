@@ -32,7 +32,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, AccountLookupBCTopics } from ".";
@@ -45,7 +45,7 @@ export type ParticipantAssociationCreatedEvtPayload = {
 }
 
 export class ParticipantAssociationCreatedEvt extends DomainEventMsg {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -75,7 +75,7 @@ export type ParticipantAssociationRemovedEvtPayload = {
 }
 
 export class ParticipantAssociationRemovedEvt extends DomainEventMsg {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -108,7 +108,7 @@ export type ParticipantQueryResponseEvtPayload = {
 }
 
 export class ParticipantQueryResponseEvt extends DomainEventMsg {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -151,7 +151,7 @@ export type PartyInfoRequestedEvtPayload = {
 }
 
 export class PartyInfoRequestedEvt extends DomainEventMsg {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -203,7 +203,7 @@ export type PartyQueryResponseEvtPayload = {
 }
 
 export class PartyQueryResponseEvt extends DomainEventMsg {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
@@ -247,7 +247,7 @@ export type GetPartyQueryRejectedResponseEvtPayload = {
 	}
 }
 export class GetPartyQueryRejectedResponseEvt extends DomainEventMsg {
-    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;

@@ -52,7 +52,7 @@ export type TransferPreparedEvtPayload = {
 }
 
 export class TransferPreparedEvt extends DomainEventMsg {
-	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
 	aggregateId: string;
 	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
 	msgKey: string;
@@ -90,7 +90,7 @@ export type TransferCommittedFulfiledEvtPayload = {
 }
 
 export class TransferCommittedFulfiledEvt extends DomainEventMsg {
-	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
 	aggregateId: string;
 	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
 	msgKey: string;
@@ -118,7 +118,7 @@ export type TransferRejectRequestProcessedEvtPayload = {
 }
 
 export class TransferRejectRequestProcessedEvt extends DomainEventMsg {
-	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
 	aggregateId: string;
 	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
 	msgKey: string;
@@ -151,7 +151,7 @@ export type TransferQueryResponseEvtPayload = {
 }
 
 export class TransferQueryResponseEvt extends DomainEventMsg {
-    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;

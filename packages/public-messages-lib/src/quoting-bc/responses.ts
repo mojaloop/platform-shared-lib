@@ -29,7 +29,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { QUOTING_BOUNDED_CONTEXT_NAME, QUOTING_AGGREGATE_NAME, QuotingBCTopics } from ".";
@@ -110,7 +110,7 @@ export type QuoteRequestAcceptedEvtPayload = {
 }
 
 export class QuoteRequestAcceptedEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -193,7 +193,7 @@ export type QuoteResponseAcceptedEvtPayload = {
 }
 
 export class QuoteResponseAccepted extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -266,7 +266,7 @@ export type QuoteQueryResponseEvtPayload = {
 }
 
 export class QuoteQueryResponseEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -388,7 +388,7 @@ export type BulkQuoteReceivedEvtPayload = {
 }
 
 export class BulkQuoteReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
@@ -491,7 +491,7 @@ export type BulkQuoteAcceptedEvtPayload = {
 }
 
 export class BulkQuoteAcceptedEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;

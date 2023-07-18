@@ -28,7 +28,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 
@@ -278,7 +278,7 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
                             (err: any, offset?: RDKafka.NumberNullUndefined) => {
                                 /* istanbul ignore if */
                                 if (err!==null) {
-                                    this._logger?.isErrorEnabled() && this._logger.error(err, "MLRawKafkaProducer - send - Error getting aks from publisher")
+                                    this._logger?.isErrorEnabled() && this._logger.error(err, "MLRawKafkaProducer - send - Error getting aks from publisher");
                                     if (!rejected) {
                                         rejected = true;
                                         reject(err);
@@ -299,7 +299,7 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
                     /* istanbul ignore next */
                     reject(err);
                 }
-            })
+            });
         });
     }
 

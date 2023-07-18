@@ -28,7 +28,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -51,10 +51,10 @@ type MLKafkaJsonConsumerEventListener<K extends string> = K extends keyof MLKafk
 
 
 export class MLKafkaJsonConsumerOptions {
-    kafkaBrokerList: string
-    kafkaGroupId?: string
-    useSyncCommit?: boolean
-    autoOffsetReset?: "earliest" | "latest" | "error" // default is latest
+    kafkaBrokerList: string;
+    kafkaGroupId?: string;
+    useSyncCommit?: boolean;
+    autoOffsetReset?: "earliest" | "latest" | "error"; // default is latest
     sessionTimeoutMs?: number;   //Client group session and failure detection timeout, default is 45 secs
     batchSize?: number;
     batchTimeoutMs?: number;
@@ -65,8 +65,8 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
     private readonly _kafkaRawConsumer: MLKafkaRawConsumer;
     private _handlerCallback: ((message: IMessage) => Promise<void>) | null = null;
     private _batchHandlerCallback: ((messages: IMessage[]) => Promise<void>) | null = null;
-    private _filterFn: (message: IMessage) => boolean
-    private _options: MLKafkaJsonConsumerOptions
+    private _filterFn: (message: IMessage) => boolean;
+    private _options: MLKafkaJsonConsumerOptions;
 
     constructor(options: MLKafkaJsonConsumerOptions, logger: ILogger | null = null) {
         super();
@@ -86,7 +86,7 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
         //     this._kafkaRawConsumer.setCallbackFn(this._internalHandler.bind(this));
         // }
 
-        this._kafkaRawConsumer.eventNames()
+        this._kafkaRawConsumer.eventNames();
 
         // hook MLKafkaRawConsumer events we care about
         this._kafkaRawConsumer.on("rebalance", (type: "assign" | "revoke", assignments: { topic: string; partition: number }[]) => {

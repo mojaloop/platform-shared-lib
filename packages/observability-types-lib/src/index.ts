@@ -35,4 +35,4 @@
 * */
 
 export * from "./metrics";
-export * from "./metrics-mock"
+export * from "./metrics-mock";

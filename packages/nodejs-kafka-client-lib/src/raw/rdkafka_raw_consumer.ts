@@ -28,7 +28,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unused-vars */
 
@@ -51,7 +51,7 @@ const defaultOptions = {
 	outputType: MLKafkaRawConsumerOutputType.Json,
 	batchSize: 1,
 	batchTimeoutMs: 1000
-}
+};
 
 export class MLKafkaRawConsumerOptions {
 	kafkaBrokerList: string;
@@ -275,7 +275,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 				this._consumeLoop();
 			});
 			this._consuming = false;
-		}
+		};
 
 		this._client.consume(this._batchSize, (err: RDKafka.LibrdKafkaError, kafkaMessages: RDKafka.Message[]) => {
 			this._consuming = true;
@@ -293,7 +293,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 				const commitAndContinue = (msgs: IRawMessage[])=>{
 					this._commitMsg(kafkaMessages);
 					return callContinue();
-				}
+				};
 
 				const msgs = kafkaMessages.map(this._toIMessage.bind(this));
 
@@ -350,7 +350,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 						msg.headers!.push({[key]: kafkaHeader[key]});
 					}
 				}
-			})
+			});
 		}
 
 		// parse msg value
@@ -432,7 +432,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 				// metadata is handled by the onReady event
 				this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - connected!");
 				resolve();
-			})
+			});
 		});
 	}
 
@@ -451,8 +451,8 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 				}
 				this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - disconnected.");
 				resolve();
-			})
-		})
+			});
+		});
 	}
 
 	startAndWaitForRebalance():Promise<void>{
@@ -461,7 +461,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 
 			this.prependOnceListener("rebalance", (type, assignments) => {
 				if (type!=="assign") {
-					throw new Error("MLRawKafkaConsumer - got revoke in first rebalance event")
+					throw new Error("MLRawKafkaConsumer - got revoke in first rebalance event");
 				}
 
 				this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - got rebalance on startAndWaitForRebalance()");

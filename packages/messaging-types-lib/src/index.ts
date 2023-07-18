@@ -28,7 +28,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 export * from "./messages";
 export * from "./imessage_consumer";

@@ -205,7 +205,7 @@ export class PrometheusMetrics implements IMetrics{
      * Get the options that are used to setup the prom-client
      */
     getOptions():PrometheusMetricsOptions{
-        return this._options
+        return this._options;
     }
 
 }

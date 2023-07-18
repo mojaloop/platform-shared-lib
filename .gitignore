@@ -130,3 +130,6 @@ devspace*
 **/test/**/*.js
 **/test/**/*.js.map
 **/test/**/*.d.ts
+
+#vscode configurations
+.vscode

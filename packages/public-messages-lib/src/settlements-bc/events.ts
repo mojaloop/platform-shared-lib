@@ -28,7 +28,7 @@
  --------------
  ******/
 
-"use strict"
+"use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { SETTLEMENTS_BOUNDED_CONTEXT_NAME, SETTLEMENTS_AGGREGATE_NAME, SettlementsBCTopics } from ".";
@@ -47,7 +47,7 @@ export type SettlementMatrixSettledEvtPayload = {
 }
 
 export class SettlementMatrixSettledEvt extends DomainEventMsg {
-  boundedContextName: string = SETTLEMENTS_BOUNDED_CONTEXT_NAME
+  boundedContextName: string = SETTLEMENTS_BOUNDED_CONTEXT_NAME;
   aggregateId: string;
   aggregateName: string = SETTLEMENTS_AGGREGATE_NAME;
   msgKey: string;
