@@ -36,6 +36,8 @@ import { QUOTING_AGGREGATE_NAME, QUOTING_BOUNDED_CONTEXT_NAME, QuotingBCTopics }
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import crypto from "crypto";
 
+//#region Quote
+
 export type QuoteRequestAcceptedEvtPayload = {
     quoteId: string;
     transactionId: string;
@@ -306,6 +308,37 @@ export class QuoteQueryResponseEvt extends DomainEventMsg {
     }
 }
 
+export type GetQuoteQueryRejectedResponseEvtPayload = {
+    quoteId: string;
+	errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+	}
+}
+export class GetQuoteQueryRejectedResponseEvt extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+	payload: GetQuoteQueryRejectedResponseEvtPayload;
+
+	constructor(payload: GetQuoteQueryRejectedResponseEvtPayload) {
+		super();
+
+		this.aggregateId = this.msgKey = payload.quoteId;
+		this.payload = payload;
+	}
+
+	validatePayload(): void {
+		// TODO
+	}
+}
+
+//#endregion Quote
+
+//#region BulkQuote
+
 export type BulkQuoteReceivedEvtPayload = {
     bulkQuoteId: string;
     payer:  {
@@ -528,25 +561,124 @@ export class BulkQuoteAcceptedEvt extends DomainEventMsg {
     }
 }
 
-export type GetQuoteQueryRejectedResponseEvtPayload = {
-    quoteId: string;
-	errorInformation: {
-		errorCode: string;
-		errorDescription: string;
-	}
+export type GetBulkQuoteQueryResponseEvtPayload = {
+    bulkQuoteId: string;
+    individualQuoteResults: {
+        quoteId: string;
+        payee:  {
+            partyIdInfo: {
+                partyIdType: string;
+                partyIdentifier: string;
+                partySubIdOrType: string | null;
+                fspId: string | null;
+            };
+            merchantClassificationCode: string | null,
+            name: string | null,
+            personalInfo: {
+                complexName: {
+                    firstName: string | null;
+                    middleName: string | null;
+                    lastName: string | null;
+                } | null,
+                dateOfBirth: string | null
+            } | null
+        } | null;
+        transferAmount: {
+            currency: string;
+            amount: string;
+        } | null;
+        payeeReceiveAmount: {
+            currency: string;
+            amount: string;
+        } | null;
+        payeeFspFee: {
+            currency: string;
+            amount: string;
+        } | null;
+        payeeFspCommission: {
+            currency: string;
+            amount: string;
+        } | null;
+        ilpPacket: string;
+        condition: string;
+        errorInformation: {
+            errorCode: string,
+            errorDescription: string,
+            extensionList: {
+                extension: {
+                    key: string;
+                    value: string;
+                }[]
+            };
+        } | null;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+    }[];
+    expiration: string | null;
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
 }
-export class GetQuoteQueryRejectedResponseEvt extends DomainEventMsg {
+
+export class GetBulkQuoteQueryResponseEvt extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainEvents;
-	payload: GetQuoteQueryRejectedResponseEvtPayload;
 
-	constructor(payload: GetQuoteQueryRejectedResponseEvtPayload) {
+    payload: GetBulkQuoteQueryResponseEvtPayload;
+
+    constructor (payload: GetBulkQuoteQueryResponseEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkQuoteId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { bulkQuoteId, individualQuoteResults } = this.payload;
+
+        if (!bulkQuoteId) {
+            throw new Error("bulkQuoteId is required.");
+		}
+
+        if (!individualQuoteResults) {
+            throw new Error("individualQuotes is required.");
+		}
+
+        if (individualQuoteResults.length < 0) {
+            throw new Error("individualQuotes needs at least one element.");
+		}
+    }
+}
+
+export type GetBulkQuoteQueryRejectedResponseEvtPayload = {
+    bulkQuoteId: string;
+	errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+	}
+}
+export class GetBulkQuoteQueryRejectedResponseEvt extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+	payload: GetBulkQuoteQueryRejectedResponseEvtPayload;
+
+	constructor(payload: GetBulkQuoteQueryRejectedResponseEvtPayload) {
 		super();
 
-		this.aggregateId = this.msgKey = payload.quoteId;
+		this.aggregateId = this.msgKey = payload.bulkQuoteId;
 		this.payload = payload;
 	}
 
@@ -554,3 +686,4 @@ export class GetQuoteQueryRejectedResponseEvt extends DomainEventMsg {
 		// TODO
 	}
 }
+//#endregion BulkQuote

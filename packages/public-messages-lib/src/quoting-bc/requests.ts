@@ -263,6 +263,36 @@ export class QuoteQueryReceivedEvt extends DomainEventMsg {
     }
 }
 
+export type BulkQuoteQueryReceivedEvtPayload = {
+    bulkQuoteId: string;
+}
+
+export class BulkQuoteQueryReceivedEvt extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainRequests;
+
+    payload: BulkQuoteQueryReceivedEvtPayload;
+
+    constructor (payload: BulkQuoteQueryReceivedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkQuoteId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { bulkQuoteId } = this.payload;
+
+        if (!bulkQuoteId) {
+            throw new Error("bulkQuoteId is required.");
+		}
+    }
+}
+
+
 export type BulkQuoteRequestedEvtPayload = {
     bulkQuoteId: string;
     payer:  {
@@ -521,6 +551,46 @@ export class GetQuoteQueryRejectedEvt extends DomainEventMsg {
 
 		if (!quoteId) {
             throw new Error("quoteId is required.");
+		}
+
+    }
+}
+
+export type GetBulkQuoteQueryRejectedEvtPayload = {
+    bulkQuoteId: string,
+    errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+	}
+}
+
+export class GetBulkQuoteQueryRejectedEvt extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainRequests;
+
+    payload: GetBulkQuoteQueryRejectedEvtPayload;
+
+    constructor (payload: GetBulkQuoteQueryRejectedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkQuoteId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { bulkQuoteId } = this.payload;
+
+		if (!bulkQuoteId) {
+            throw new Error("bulkQuoteId is required.");
 		}
 
     }
