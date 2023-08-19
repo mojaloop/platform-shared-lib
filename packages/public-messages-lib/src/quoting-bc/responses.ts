@@ -561,7 +561,7 @@ export class BulkQuoteAcceptedEvt extends DomainEventMsg {
     }
 }
 
-export type GetBulkQuoteQueryResponseEvtPayload = {
+export type BulkQuoteQueryResponseEvtPayload = {
     bulkQuoteId: string;
     individualQuoteResults: {
         quoteId: string;
@@ -627,16 +627,16 @@ export type GetBulkQuoteQueryResponseEvtPayload = {
     } | null;
 }
 
-export class GetBulkQuoteQueryResponseEvt extends DomainEventMsg {
+export class BulkQuoteQueryResponseEvt extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainEvents;
 
-    payload: GetBulkQuoteQueryResponseEvtPayload;
+    payload: BulkQuoteQueryResponseEvtPayload;
 
-    constructor (payload: GetBulkQuoteQueryResponseEvtPayload) {
+    constructor (payload: BulkQuoteQueryResponseEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.bulkQuoteId;
