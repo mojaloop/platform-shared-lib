@@ -263,6 +263,46 @@ export class QuoteQueryReceivedEvt extends DomainEventMsg {
     }
 }
 
+export type GetQuoteQueryRejectedEvtPayload = {
+    quoteId: string,
+    errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+	}
+}
+
+export class GetQuoteQueryRejectedEvt extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainRequests;
+
+    payload: GetQuoteQueryRejectedEvtPayload;
+
+    constructor (payload: GetQuoteQueryRejectedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.quoteId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { quoteId } = this.payload;
+
+		if (!quoteId) {
+            throw new Error("quoteId is required.");
+		}
+    }
+}
+
+
 export type BulkQuoteQueryReceivedEvtPayload = {
     bulkQuoteId: string;
 }
@@ -291,7 +331,6 @@ export class BulkQuoteQueryReceivedEvt extends DomainEventMsg {
 		}
     }
 }
-
 
 export type BulkQuoteRequestedEvtPayload = {
     bulkQuoteId: string;
@@ -513,46 +552,6 @@ export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
         if (individualQuoteResults.length < 0) {
             throw new Error("individualQuoteResults needs at least one element.");
 		}
-    }
-}
-
-export type GetQuoteQueryRejectedEvtPayload = {
-    quoteId: string,
-    errorInformation: {
-		errorCode: string;
-		errorDescription: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
-	}
-}
-
-export class GetQuoteQueryRejectedEvt extends DomainEventMsg {
-    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
-    aggregateId: string;
-    aggregateName: string = QUOTING_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainRequests;
-
-    payload: GetQuoteQueryRejectedEvtPayload;
-
-    constructor (payload: GetQuoteQueryRejectedEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.quoteId;
-        this.payload = payload;
-    }
-
-    validatePayload (): void {
-        const { quoteId } = this.payload;
-
-		if (!quoteId) {
-            throw new Error("quoteId is required.");
-		}
-
     }
 }
 
