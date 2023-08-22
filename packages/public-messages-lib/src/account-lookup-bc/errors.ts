@@ -39,6 +39,7 @@ import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, Acc
 
 export type AccountLookupBCInvalidMessageErrorPayload = {
     partyId: string;
+    partyType: string;
     partySubType: string | null;
     requesterFspId: string | null;
     errorDescription: string;
@@ -67,6 +68,7 @@ export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventM
 export type AccountLookupBCInvalidMessageTypeErrorPayload = {
     requesterFspId: string | null;
     partyId: string;
+    partyType: string;
     partySubType: string;
     errorDescription: string;
 }
@@ -207,6 +209,7 @@ export class AccountLookUpUnableToGetParticipantFromOracleErrorEvent extends Dom
 
 export type AccountLookupBCDestinationParticipantNotFoundErrorPayload = {
     partyId: string;
+    partyType: string;
     partySubType: string | null;
     destinationFspId: string | null;
     errorDescription: string;
@@ -234,6 +237,7 @@ export class AccountLookupBCDestinationParticipantNotFoundErrorEvent extends Dom
 
 export type AccountLookupBCInvalidDestinationParticipantErrorPayload = {
     partyId: string;
+    partyType: string;
     partySubType: string | null;
     destinationFspId: string | null;
     errorDescription: string;
@@ -261,6 +265,7 @@ export class AccountLookupBCInvalidDestinationParticipantErrorEvent extends Doma
 
 export type AccountLookupBCRequesterParticipantNotFoundErrorPayload = {
     partyId: string;
+    partyType: string;
     partySubType: string | null;
     requesterFspId: string | null;
     errorDescription: string;
@@ -288,6 +293,7 @@ export class AccountLookupBCRequesterParticipantNotFoundErrorEvent extends Domai
 
 export type AccountLookupBCInvalidRequesterParticipantErrorPayload = {
     partyId: string;
+    partyType: string;
     partySubType: string | null;
     requesterFspId: string | null;
     errorDescription: string;
