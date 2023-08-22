@@ -39,6 +39,7 @@ import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, Acc
 
 export type AccountLookupBCInvalidMessageErrorPayload = {
     partyId: string;
+    partySubType: string | null;
     requesterFspId: string | null;
     errorDescription: string;
 }
@@ -66,6 +67,7 @@ export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventM
 export type AccountLookupBCInvalidMessageTypeErrorPayload = {
     requesterFspId: string | null;
     partyId: string;
+    partySubType: string;
     errorDescription: string;
 }
 
@@ -176,6 +178,7 @@ export class AccountLookupBCUnableToGetOracleAdapterErrorEvent extends DomainEve
 
 export type AccountLookUpUnableToGetParticipantFromOracleErrorPayload = {
     partyId: string;
+    partySubType: string | null;
     partyType: string | null;
     currency: string | null;
     errorDescription: string;
@@ -204,6 +207,7 @@ export class AccountLookUpUnableToGetParticipantFromOracleErrorEvent extends Dom
 
 export type AccountLookupBCDestinationParticipantNotFoundErrorPayload = {
     partyId: string;
+    partySubType: string | null;
     destinationFspId: string | null;
     errorDescription: string;
 }
@@ -230,6 +234,7 @@ export class AccountLookupBCDestinationParticipantNotFoundErrorEvent extends Dom
 
 export type AccountLookupBCInvalidDestinationParticipantErrorPayload = {
     partyId: string;
+    partySubType: string | null;
     destinationFspId: string | null;
     errorDescription: string;
 }
@@ -256,6 +261,7 @@ export class AccountLookupBCInvalidDestinationParticipantErrorEvent extends Doma
 
 export type AccountLookupBCRequesterParticipantNotFoundErrorPayload = {
     partyId: string;
+    partySubType: string | null;
     requesterFspId: string | null;
     errorDescription: string;
 }
@@ -282,6 +288,7 @@ export class AccountLookupBCRequesterParticipantNotFoundErrorEvent extends Domai
 
 export type AccountLookupBCInvalidRequesterParticipantErrorPayload = {
     partyId: string;
+    partySubType: string | null;
     requesterFspId: string | null;
     errorDescription: string;
 }
