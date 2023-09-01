@@ -109,6 +109,44 @@ export class TransferCommittedFulfiledEvt extends DomainEventMsg {
 	}
 }
 
+export type TransferReserveFulfiledEvtPayload = {
+	transferId: string;
+	fulfilment: string | null,
+	completedTimestamp: number,
+	extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+	// for settlements
+	payeeFspId: string;
+	payerFspId: string;
+	amount: string;
+	currencyCode: string;
+	settlementModel: string;
+}
+
+export class TransferReserveFulfiledEvt extends DomainEventMsg {
+	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+	aggregateId: string;
+	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+	msgKey: string;
+	msgTopic: string = TransfersBCTopics.DomainEvents;
+	payload: TransferReserveFulfiledEvtPayload;
+
+	constructor(payload: TransferReserveFulfiledEvtPayload) {
+		super();
+
+		this.aggregateId = this.msgKey = payload.transferId;
+		this.payload = payload;
+	}
+
+	validatePayload(): void {
+		// TODO
+	}
+}
+
 export type TransferRejectRequestProcessedEvtPayload = {
 	transferId: string;
 	errorInformation: {
