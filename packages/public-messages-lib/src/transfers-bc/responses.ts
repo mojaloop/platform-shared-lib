@@ -71,7 +71,7 @@ export class TransferPreparedEvt extends DomainEventMsg {
 	}
 }
 
-export type TransferCommittedFulfiledEvtPayload = {
+export type TransferFulfiledEvtPayload = {
 	transferId: string;
 	fulfilment: string | null,
 	completedTimestamp: number,
@@ -87,17 +87,18 @@ export type TransferCommittedFulfiledEvtPayload = {
 	amount: string;
 	currencyCode: string;
 	settlementModel: string;
+	notifyPayee: boolean;
 }
 
-export class TransferCommittedFulfiledEvt extends DomainEventMsg {
+export class TransferFulfiledEvt extends DomainEventMsg {
 	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
 	aggregateId: string;
 	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
 	msgKey: string;
 	msgTopic: string = TransfersBCTopics.DomainEvents;
-	payload: TransferCommittedFulfiledEvtPayload;
+	payload: TransferFulfiledEvtPayload;
 
-	constructor(payload: TransferCommittedFulfiledEvtPayload) {
+	constructor(payload: TransferFulfiledEvtPayload) {
 		super();
 
 		this.aggregateId = this.msgKey = payload.transferId;

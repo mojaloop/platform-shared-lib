@@ -71,7 +71,7 @@ export class TransferPrepareRequestedEvt extends DomainEventMsg {
 	}
 }
 
-export type TransferFulfilCommittedRequestedEvtPayload = {
+export type TransferFulfilRequestedEvtPayload = {
 	transferId: string;
 	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
 	fulfilment: string | null,
@@ -82,17 +82,18 @@ export type TransferFulfilCommittedRequestedEvtPayload = {
             value: string;
         }[]
     } | null;
+	notifyPayee: boolean;
 }
 
-export class TransferFulfilCommittedRequestedEvt extends DomainEventMsg {
+export class TransferFulfilRequestedEvt extends DomainEventMsg {
 	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
 	aggregateId: string;
 	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
 	msgKey: string;
 	msgTopic: string = TransfersBCTopics.DomainRequests;
-	payload: TransferFulfilCommittedRequestedEvtPayload;
+	payload: TransferFulfilRequestedEvtPayload;
 
-	constructor(payload: TransferFulfilCommittedRequestedEvtPayload) {
+	constructor(payload: TransferFulfilRequestedEvtPayload) {
 		super();
 
 		this.aggregateId = this.msgKey = payload.transferId;

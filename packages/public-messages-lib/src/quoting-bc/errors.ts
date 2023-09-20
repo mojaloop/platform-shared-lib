@@ -393,7 +393,7 @@ export class QuoteBCQuoteExpiredErrorEvent extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainErrors;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
     payload: QuoteBCQuoteExpiredErrorPayload;
 
     constructor (payload: QuoteBCQuoteExpiredErrorPayload) {
@@ -419,7 +419,7 @@ export class QuoteBCBulkQuoteExpiredErrorEvent extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainErrors;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
     payload: QuoteBCBulkQuoteExpiredErrorPayload;
 
     constructor (payload: QuoteBCBulkQuoteExpiredErrorPayload) {
@@ -444,7 +444,7 @@ export class QuoteBCUnableToAddQuoteToDatabaseErrorEvent extends DomainEventMsg 
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainErrors;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
     payload: QuoteBCUnableToAddQuoteToDatabaseErrorPayload;
 
     constructor (payload: QuoteBCUnableToAddQuoteToDatabaseErrorPayload) {
@@ -469,7 +469,7 @@ export class QuoteBCUnableToAddBulkQuoteToDatabaseErrorEvent extends DomainEvent
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainErrors;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
     payload: QuoteBCUnableToAddBulkQuoteToDatabaseErrorPayload;
 
     constructor (payload: QuoteBCUnableToAddBulkQuoteToDatabaseErrorPayload) {
@@ -494,7 +494,7 @@ export class QuoteBCUnableToUpdateQuoteInDatabaseErrorEvent extends DomainEventM
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainErrors;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
     payload: QuoteBCUnableToUpdateQuoteInDatabaseErrorPayload;
 
     constructor (payload: QuoteBCUnableToUpdateQuoteInDatabaseErrorPayload) {
@@ -519,7 +519,7 @@ export class QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorEvent extends DomainEv
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = QuotingBCTopics.DomainErrors;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
     payload: QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorPayload;
 
     constructor (payload: QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorPayload) {
@@ -544,7 +544,7 @@ export class QuoteBCInvalidBulkQuoteLengthErrorEvent extends DomainEventMsg {
     aggregateId: string;
     msgKey: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
-    msgTopic: string = QuotingBCTopics.DomainErrors;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
     payload: QuoteBCInvalidBulkQuoteLengthErrorPayload;
 
     constructor (payload: QuoteBCInvalidBulkQuoteLengthErrorPayload) {
@@ -569,7 +569,7 @@ export class QuoteBCQuoteRuleSchemeViolatedRequestErrorEvent extends DomainEvent
     aggregateId: string;
     msgKey: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
-    msgTopic: string = QuotingBCTopics.DomainErrors;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
     payload: QuoteBCQuoteRuleSchemeViolatedRequestErrorPayload;
 
     constructor (payload: QuoteBCQuoteRuleSchemeViolatedRequestErrorPayload) {
@@ -594,7 +594,7 @@ export class QuoteBCQuoteRuleSchemeViolatedResponseErrorEvent extends DomainEven
     aggregateId: string;
     msgKey: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
-    msgTopic: string = QuotingBCTopics.DomainErrors;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
     payload: QuoteBCQuoteRuleSchemeViolatedResponseErrorPayload;
 
     constructor (payload: QuoteBCQuoteRuleSchemeViolatedResponseErrorPayload) {
