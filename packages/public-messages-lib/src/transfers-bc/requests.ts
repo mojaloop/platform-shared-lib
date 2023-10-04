@@ -295,7 +295,7 @@ export type BulkTransferFulfilRequestedEvtPayload = {
     } | null;
 }
 
-export class BulkTransferFulfilRequestedeceivedEvt extends DomainEventMsg {
+export class BulkTransferFulfilRequestedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
