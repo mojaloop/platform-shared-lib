@@ -208,3 +208,110 @@ export class TransferQueryResponseEvt extends DomainEventMsg {
 		// TODO
     }
 }
+
+export type BulkTransferPreparedEvtPayload = {
+    bulkTransferId: string;
+    bulkQuoteId: string;
+    payeeFsp: string;
+    payerFsp: string;
+    geoCode: {
+        latitude: string;
+        longitude: string;
+    } | null;
+    expiration: string;
+    individualTransfers: {
+        transferId: string;
+        transferAmount: {
+            currency: string;
+            amount: string;
+        };
+        ilpPacket: string;
+        condition: string;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+    }[];
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+}
+
+export class BulkTransferPreparedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+
+    payload: BulkTransferPreparedEvtPayload;
+
+    constructor (payload: BulkTransferPreparedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkTransferId;
+        this.payload = payload;
+    }
+
+	validatePayload(): void {
+		// TODO
+	}
+}
+
+export type BulkTransferFulfiledEvtPayload = {
+    bulkTransferId: string;
+	completedTimestamp: number,
+	bulkTransferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
+    individualTransferResults: {
+        transferId: string;
+        fulfilment: string | null;
+        errorInformation: {
+            errorCode: string;
+            errorDescription: string;
+            extensionList: {
+                extension: {
+                    key: string;
+                    value: string;
+                }[]
+            } | null;
+        }
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+    }[];
+	extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+}
+
+export class BulkTransferFulfiledEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+
+    payload: BulkTransferFulfiledEvtPayload;
+
+    constructor (payload: BulkTransferFulfiledEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkTransferId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        // TODO
+    }
+}

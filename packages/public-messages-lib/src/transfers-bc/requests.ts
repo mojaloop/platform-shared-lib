@@ -183,3 +183,170 @@ export class TransferTimeoutEvt extends DomainEventMsg {
         // NOT IMPLEMENTED
     }
 }
+
+export type BulkTransferQueryReceivedEvtPayload = {
+    bulkTransferId: string;
+}
+
+export class BulkTransferQueryReceivedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+
+    payload: BulkTransferQueryReceivedEvtPayload;
+
+    constructor (payload: BulkTransferQueryReceivedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkTransferId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { bulkTransferId } = this.payload;
+
+        if (!bulkTransferId) {
+            throw new Error("bulkTransferId is required.");
+		}
+    }
+}
+
+export type BulkTransferPrepareRequestedEvtPayload = {
+    bulkTransferId: string;
+    bulkQuoteId: string;
+    payeeFsp: string;
+    payerFsp: string;
+    individualTransfers: {
+        transferId: string;
+        transferAmount: {
+            currency: string;
+            amount: string;
+        };
+        ilpPacket: string;
+        condition: string;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+    }[];
+    expiration: string;
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+}
+
+export class BulkTransferPrepareRequestedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+
+    payload: BulkTransferPrepareRequestedEvtPayload;
+
+    constructor (payload: BulkTransferPrepareRequestedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkTransferId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        // TODO
+    }
+}
+
+export type BulkTransferFulfilRequestedEvtPayload = {
+    bulkTransferId: string;
+	completedTimestamp: number,
+	bulkTransferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
+    individualTransferResults: {
+        transferId: string;
+        fulfilment: string | null;
+        errorInformation: {
+            errorCode: string;
+            errorDescription: string;
+            extensionList: {
+                extension: {
+                    key: string;
+                    value: string;
+                }[]
+            } | null;
+        }
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+    }[];
+	extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
+}
+
+export class BulkTransferFulfilRequestedeceivedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+
+    payload: BulkTransferFulfilRequestedEvtPayload;
+
+    constructor (payload: BulkTransferFulfilRequestedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkTransferId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        // TODO
+    }
+}
+
+export type GetBulkTransferQueryRejectedEvtPayload = {
+    bulkTransferId: string,
+    errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+	}
+}
+
+export class GetBulkTransferQueryRejectedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+
+    payload: GetBulkTransferQueryRejectedEvtPayload;
+
+    constructor (payload: GetBulkTransferQueryRejectedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkTransferId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        // TODO
+    }
+}
