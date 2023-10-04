@@ -31,10 +31,32 @@
 "use strict";
 
 
-export * from "./account-lookup-bc/";
-export * from "./quoting-bc/";
-export * from "./transfers-bc/";
-export * from "./settlements-bc/";
-export * from "./platform-configuration/";
-export * from "./participants-bc/";
+import {DomainEventMsg} from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import {PARTICIPANTS_AGGREGATE_NAME, PARTICIPANTS_BOUNDED_CONTEXT_NAME, ParticipantsBCTopics} from "./index";
+
+// simple change event with id and action name, later we should have specific events for all kinds of changes
+export type ParticipantChangedEvtPayload = {
+    participantId: string;
+    actionName: string; // we can use audit actions for now
+}
+
+export class ParticipantChangedEvt extends DomainEventMsg {
+    boundedContextName: string = PARTICIPANTS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = PARTICIPANTS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ParticipantsBCTopics.DomainEvents;
+    payload: ParticipantChangedEvtPayload;
+
+    constructor(payload: ParticipantChangedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.participantId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO
+    }
+}
 

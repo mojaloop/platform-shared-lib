@@ -30,11 +30,13 @@
 
 "use strict";
 
+const PARTICIPANTS_BOUNDED_CONTEXT_NAME = "ParticipantsBc";
+const PARTICIPANTS_AGGREGATE_NAME = "Participants";
 
-export * from "./account-lookup-bc/";
-export * from "./quoting-bc/";
-export * from "./transfers-bc/";
-export * from "./settlements-bc/";
-export * from "./platform-configuration/";
-export * from "./participants-bc/";
+enum ParticipantsBCTopics {
+    "DomainEvents" = "ParticipantsBcEvents",
+}
 
+export {ParticipantsBCTopics , PARTICIPANTS_BOUNDED_CONTEXT_NAME, PARTICIPANTS_AGGREGATE_NAME};
+
+export * from "./events";
