@@ -233,7 +233,7 @@ export type BulkTransferPrepareRequestedEvtPayload = {
             }[]
         } | null;
     }[];
-    expiration: string;
+    expiration: number;
     extensionList: {
         extension: {
             key: string;
