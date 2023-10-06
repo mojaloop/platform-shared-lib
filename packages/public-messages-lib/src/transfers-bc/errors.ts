@@ -1106,6 +1106,29 @@ export class TransferUnableCreateReminderEvt extends DomainErrorEventMsg {
     }
 }
 
+export type TransferBCUnableToAddBulkTransferToDatabaseEvtPayload = {
+    bulkTransferId: string;
+    errorDescription: string;
+}
+export class TransferBCUnableToAddBulkTransferToDatabaseEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferBCUnableToAddBulkTransferToDatabaseEvtPayload;
+
+    constructor (payload: TransferBCUnableToAddBulkTransferToDatabaseEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = (payload.bulkTransferId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
 
 export type TransfersBCUnknownErrorPayload = {
     payerFspId: string;

@@ -214,17 +214,11 @@ export type BulkTransferPreparedEvtPayload = {
     bulkQuoteId: string;
     payeeFsp: string;
     payerFsp: string;
-    geoCode: {
-        latitude: string;
-        longitude: string;
-    } | null;
     expiration: string;
     individualTransfers: {
         transferId: string;
-        transferAmount: {
-            currency: string;
-            amount: string;
-        };
+        amount: string;
+        currencyCode: string;
         ilpPacket: string;
         condition: string;
         extensionList: {
@@ -247,7 +241,7 @@ export class BulkTransferPreparedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainRequests;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: BulkTransferPreparedEvtPayload;
 
@@ -300,7 +294,7 @@ export class BulkTransferFulfiledEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainRequests;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: BulkTransferFulfiledEvtPayload;
 
