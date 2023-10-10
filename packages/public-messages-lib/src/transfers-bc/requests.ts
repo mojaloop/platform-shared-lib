@@ -184,35 +184,6 @@ export class TransferTimeoutEvt extends DomainEventMsg {
     }
 }
 
-export type BulkTransferQueryReceivedEvtPayload = {
-    bulkTransferId: string;
-}
-
-export class BulkTransferQueryReceivedEvt extends DomainEventMsg {
-    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
-    aggregateId: string;
-    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainRequests;
-
-    payload: BulkTransferQueryReceivedEvtPayload;
-
-    constructor (payload: BulkTransferQueryReceivedEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.bulkTransferId;
-        this.payload = payload;
-    }
-
-    validatePayload (): void {
-        const { bulkTransferId } = this.payload;
-
-        if (!bulkTransferId) {
-            throw new Error("bulkTransferId is required.");
-		}
-    }
-}
-
 export type BulkTransferPrepareRequestedEvtPayload = {
     bulkTransferId: string;
     bulkQuoteId: string;
@@ -316,9 +287,9 @@ export class BulkTransferFulfilRequestedEvt extends DomainEventMsg {
     }
 }
 
-export type GetBulkTransferQueryRejectedEvtPayload = {
-    bulkTransferId: string,
-    errorInformation: {
+export type BulkTransferRejectRequestedEvtPayload = {
+	bulkTransferId: string;
+	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
         extensionList: {
@@ -330,16 +301,41 @@ export type GetBulkTransferQueryRejectedEvtPayload = {
 	}
 }
 
-export class GetBulkTransferQueryRejectedEvt extends DomainEventMsg {
+export class BulkTransferRejectRequestedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainRequests;
 
-    payload: GetBulkTransferQueryRejectedEvtPayload;
+    payload: BulkTransferRejectRequestedEvtPayload;
 
-    constructor (payload: GetBulkTransferQueryRejectedEvtPayload) {
+    constructor (payload: BulkTransferRejectRequestedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkTransferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type BulkTransferQueryReceivedEvtPayload = {
+    bulkTransferId: string;
+}
+
+export class BulkTransferQueryReceivedEvt extends DomainEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+
+    payload: BulkTransferQueryReceivedEvtPayload;
+
+    constructor (payload: BulkTransferQueryReceivedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.bulkTransferId;
@@ -347,6 +343,10 @@ export class GetBulkTransferQueryRejectedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        // TODO
+        const { bulkTransferId } = this.payload;
+
+        if (!bulkTransferId) {
+            throw new Error("bulkTransferId is required.");
+		}
     }
 }

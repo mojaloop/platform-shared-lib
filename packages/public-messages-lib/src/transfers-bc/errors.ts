@@ -1130,6 +1130,54 @@ export class TransferBCUnableToAddBulkTransferToDatabaseEvt extends DomainErrorE
     }
 }
 
+export type TransferUnableToGetBulkTransferByIdEvtPayload = {
+    bulkTransferId: string;
+    errorDescription: string;
+}
+export class TransferUnableToGetBulkTransferByIdEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferUnableToGetBulkTransferByIdEvtPayload;
+
+    constructor (payload: TransferUnableToGetBulkTransferByIdEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkTransferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type BulkTransferNotFoundEvtPayload = {
+    bulkTransferId: string;
+    errorDescription: string;
+}
+export class BulkTransferNotFoundEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: BulkTransferNotFoundEvtPayload;
+
+    constructor (payload: BulkTransferNotFoundEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.bulkTransferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 export type TransfersBCUnknownErrorPayload = {
     payerFspId: string;
     transferId: string;
