@@ -259,8 +259,8 @@ export class BulkTransferPreparedEvt extends DomainEventMsg {
 
 export type BulkTransferFulfiledEvtPayload = {
     bulkTransferId: string;
-	completedTimestamp: number,
-	bulkTransferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
+	completedTimestamp: number;
+	bulkTransferState: string;
     individualTransferResults: {
         transferId: string;
         fulfilment: string | null;
@@ -347,9 +347,28 @@ export class BulkTransferRejectRequestProcessedEvt extends DomainEventMsg {
 
 export type BulkTransferQueryResponseEvtPayload = {
 	bulkTransferId: string;
-	transferState: string;
-	fulfilment: string | null;
-	completedTimestamp: number | null;
+    completedTimestamp: number | null;
+    bulkTransferState: string;
+    individualTransferResults: {
+        transferId: string;
+        fulfilment: string | null;
+        errorInformation: {
+            errorCode: string;
+            errorDescription: string;
+            extensionList: {
+                extension: {
+                    key: string;
+                    value: string;
+                }[]
+            } | null;
+        }
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+    }[];
     extensionList: {
         extension: {
             key: string;
