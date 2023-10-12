@@ -390,7 +390,7 @@ export type BulkQuoteReceivedEvtPayload = {
             currency: string;
             amount: string;
         };
-        fees: {
+        feesPayer: {
             currency: string;
             amount: string;
         } | null;
@@ -496,8 +496,8 @@ export type BulkQuoteAcceptedEvtPayload = {
             currency: string;
             amount: string;
         } | null;
-        ilpPacket: string;
-        condition: string;
+        ilpPacket: string | null;
+        condition: string | null;
         errorInformation: {
             errorCode: string,
             errorDescription: string,
@@ -599,8 +599,8 @@ export type BulkQuoteQueryResponseEvtPayload = {
             currency: string;
             amount: string;
         } | null;
-        ilpPacket: string;
-        condition: string;
+        ilpPacket: string | null;
+        condition: string | null;
         errorInformation: {
             errorCode: string,
             errorDescription: string,
