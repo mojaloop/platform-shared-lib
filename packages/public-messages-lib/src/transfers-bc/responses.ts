@@ -43,6 +43,8 @@ export type TransferPreparedEvtPayload = {
 	ilpPacket: string;
 	condition: string;
 	expiration: number;
+    settlementModel: string;
+    preparedAt: number;
 	extensionList: {
         extension: {
             key: string;
@@ -88,6 +90,7 @@ export type TransferFulfiledEvtPayload = {
 	currencyCode: string;
 	settlementModel: string;
 	notifyPayee: boolean;
+    fulfiledAt: number;
 }
 
 export class TransferFulfiledEvt extends DomainEventMsg {
