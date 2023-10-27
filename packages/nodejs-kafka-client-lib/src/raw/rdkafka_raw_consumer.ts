@@ -291,8 +291,8 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 
 			if(kafkaMessages.length<=0) return callContinue();
 
-			// use the batch handler if batchSize > 1 and we have a batchHandlerCallback
-			if(this._batchSize > 1 && this._batchHandlerCallback){
+			// use the batch handler if we have a batchHandlerCallback
+			if(this._batchHandlerCallback){
 				const commitAndContinue = (msgs: IRawMessage[])=>{
 					this._commitMsg(kafkaMessages);
 					return callContinue();
