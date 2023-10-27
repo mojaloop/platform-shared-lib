@@ -107,8 +107,11 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 
 		this._client = new RDKafka.KafkaConsumer(this._globalConfig, this._topicConfig);
 
-		if(this._options.batchTimeoutMs)
-			this._client.setDefaultConsumeTimeout(this._options.batchTimeoutMs);
+		if(this._options.batchTimeoutMs) {
+            this._client.setDefaultConsumeTimeout(this._options.batchTimeoutMs);
+        }else {
+            this._client.setDefaultConsumeTimeout(defaultOptions.batchTimeoutMs);
+        }
 
 		this._client.on("ready", this._onReady.bind(this));
 		this._client.on("rebalance", this._onRebalance.bind(this));
