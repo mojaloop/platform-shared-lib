@@ -37,4 +37,5 @@ export * from "./transfers-bc/";
 export * from "./settlements-bc/";
 export * from "./platform-configuration/";
 export * from "./participants-bc/";
+export * from "./security-bc/";
 
