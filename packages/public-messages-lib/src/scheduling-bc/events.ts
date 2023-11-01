@@ -33,7 +33,7 @@
 import {DomainEventMsg} from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import {SCHEDULING_AGGREGATE_NAME, SCHEDULING_BOUNDED_CONTEXT_NAME} from "./index";
 
-export type CreateReminderEvtPayload = {
+export type CreatedReminderEvtPayload = {
     id: string;
     time: string; // TODO: Date.
     payload: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -46,15 +46,15 @@ export type CreateReminderEvtPayload = {
     };
 }
 
-export class CreateReminderEvt extends DomainEventMsg {
+export class CreatedReminderEvt extends DomainEventMsg {
     aggregateName: string = SCHEDULING_AGGREGATE_NAME
     aggregateId: string;
     boundedContextName: string = SCHEDULING_BOUNDED_CONTEXT_NAME;
     msgKey: string;
     msgTopic: string;
-    payload: CreateReminderEvtPayload;
+    payload: CreatedReminderEvtPayload;
 
-    constructor(payload: CreateReminderEvtPayload) {
+    constructor(payload: CreatedReminderEvtPayload) {
         super();
         this.aggregateId = this.msgKey = payload.id;
         this.payload = payload;
@@ -65,7 +65,7 @@ export class CreateReminderEvt extends DomainEventMsg {
     }
 }
 
-export type CreateSingleReminderEvtPayload = {
+export type CreatedSingleReminderEvtPayload = {
     id: string;
     time: string | number; // TODO: Date.
     payload: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -78,15 +78,15 @@ export type CreateSingleReminderEvtPayload = {
     };
 }
 
-export class CreateSingleReminderEvt extends DomainEventMsg {
+export class CreatedSingleReminderEvt extends DomainEventMsg {
     aggregateName: string = SCHEDULING_AGGREGATE_NAME;
     aggregateId: string;
     boundedContextName: string = SCHEDULING_BOUNDED_CONTEXT_NAME;
     msgKey: string;
     msgTopic: string;
-    payload: CreateSingleReminderEvtPayload;
+    payload: CreatedSingleReminderEvtPayload;
 
-    constructor(payload: CreateSingleReminderEvtPayload) {
+    constructor(payload: CreatedSingleReminderEvtPayload) {
         super();
         this.aggregateId = this.msgKey = payload.id;
         this.payload = payload;
@@ -97,19 +97,19 @@ export class CreateSingleReminderEvt extends DomainEventMsg {
 
 }
 
-export type DeleteReminderEvtPayload = {
+export type DeletedReminderEvtPayload = {
     id: string;
 }
 
-export class DeleteReminderEvt extends DomainEventMsg {
+export class DeletedReminderEvt extends DomainEventMsg {
     aggregateName: string = SCHEDULING_AGGREGATE_NAME;
     aggregateId: string;
     boundedContextName: string = SCHEDULING_BOUNDED_CONTEXT_NAME;
     msgKey: string;
     msgTopic: string;
-    payload: DeleteReminderEvtPayload;
+    payload: DeletedReminderEvtPayload;
 
-    constructor(payload: DeleteReminderEvtPayload) {
+    constructor(payload: DeletedReminderEvtPayload) {
         super();
         this.aggregateId = this.msgKey = payload.id;
         this.payload = payload;
@@ -120,20 +120,20 @@ export class DeleteReminderEvt extends DomainEventMsg {
 
 }
 
-export type DeleteRemindersEvtPayload = {
+export type DeletedRemindersEvtPayload = {
     id:string;
 }
 
 
-export class DeleteRemindersEvt extends DomainEventMsg {
+export class DeletedRemindersEvt extends DomainEventMsg {
     aggregateName: string = SCHEDULING_AGGREGATE_NAME;
     aggregateId: string;
     boundedContextName: string = SCHEDULING_BOUNDED_CONTEXT_NAME;
     msgKey: string;
     msgTopic: string;
-    payload: DeleteRemindersEvtPayload;
+    payload: DeletedRemindersEvtPayload;
 
-    constructor(payload: DeleteRemindersEvtPayload) {
+    constructor(payload: DeletedRemindersEvtPayload) {
         super();
         this.aggregateId = this.msgKey = payload.id;
         this.payload = payload;
