@@ -26,7 +26,7 @@
  ******/
 
 export const SCHEDULING_BOUNDED_CONTEXT_NAME = "scheduling-bc";
-export const SCHEDULING_AGGREGATE_NAME = "scheduling-bc-domain-lib";
+export const SCHEDULING_AGGREGATE_NAME = "Scheduling";
 
 export enum SchedulingBcTopics{
     "Commands" = "SchedulingBcCommands",
