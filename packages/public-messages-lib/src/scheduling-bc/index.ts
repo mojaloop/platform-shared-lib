@@ -19,24 +19,18 @@
  their names indented and be marked with a '-'. Email address can be added
  optionally within square brackets <email>.
 
- * Gates Foundation
- - Name Surname <name.surname@gatesfoundation.com>
-
- * Crosslake
- - Pedro Sousa Barreto <pedrob@crosslaketech.com>
+ * Alfajiri
+ - Elijah Okello <elijahokello90@gmail.com>
 
  --------------
  ******/
 
-"use strict";
+export const SCHEDULING_BOUNDED_CONTEXT_NAME = "scheduling-bc";
+export const SCHEDULING_AGGREGATE_NAME = "Scheduling";
 
+export enum SchedulingBcTopics{
+    "Commands" = "SchedulingBcCommands",
+    "DomainEvents" = "SchedulingBcEvents"
+}
 
-export * from "./account-lookup-bc/";
-export * from "./quoting-bc/";
-export * from "./transfers-bc/";
-export * from "./settlements-bc/";
-export * from "./platform-configuration/";
-export * from "./participants-bc/";
-export * from "./security-bc/";
-export * from "./scheduling-bc/";
-
+export * from "./events";

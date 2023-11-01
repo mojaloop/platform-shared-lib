@@ -1,51 +1,51 @@
 {
-  "name": "@mojaloop/platform-shared-lib-nodejs-kafka-client-lib",
-  "version": "0.3.69",
-  "description": "mojaloop vnext platform shared libraries",
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/mojaloop/platform-shared-lib/tree/main/modules/nodejs-kafka-client-lib",
-  "bugs": {
-    "url": "https://github.com/mojaloop/platform-shared-lib/issues#readme"
-  },
-  "contributors": [
-    "Miguel de Barros <miguel.debarros@modusbox.com>",
-    "Pedro Sousa Barreto <pedrosousabarreto@gmail.com>"
-  ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "/dist"
-  ],
-  "scripts": {
-    "start": "npm run service",
-    "service": "tsc && node dist/index.js --config ../../.env",
-    "build": "tsc",
-    "watch": "tsc -w",
-    "clean": "npm run clean:npm; npm run clean:dist",
-    "clean:dist": "rm -rf dist",
-    "clean:npm": "rm -rf node_modules",
-    "pretest": "npm run build",
-    "standard": "npm run lint",
-    "lint": "npm run build && npx eslint ./src",
-    "lint:fix": "npm run build && npx eslint ./src --fix",
-    "test:unit": "jest --passWithNoTests --testMatch **/test/unit/**/*.test.ts",
-    "test:unit-report": "jest --passWithNoTests --testMatch **/test/unit/**/*.test.ts",
-    "test:coverage": "jest --reporters=default --reporters=jest-junit --passWithNoTests --coverage --coverageThreshold='{}' --testMatch **/test/unit/**/*.test.ts",
-    "test:coverage-check": "jest --coverage --testMatch **/test/unit/**/*.test.ts",
-    "test:integration": "jest --passWithNoTests --testMatch **/test/integration/**/*.test.ts",
-    "dep:check": "ncu -e 2",
-    "dep:update": "ncu -u"
-  },
-  "dependencies": {
-    "@mojaloop/logging-bc-public-types-lib": "^0.1.19",
-    "@mojaloop/platform-shared-lib-messaging-types-lib": "~0.2.82",
-    "node-rdkafka": "~2.15.0"
-  },
-  "devDependencies": {
-    "eslint": "^8.38.0",
-    "jest": "^29.5.0",
-    "npm-check-updates": "^16.10.9",
-    "ts-jest": "^29.1.0",
-    "typescript": "^4.6.4"
-  }
+    "name": "@mojaloop/platform-shared-lib-nodejs-kafka-client-lib",
+    "version": "0.3.69",
+    "description": "mojaloop vnext platform shared libraries",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/mojaloop/platform-shared-lib/tree/main/modules/nodejs-kafka-client-lib",
+    "bugs": {
+        "url": "https://github.com/mojaloop/platform-shared-lib/issues#readme"
+    },
+    "contributors": [
+        "Miguel de Barros <miguel.debarros@modusbox.com>",
+        "Pedro Sousa Barreto <pedrosousabarreto@gmail.com>"
+    ],
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "/dist"
+    ],
+    "scripts": {
+        "start": "npm run service",
+        "service": "tsc && node dist/index.js --config ../../.env",
+        "build": "tsc",
+        "watch": "tsc -w",
+        "clean": "npm run clean:npm; npm run clean:dist",
+        "clean:dist": "rm -rf dist",
+        "clean:npm": "rm -rf node_modules",
+        "pretest": "npm run build",
+        "standard": "npm run lint",
+        "lint": "npm run build && npx eslint ./src",
+        "lint:fix": "npm run build && npx eslint ./src --fix",
+        "test:unit": "jest --passWithNoTests --testMatch **/test/unit/**/*.test.ts",
+        "test:unit-report": "jest --passWithNoTests --testMatch **/test/unit/**/*.test.ts",
+        "test:coverage": "jest --reporters=default --reporters=jest-junit --passWithNoTests --coverage --coverageThreshold='{}' --testMatch **/test/unit/**/*.test.ts",
+        "test:coverage-check": "jest --coverage --testMatch **/test/unit/**/*.test.ts",
+        "test:integration": "jest --passWithNoTests --testMatch **/test/integration/**/*.test.ts",
+        "dep:check": "ncu -e 2",
+        "dep:update": "ncu -u"
+    },
+    "dependencies": {
+        "@mojaloop/logging-bc-public-types-lib": "^0.1.19",
+        "@mojaloop/platform-shared-lib-messaging-types-lib": "~0.2.82",
+        "node-rdkafka": "~2.15.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.38.0",
+        "jest": "^29.5.0",
+        "npm-check-updates": "^16.10.9",
+        "ts-jest": "^29.1.0",
+        "typescript": "^4.6.4"
+    }
 }
