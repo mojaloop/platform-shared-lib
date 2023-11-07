@@ -49,6 +49,9 @@ export type TransferPrepareRequestedEvtPayload = {
             value: string;
         }[]
     } | null;
+    payerIdType: string; 
+    payeeIdType: string;
+    transferType: string;
 }
 
 export class TransferPrepareRequestedEvt extends DomainEventMsg {
@@ -203,6 +206,9 @@ export type BulkTransferPrepareRequestedEvtPayload = {
                 value: string;
             }[]
         } | null;
+        payerIdType: string; 
+        payeeIdType: string;
+        transferType: string;
     }[];
     expiration: number;
     extensionList: {
