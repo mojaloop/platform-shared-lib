@@ -1,6 +1,6 @@
 {
     "name": "@mojaloop/platform-shared-lib-messaging-types-lib",
-    "version": "0.2.102",
+    "version": "0.2.103",
     "description": "mojaloop vnext platform shared libraries - generic messaging types lib",
     "license": "Apache-2.0",
     "homepage": "https://github.com/mojaloop/platform-shared-lib/tree/main/packages/messaging-types-lib",
