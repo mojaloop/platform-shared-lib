@@ -436,4 +436,62 @@ export class AccountLookupBCRequiredRequesterParticipantIsNotActiveErrorEvent ex
     }
 }
 
+export type AccountLookupBCRequiredDestinationParticipantIsNotApprovedErrorPayload = {
+    partyId: string;
+    partyType: string;
+    partySubType: string | null;
+    destinationFspId: string | null;
+    errorDescription: string;
+}
+
+
+export class AccountLookupBCRequiredDestinationParticipantIsNotApprovedErrorEvent extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainErrors;
+    payload: AccountLookupBCRequiredDestinationParticipantIsNotApprovedErrorPayload;
+
+    constructor (payload: AccountLookupBCRequiredDestinationParticipantIsNotApprovedErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type AccountLookupBCRequiredRequesterParticipantIsNotApprovedErrorPayload = {
+    partyId: string;
+    partyType: string;
+    partySubType: string | null;
+    requesterFspId: string | null;
+    errorDescription: string;
+}
+
+
+export class AccountLookupBCRequiredRequesterParticipantIsNotApprovedErrorEvent extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainErrors;
+    payload: AccountLookupBCRequiredRequesterParticipantIsNotApprovedErrorPayload;
+
+    constructor (payload: AccountLookupBCRequiredRequesterParticipantIsNotApprovedErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 

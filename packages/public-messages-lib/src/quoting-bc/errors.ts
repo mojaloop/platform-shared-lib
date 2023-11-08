@@ -223,6 +223,58 @@ export class QuoteBCRequesterParticipantNotFoundErrorEvent extends DomainEventMs
     }
 }
 
+export type QuoteBCRequiredDestinationParticipantIsNotApprovedErrorPayload = {
+    destinationFspId: string;
+    errorDescription: string;
+    quoteId: string | null;
+    bulkQuoteId: string | null;
+}
+export class QuoteBCRequiredDestinationParticipantIsNotApprovedErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+
+    payload: QuoteBCRequiredDestinationParticipantIsNotApprovedErrorPayload;
+
+    constructor (payload: QuoteBCRequiredDestinationParticipantIsNotApprovedErrorPayload) {
+        super();
+        this.aggregateId = this.msgKey = (payload.destinationFspId ?? payload.destinationFspId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type QuoteBCRequiredRequesterParticipantIsNotApprovedErrorPayload = {
+    requesterFspId: string;
+    errorDescription: string;
+    quoteId: string | null;
+    bulkQuoteId: string | null;
+}
+export class QuoteBCRequiredRequesterParticipantIsNotApprovedErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+
+    payload: QuoteBCRequiredRequesterParticipantIsNotApprovedErrorPayload;
+
+    constructor (payload: QuoteBCRequiredRequesterParticipantIsNotApprovedErrorPayload) {
+        super();
+        this.aggregateId = this.msgKey = (payload.requesterFspId ?? payload.requesterFspId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 export type QuoteBCRequiredDestinationParticipantIsNotActiveErrorPayload = {
     destinationFspId: string;
     errorDescription: string;
@@ -262,11 +314,11 @@ export class QuoteBCRequiredRequesterParticipantIsNotActiveErrorEvent extends Do
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainEvents;
 
-    payload: QuoteBCRequiredDestinationParticipantIsNotActiveErrorPayload;
+    payload: QuoteBCRequiredRequesterParticipantIsNotActiveErrorPayload;
 
-    constructor (payload: QuoteBCRequiredDestinationParticipantIsNotActiveErrorPayload) {
+    constructor (payload: QuoteBCRequiredRequesterParticipantIsNotActiveErrorPayload) {
         super();
-        this.aggregateId = this.msgKey = (payload.destinationFspId ?? payload.destinationFspId) as string;
+        this.aggregateId = this.msgKey = (payload.requesterFspId ?? payload.requesterFspId) as string;
         this.payload = payload;
     }
 
