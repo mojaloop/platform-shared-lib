@@ -392,7 +392,7 @@ export class AccountLookupBCRequiredDestinationParticipantIsNotActiveErrorEvent 
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainErrors;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: AccountLookupBCRequiredDestinationParticipantIsNotActiveErrorPayload;
 
     constructor (payload: AccountLookupBCRequiredDestinationParticipantIsNotActiveErrorPayload) {
@@ -421,7 +421,7 @@ export class AccountLookupBCRequiredRequesterParticipantIsNotActiveErrorEvent ex
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainErrors;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: AccountLookupBCRequiredRequesterParticipantIsNotActiveErrorPayload;
 
     constructor (payload: AccountLookupBCRequiredRequesterParticipantIsNotActiveErrorPayload) {
@@ -450,7 +450,7 @@ export class AccountLookupBCRequiredDestinationParticipantIsNotApprovedErrorEven
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainErrors;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: AccountLookupBCRequiredDestinationParticipantIsNotApprovedErrorPayload;
 
     constructor (payload: AccountLookupBCRequiredDestinationParticipantIsNotApprovedErrorPayload) {
@@ -479,7 +479,7 @@ export class AccountLookupBCRequiredRequesterParticipantIsNotApprovedErrorEvent 
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = AccountLookupBCTopics.DomainErrors;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
     payload: AccountLookupBCRequiredRequesterParticipantIsNotApprovedErrorPayload;
 
     constructor (payload: AccountLookupBCRequiredRequesterParticipantIsNotApprovedErrorPayload) {

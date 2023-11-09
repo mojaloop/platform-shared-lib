@@ -750,6 +750,80 @@ export class TransferHubNotFoundFailedEvt extends DomainErrorEventMsg {
     }
 }
 
+export type TransferHubIdMismatchEvtPayload = {
+    hubId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferHubIdMismatchEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferHubIdMismatchEvtPayload;
+
+    constructor (payload: TransferHubIdMismatchEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferHubNotActiveEvtPayload = {
+    hubId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferHubNotActiveEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferHubNotActiveEvtPayload;
+
+    constructor (payload: TransferHubNotActiveEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferHubNotApprovedEvtPayload = {
+    hubId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferHubNotApprovedEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferHubNotApprovedEvtPayload;
+
+    constructor (payload: TransferHubNotApprovedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
 
 export type TransferHubAccountNotFoundFailedEvtPayload = {
     transferId: string;
@@ -875,6 +949,31 @@ export class TransferPayeeLiquidityAccountNotFoundFailedEvt extends DomainErrorE
     }
 }
 
+export type TransferPayerIdMismatchEvtPayload = {
+    payerFspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPayerIdMismatchEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPayerIdMismatchEvtPayload;
+
+    constructor (payload: TransferPayerIdMismatchEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 export type TransferPayerNotActiveEvtPayload = {
     payerFspId: string;
     transferId: string;
@@ -914,6 +1013,31 @@ export class TransferPayerNotApprovedEvt extends DomainErrorEventMsg {
     payload: TransferPayerNotApprovedEvtPayload;
 
     constructor (payload: TransferPayerNotApprovedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type TransferPayeeIdMismatchEvtPayload = {
+    payeeFspId: string;
+    transferId: string;
+    errorDescription: string;
+}
+export class TransferPayeeIdMismatchEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferPayeeIdMismatchEvtPayload;
+
+    constructor (payload: TransferPayeeIdMismatchEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
