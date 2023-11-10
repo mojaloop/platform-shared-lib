@@ -223,6 +223,58 @@ export class QuoteBCRequesterParticipantNotFoundErrorEvent extends DomainEventMs
     }
 }
 
+export type QuoteBCRequiredDestinationParticipantIdMismatchErrorPayload = {
+    destinationFspId: string;
+    errorDescription: string;
+    quoteId: string | null;
+    bulkQuoteId: string | null;
+}
+export class QuoteBCRequiredDestinationParticipantIdMismatchErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+
+    payload: QuoteBCRequiredDestinationParticipantIdMismatchErrorPayload;
+
+    constructor (payload: QuoteBCRequiredDestinationParticipantIdMismatchErrorPayload) {
+        super();
+        this.aggregateId = this.msgKey = (payload.destinationFspId ?? payload.destinationFspId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type QuoteBCRequiredRequesterParticipantIdMismatchErrorPayload = {
+    requesterFspId: string;
+    errorDescription: string;
+    quoteId: string | null;
+    bulkQuoteId: string | null;
+}
+export class QuoteBCRequiredRequesterParticipantIdMismatchErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+
+    payload: QuoteBCRequiredRequesterParticipantIdMismatchErrorPayload;
+
+    constructor (payload: QuoteBCRequiredRequesterParticipantIdMismatchErrorPayload) {
+        super();
+        this.aggregateId = this.msgKey = (payload.requesterFspId ?? payload.requesterFspId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 export type QuoteBCRequiredDestinationParticipantIsNotApprovedErrorPayload = {
     destinationFspId: string;
     errorDescription: string;

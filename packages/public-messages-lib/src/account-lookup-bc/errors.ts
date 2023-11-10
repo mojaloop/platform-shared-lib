@@ -378,6 +378,64 @@ export class AccountLookUpBCOperatorErrorEvent extends DomainEventMsg {
     }
 }
 
+export type AccountLookupBCRequiredDestinationParticipantIdMismatchErrorPayload = {
+    partyId: string;
+    partyType: string;
+    partySubType: string | null;
+    destinationFspId: string | null;
+    errorDescription: string;
+}
+
+
+export class AccountLookupBCRequiredDestinationParticipantIdMismatchErrorEvent extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+    payload: AccountLookupBCRequiredDestinationParticipantIdMismatchErrorPayload;
+
+    constructor (payload: AccountLookupBCRequiredDestinationParticipantIdMismatchErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+export type AccountLookupBCRequiredRequesterParticipantIdMismatchErrorPayload = {
+    partyId: string;
+    partyType: string;
+    partySubType: string | null;
+    requesterFspId: string | null;
+    errorDescription: string;
+}
+
+
+export class AccountLookupBCRequiredRequesterParticipantIdMismatchErrorEvent extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+    payload: AccountLookupBCRequiredRequesterParticipantIdMismatchErrorPayload;
+
+    constructor (payload: AccountLookupBCRequiredRequesterParticipantIdMismatchErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
 export type AccountLookupBCRequiredDestinationParticipantIsNotActiveErrorPayload = {
     partyId: string;
     partyType: string;
