@@ -113,6 +113,12 @@ export type TransferRejectRequestedEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
 	}
 }
 
