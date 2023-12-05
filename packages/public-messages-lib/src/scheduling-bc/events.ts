@@ -47,7 +47,7 @@ export type CreatedReminderEvtPayload = {
 }
 
 export class CreatedReminderEvt extends DomainEventMsg {
-    aggregateName: string = SCHEDULING_AGGREGATE_NAME
+    aggregateName: string = SCHEDULING_AGGREGATE_NAME;
     aggregateId: string;
     boundedContextName: string = SCHEDULING_BOUNDED_CONTEXT_NAME;
     msgKey: string;
