@@ -35,8 +35,8 @@ export const SECURITY_AUTHORIZATION_AGGREGATE_NAME = "Authorization";
 export const SECURITY_AUTHENTICATION_AGGREGATE_NAME = "Authentication";
 export const SECURITY_BUILTIN_IAM_AGGREGATE_NAME = "BuiltinIdentity";
 
-export enum SecurityAuthorizationBCTopics {
-    "DomainEvents" = "SecurityBcAuthorizationEvents"
+export enum SecurityBCTopics {
+    "DomainEvents" = "SecurityBcEvents"
 }
 
 export * from "./events";

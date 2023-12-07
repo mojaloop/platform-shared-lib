@@ -31,7 +31,12 @@
 "use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import {SECURITY_AUTHORIZATION_AGGREGATE_NAME, SECURITY_BOUNDED_CONTEXT_NAME, SecurityAuthorizationBCTopics} from ".";
+import {
+    SECURITY_AUTHENTICATION_AGGREGATE_NAME,
+    SECURITY_AUTHORIZATION_AGGREGATE_NAME,
+    SECURITY_BOUNDED_CONTEXT_NAME, SECURITY_BUILTIN_IAM_AGGREGATE_NAME,
+    SecurityBCTopics
+} from ".";
 
 export type PlatformRoleChangedEvtPayload = {
   roleId: string;
@@ -42,7 +47,7 @@ export class PlatformRoleChangedEvt extends DomainEventMsg {
   aggregateId: string;
   aggregateName: string = SECURITY_AUTHORIZATION_AGGREGATE_NAME;
   msgKey: string;
-  msgTopic: string = SecurityAuthorizationBCTopics.DomainEvents;
+  msgTopic: string = SecurityBCTopics.DomainEvents;
   payload: PlatformRoleChangedEvtPayload;
 
   constructor(payload: PlatformRoleChangedEvtPayload) {
@@ -55,4 +60,125 @@ export class PlatformRoleChangedEvt extends DomainEventMsg {
   validatePayload(): void {
     // TODO
   }
+}
+
+export type AuthTokenInvalidatedEvtPayload = {
+    tokenId:string;
+    tokenExpirationDateTimestamp:number;
+}
+
+export class AuthTokenInvalidatedEvt extends DomainEventMsg {
+    boundedContextName: string = SECURITY_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = SECURITY_AUTHENTICATION_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = SecurityBCTopics.DomainEvents;
+    payload: AuthTokenInvalidatedEvtPayload;
+
+    constructor(payload: AuthTokenInvalidatedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.tokenId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO
+    }
+}
+
+export type UserRoleRemovedEvtPayload = {
+    userId:string;
+    roleId:string;
+}
+
+export class UserRoleRemovedEvt extends DomainEventMsg {
+    boundedContextName: string = SECURITY_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = SECURITY_AUTHORIZATION_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = SecurityBCTopics.DomainEvents;
+    payload: UserRoleRemovedEvtPayload;
+
+    constructor(payload: UserRoleRemovedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.userId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO
+    }
+}
+
+export type AppRoleRemovedEvtPayload = {
+    clientId:string;
+    roleId:string;
+}
+
+export class AppRoleRemovedEvt extends DomainEventMsg {
+    boundedContextName: string = SECURITY_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = SECURITY_AUTHORIZATION_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = SecurityBCTopics.DomainEvents;
+    payload: AppRoleRemovedEvtPayload;
+
+    constructor(payload: AppRoleRemovedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.clientId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO
+    }
+}
+
+export type UserDisabledEvtPayload = {
+    userId:string;
+}
+export class UserDisabledEvt extends DomainEventMsg {
+    boundedContextName: string = SECURITY_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = SECURITY_BUILTIN_IAM_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = SecurityBCTopics.DomainEvents;
+    payload: UserDisabledEvtPayload;
+
+    constructor(payload: UserDisabledEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.userId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO
+    }
+}
+
+export type AppDisabledEvtPayload = {
+    clientId:string;
+}
+export class AppDisabledEvt extends DomainEventMsg {
+    boundedContextName: string = SECURITY_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = SECURITY_BUILTIN_IAM_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = SecurityBCTopics.DomainEvents;
+    payload: AppDisabledEvtPayload;
+
+    constructor(payload: AppDisabledEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.clientId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO
+    }
 }
