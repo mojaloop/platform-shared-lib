@@ -89,7 +89,7 @@ export class AuthTokenInvalidatedEvt extends DomainEventMsg {
 
 export type UserRoleRemovedEvtPayload = {
     userId:string;
-    roleId:string;
+    roleIds:string[];
 }
 
 export class UserRoleRemovedEvt extends DomainEventMsg {
@@ -114,7 +114,7 @@ export class UserRoleRemovedEvt extends DomainEventMsg {
 
 export type AppRoleRemovedEvtPayload = {
     clientId:string;
-    roleId:string;
+    roleIds:string[];
 }
 
 export class AppRoleRemovedEvt extends DomainEventMsg {
