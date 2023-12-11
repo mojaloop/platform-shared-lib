@@ -39,6 +39,7 @@ import * as RDKafka from "node-rdkafka";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {LibrdKafkaError, Metadata} from "node-rdkafka/index";
 import {IRawMessage, IRawMessageConsumer} from "./raw_types";
+import * as crypto from "crypto";
 
 export enum MLKafkaRawConsumerOutputType {
 	Raw,
@@ -145,7 +146,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		// we want to always receive the event events
 		this._globalConfig.event_cb = true;
 
-		// apply local defaults
+		// apply local defaults - if not provided by options
 		if (this._options.useSyncCommit === undefined) {
 			this._options.useSyncCommit = defaultOptions.useSyncCommit;
 		}
@@ -171,10 +172,6 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 			this._globalConfig["client.id"] = this._options.consumerClientId;
 		}
 
-		if (this._options.kafkaGroupId !== undefined) {
-			this._globalConfig["group.id"] = this._options.kafkaGroupId;
-		}
-
 		if (this._options.messageMaxBytes !== undefined) {
 			this._globalConfig["message.max.bytes"] = this._options.messageMaxBytes;
 		}
@@ -182,6 +179,9 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		if (this._options.sessionTimeoutMs !== undefined) {
 			this._globalConfig["session.timeout.ms"] = this._options.sessionTimeoutMs;
 		}
+
+        // group.id is required, if not provided, generate a random one
+        this._globalConfig["group.id"] = this._options.kafkaGroupId || crypto.randomUUID();
 
 		// topic configs
 		this._topicConfig["auto.offset.reset"] = this._options.autoOffsetReset;
@@ -431,6 +431,16 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 					this._logger?.isErrorEnabled() && this._logger.error(err, "MLRawKafkaConsumer - error connecting to cluster");
 					return reject(new Error(`MLRawKafkaConsumer - error connecting to cluster: ${err.message}`));
 				}
+
+                // throw if topics not found in metadata
+                if(this._topics){
+                    this._topics.forEach(topicName => {
+                        const found = metadata.topics.find(value => value.name.toUpperCase()===topicName.toUpperCase());
+                        if(!found){
+                            throw new Error(`Topic "${topicName}" not found in kafka, cannot continue`);
+                        }
+                    });
+                }
 
 				// metadata is handled by the onReady event
 				this._logger?.isInfoEnabled() && this._logger.info("MLRawKafkaConsumer - connected!");
