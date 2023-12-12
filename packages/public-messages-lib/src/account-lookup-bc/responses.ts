@@ -200,6 +200,12 @@ export type PartyQueryResponseEvtPayload = {
     middleName: string;
     lastName: string;
     partyDoB: Date | null;
+    extensionList: {
+        extension: {
+            key: string;
+            value: string;
+        }[]
+    } | null;
 }
 
 export class PartyQueryResponseEvt extends DomainEventMsg {
