@@ -39,4 +39,5 @@ export * from "./platform-configuration/";
 export * from "./participants-bc/";
 export * from "./security-bc/";
 export * from "./scheduling-bc/";
+export * from "./cert-management-bc/";
 
