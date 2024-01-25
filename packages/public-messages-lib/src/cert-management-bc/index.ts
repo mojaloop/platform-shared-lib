@@ -25,19 +25,21 @@
  * Crosslake
  - Pedro Sousa Barreto <pedrob@crosslaketech.com>
 
+ * ThitsaWorks
+ - Si Thu Myo <sithu.myo@thitsaworks.com>
+
  --------------
  ******/
 
 "use strict";
 
+const CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME = "CertManagementBc";
+const CERT_MANAGEMENT_AGGREGATE_NAME = "Party";
 
-export * from "./account-lookup-bc/";
-export * from "./quoting-bc/";
-export * from "./transfers-bc/";
-export * from "./settlements-bc/";
-export * from "./platform-configuration/";
-export * from "./participants-bc/";
-export * from "./security-bc/";
-export * from "./scheduling-bc/";
-export * from "./cert-management-bc/";
+enum CertManagementBCTopics {
+    "DomainEvents" = "CertManagementBcEvents",
+}
+
+export { CertManagementBCTopics, CERT_MANAGEMENT_AGGREGATE_NAME, CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME };
+export * from "./events";
 
