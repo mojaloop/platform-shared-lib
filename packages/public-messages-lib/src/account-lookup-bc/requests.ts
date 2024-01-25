@@ -216,6 +216,8 @@ export type PartyInfoAvailableEvtPayload = {
             value: string;
         }[]
     } | null;
+    kycInfo: string | null;
+    supportedCurrencies: string[] | null;
 }
 
 export class PartyInfoAvailableEvt extends DomainEventMsg {
