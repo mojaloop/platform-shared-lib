@@ -206,6 +206,8 @@ export type PartyQueryResponseEvtPayload = {
             value: string;
         }[]
     } | null;
+    kycInfo: string | null;
+    supportedCurrencies: string[] | null;
 }
 
 export class PartyQueryResponseEvt extends DomainEventMsg {
