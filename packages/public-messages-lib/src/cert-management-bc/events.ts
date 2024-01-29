@@ -40,20 +40,20 @@ import {
     CERT_MANAGEMENT_AGGREGATE_NAME,
 } from "./index";
 
-export type CertQueryEvtPayload = {
+export type CertQueryReceivedEvtPayload = {
     requesterFspId: string;
     participantId: string; // certId
 };
 
-export class CertQueryEvt extends DomainEventMsg {
+export class CertQueryReceivedEvt extends DomainEventMsg {
     boundedContextName: string = CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = CERT_MANAGEMENT_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = CertManagementBCTopics.DomainEvents;
-    payload: CertQueryEvtPayload;
+    payload: CertQueryReceivedEvtPayload;
 
-    constructor(payload: CertQueryEvtPayload) {
+    constructor(payload: CertQueryReceivedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.participantId;
