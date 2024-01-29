@@ -40,6 +40,31 @@ import {
     CERT_MANAGEMENT_AGGREGATE_NAME,
 } from "./index";
 
+export type CertQueryEvtPayload = {
+    requesterFspId: string;
+    participantId: string; // certId
+};
+
+export class CertQueryEvt extends DomainEventMsg {
+    boundedContextName: string = CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = CERT_MANAGEMENT_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = CertManagementBCTopics.DomainEvents;
+    payload: CertQueryEvtPayload;
+
+    constructor(payload: CertQueryEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.participantId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO
+    }
+}
+
 export type CertCreatedEvtPayload = {
     participantId: string;
 };
