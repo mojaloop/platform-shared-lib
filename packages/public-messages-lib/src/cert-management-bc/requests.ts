@@ -40,27 +40,20 @@ import {
     CERT_MANAGEMENT_AGGREGATE_NAME,
 } from "./index";
 
-export type CertCreatedEvtPayload = {
-    participantId: string;
+export type CertQueryReceivedEvtPayload = {
+    requesterFspId: string;
+    participantId: string; // certId
 };
 
-export type CertChangedEvtPayload = {
-    participantId: string;
-};
-
-export type CertDeletedEvtPayload = {
-    participantId: string;
-};
-
-export class CertCreatedEvt extends DomainEventMsg {
+export class CertQueryReceivedEvt extends DomainEventMsg {
     boundedContextName: string = CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = CERT_MANAGEMENT_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = CertManagementBCTopics.DomainEvents;
-    payload: CertCreatedEvtPayload;
+    payload: CertQueryReceivedEvtPayload;
 
-    constructor(payload: CertCreatedEvtPayload) {
+    constructor(payload: CertQueryReceivedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.participantId;
@@ -72,15 +65,43 @@ export class CertCreatedEvt extends DomainEventMsg {
     }
 }
 
-export class CertChangedEvt extends DomainEventMsg {
+export type CertListQueryReceivedEvtPayload = {
+    participantId: string;
+};
+
+export class CertListQueryReceivedEvt extends DomainEventMsg {
     boundedContextName: string = CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = CERT_MANAGEMENT_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = CertManagementBCTopics.DomainEvents;
-    payload: CertChangedEvtPayload;
+    payload: CertListQueryReceivedEvtPayload;
 
-    constructor(payload: CertChangedEvtPayload) {
+    constructor(payload: CertListQueryReceivedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.participantId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+    }
+}
+
+export type CertCreateReceiveEvtPayload = {
+    participantId: string;
+    cert: string;
+};
+
+export class CertCreateReceiveEvt extends DomainEventMsg {
+    boundedContextName: string = CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = CERT_MANAGEMENT_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = CertManagementBCTopics.DomainEvents;
+    payload: CertCreateReceiveEvtPayload;
+
+    constructor(payload: CertCreateReceiveEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.participantId;
@@ -92,15 +113,19 @@ export class CertChangedEvt extends DomainEventMsg {
     }
 }
 
-export class CertDeletedEvt extends DomainEventMsg {
+export type CertChangeReceiveEvtPayload = {
+    participantId: string;
+};
+
+export class CertChangeReceiveEvt extends DomainEventMsg {
     boundedContextName: string = CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = CERT_MANAGEMENT_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = CertManagementBCTopics.DomainEvents;
-    payload: CertDeletedEvtPayload;
+    payload: CertChangeReceiveEvtPayload;
 
-    constructor(payload: CertDeletedEvtPayload) {
+    constructor(payload: CertChangeReceiveEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.participantId;
@@ -111,3 +136,28 @@ export class CertDeletedEvt extends DomainEventMsg {
         // TODO
     }
 }
+
+export type CertDeleteReceivedEvtPayload = {
+    participantId: string;
+};
+
+export class CertDeleteReceivedEvt extends DomainEventMsg {
+    boundedContextName: string = CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = CERT_MANAGEMENT_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = CertManagementBCTopics.DomainEvents;
+    payload: CertDeleteReceivedEvtPayload;
+
+    constructor(payload: CertDeleteReceivedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.participantId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO
+    }
+}
+

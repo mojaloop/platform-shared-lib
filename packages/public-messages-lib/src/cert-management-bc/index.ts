@@ -41,5 +41,6 @@ enum CertManagementBCTopics {
 }
 
 export { CertManagementBCTopics, CERT_MANAGEMENT_AGGREGATE_NAME, CERT_MANAGEMENT_BOUNDED_CONTEXT_NAME };
-export * from "./events";
-
+export * from "./errors";
+export * from "./requests";
+export * from "./responses";
