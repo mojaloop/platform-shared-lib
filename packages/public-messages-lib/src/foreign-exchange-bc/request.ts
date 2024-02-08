@@ -25,38 +25,45 @@
  * Crosslake
  - Pedro Sousa Barreto <pedrob@crosslaketech.com>
 
+ * Arg Software
+ - Jose Francisco Antunes<jfantunes@arg.software>
+ - Rui Rocha<rui.rocha@arg.software>
+
  --------------
  ******/
 
- "use strict";
+"use strict";
+
+import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics } from ".";
 
 
- import {DomainEventMsg} from "@mojaloop/platform-shared-lib-messaging-types-lib";
- import {FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics} from "./index";
+export type FxQueryReceivedEvtPayload = {
+    requesterFspId: string;
+    sourceCurrency: string | null;
+    targetCurrency: string | null;
+};
 
- // simple change event with id and action name, later we should have specific events for all kinds of changes
- export type ForeignExchangeChangedEvtPayload = {
-     participantId: string;
-     actionName: string; // we can use audit actions for now
- }
+export class FxQueryReceivedEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainRequests;
+    payload: FxQueryReceivedEvtPayload;
 
- export class ForeignExchangeChangedEvt extends DomainEventMsg {
-     boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
-     aggregateId: string;
-     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
-     msgKey: string;
-     msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
-     payload: ForeignExchangeChangedEvtPayload;
+    constructor(payload: FxQueryReceivedEvtPayload) {
+        super();
 
-     constructor(payload: ForeignExchangeChangedEvtPayload) {
-         super();
+        this.aggregateId = this.msgKey = payload.requesterFspId;
+        this.payload = payload;
+    }
 
-         this.aggregateId = this.msgKey = payload.participantId;
-         this.payload = payload;
-     }
+    validatePayload (): void {
+        const { requesterFspId } = this.payload;
 
-     validatePayload(): void {
-         // TODO
-     }
- }
-
+		if (!requesterFspId) {
+            throw new Error("requesterFspId is required.");
+		}
+    }
+}

@@ -25,22 +25,44 @@
  * Crosslake
  - Pedro Sousa Barreto <pedrob@crosslaketech.com>
 
+ * Arg Software
+ - Jose Francisco Antunes<jfantunes@arg.software>
+ - Rui Rocha<rui.rocha@arg.software>
+
  --------------
  ******/
 
 "use strict";
 
-const FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME = "ForeignExchangeBc";
-const FOREIGN_EXCHANGE_AGGREGATE_NAME = "ForeignExchange";
+import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics } from ".";
 
-enum ForeignExchangeBCTopics {
-   "DomainEvents" = "ForeignExchangeBcEvents",
-   "DomainRequests" = "ForeignExchangeBcRequests",
-   "DomainErrors" = "ForeignExchangeBcErrors"
+
+export type FxQueryResponseEvtPayload = {
+    requesterFspId: string;
+    providers: string[]
+};
+
+export class FxQueryResponseEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    payload: FxQueryResponseEvtPayload;
+
+    constructor (payload: FxQueryResponseEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.requesterFspId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { requesterFspId } = this.payload;
+
+		if (!requesterFspId) {
+            throw new Error("requesterFspId is required.");
+		}
+    }
 }
-
-export {ForeignExchangeBCTopics , FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME};
-
-export * from "./request";
-export * from "./response";
-export * from "./error";
