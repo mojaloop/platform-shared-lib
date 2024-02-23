@@ -35,26 +35,27 @@
 "use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics } from ".";
+import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics } from "..";
 
-
-export type ForeignExchangeBCInvalidMessagePayloadErrorPayload = {
+// General
+export type FxQuoteInvalidMessagePayloadErrorPayload = {
+    conversionRequestId: string | null;
     requesterFspId: string;
     errorDescription: string;
 }
 
-export class ForeignExchangeBCInvalidMessagePayloadErrorEvent extends DomainEventMsg {
+export class FxQuoteInvalidMessagePayloadErrorEvent extends DomainEventMsg {
     boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
-    payload: ForeignExchangeBCInvalidMessagePayloadErrorPayload;
+    payload: FxQuoteInvalidMessagePayloadErrorPayload;
 
-    constructor (payload: ForeignExchangeBCInvalidMessagePayloadErrorPayload) {
+    constructor (payload: FxQuoteInvalidMessagePayloadErrorPayload) {
         super();
 
-        this.aggregateId = this.msgKey = payload.requesterFspId;
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.requesterFspId;
         this.payload = payload;
     }
 
@@ -64,20 +65,48 @@ export class ForeignExchangeBCInvalidMessagePayloadErrorEvent extends DomainEven
 }
 
 
-export type ForeignExchangeBCInvalidMessageTypeErrorPayload = {
+export type FxQuoteInvalidMessageTypeErrorPayload = {
+    conversionRequestId: string | null;
     requesterFspId: string;
     errorDescription: string;
 }
 
-export class ForeignExchangeBCInvalidMessageTypeErrorEvent extends DomainEventMsg {
+export class FxQuoteInvalidMessageTypeErrorEvent extends DomainEventMsg {
     boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
-    payload: ForeignExchangeBCInvalidMessageTypeErrorPayload;
+    payload: FxQuoteInvalidMessageTypeErrorPayload;
 
-    constructor (payload: ForeignExchangeBCInvalidMessageTypeErrorPayload) {
+    constructor (payload: FxQuoteInvalidMessageTypeErrorPayload) {
+        super();
+        
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.requesterFspId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteInvalidRequesterParticipantErrorPayload = {
+    conversionRequestId: string | null;
+    requesterFspId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteInvalidRequesterParticipantErrorEvent extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    payload: FxQuoteInvalidRequesterParticipantErrorPayload;
+
+    constructor (payload: FxQuoteInvalidRequesterParticipantErrorPayload) {
         super();
         
         this.aggregateId = this.msgKey = payload.requesterFspId;
@@ -89,24 +118,24 @@ export class ForeignExchangeBCInvalidMessageTypeErrorEvent extends DomainEventMs
     }
 }
 
-
-export type ForeignExchangeBCInvalidRequesterParticipantErrorPayload = {
-    requesterFspId: string;
+export type FxQuoteInvalidDestinationParticipantErrorPayload = {
+    conversionRequestId: string | null;
+    destinationFspId: string;
     errorDescription: string;
 }
 
-export class ForeignExchangeBCInvalidRequesterParticipantErrorEvent extends DomainEventMsg {
+export class FxQuoteInvalidDestinationParticipantErrorEvent extends DomainEventMsg {
     boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
-    payload: ForeignExchangeBCInvalidRequesterParticipantErrorPayload;
+    payload: FxQuoteInvalidDestinationParticipantErrorPayload;
 
-    constructor (payload: ForeignExchangeBCInvalidRequesterParticipantErrorPayload) {
+    constructor (payload: FxQuoteInvalidDestinationParticipantErrorPayload) {
         super();
         
-        this.aggregateId = this.msgKey = payload.requesterFspId;
+        this.aggregateId = this.msgKey = payload.destinationFspId;
         this.payload = payload;
     }
 
@@ -116,25 +145,24 @@ export class ForeignExchangeBCInvalidRequesterParticipantErrorEvent extends Doma
 }
 
 
-export type ForeignExchangeBCUnknownErrorPayload = {
+export type FxQuoteUnknownErrorPayload = {
     requesterFspId: string;
-    sourceCurrency: string | null;
-    targetCurrency: string | null;
+    conversionRequestId: string | null;
     errorDescription: string;
 }
 
-export class ForeignExchangeBCUnknownErrorEvent extends DomainEventMsg {
+export class FxQuoteUnknownErrorEvent extends DomainEventMsg {
     boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
-    payload: ForeignExchangeBCUnknownErrorPayload;
+    payload: FxQuoteUnknownErrorPayload;
 
-    constructor (payload: ForeignExchangeBCUnknownErrorPayload) {
+    constructor (payload: FxQuoteUnknownErrorPayload) {
         super();
         
-        this.aggregateId = this.msgKey = payload.requesterFspId;
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.requesterFspId;
         this.payload = payload;
     }
 
