@@ -118,6 +118,7 @@ export class FxQuoteInvalidRequesterParticipantErrorEvent extends DomainEventMsg
     }
 }
 
+
 export type FxQuoteInvalidDestinationParticipantErrorPayload = {
     conversionRequestId: string | null;
     destinationFspId: string;
@@ -163,6 +164,352 @@ export class FxQuoteUnknownErrorEvent extends DomainEventMsg {
         super();
         
         this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.requesterFspId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteBCQuoteNotFoundErrorEvtPayload = {
+    conversionRequestId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteBCQuoteNotFoundErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+
+    payload: FxQuoteBCQuoteNotFoundErrorEvtPayload;
+
+    constructor (payload: FxQuoteBCQuoteNotFoundErrorEvtPayload) {
+        super();
+        this.aggregateId = this.msgKey = payload.conversionRequestId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteDestinationParticipantNotFoundErrorEvtPayload = {
+    conversionRequestId: string | null;
+    destinationFspId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteDestinationParticipantNotFoundErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+
+    payload: FxQuoteDestinationParticipantNotFoundErrorEvtPayload;
+
+    constructor (payload: FxQuoteDestinationParticipantNotFoundErrorEvtPayload) {
+        super();
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.destinationFspId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteRequesterParticipantNotFoundErrorEvtPayload = {
+    conversionRequestId: string | null;
+    requesterFspId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteRequesterParticipantNotFoundErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+
+    payload: FxQuoteRequesterParticipantNotFoundErrorEvtPayload;
+
+    constructor (payload: FxQuoteRequesterParticipantNotFoundErrorEvtPayload) {
+        super();
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.requesterFspId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteRequiredDestinationParticipantIsNotApprovedErrorEvtPayload = {
+    conversionRequestId: string | null;
+    destinationFspId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteRequiredDestinationParticipantIsNotApprovedErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+
+    payload: FxQuoteRequiredDestinationParticipantIsNotApprovedErrorEvtPayload;
+
+    constructor (payload: FxQuoteRequiredDestinationParticipantIsNotApprovedErrorEvtPayload) {
+        super();
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.destinationFspId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteRequiredRequesterParticipantIsNotApprovedErrorEvtPayload = {
+    conversionRequestId: string | null;
+    requesterFspId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteRequiredRequesterParticipantIsNotApprovedErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+
+    payload: FxQuoteRequiredRequesterParticipantIsNotApprovedErrorEvtPayload;
+
+    constructor (payload: FxQuoteRequiredRequesterParticipantIsNotApprovedErrorEvtPayload) {
+        super();
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.requesterFspId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteRequiredDestinationParticipantIsNotActiveErrorEvtPayload = {
+    conversionRequestId: string | null;
+    destinationFspId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteRequiredDestinationParticipantIsNotActiveErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+
+    payload: FxQuoteRequiredDestinationParticipantIsNotActiveErrorEvtPayload;
+
+    constructor (payload: FxQuoteRequiredDestinationParticipantIsNotActiveErrorEvtPayload) {
+        super();
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.destinationFspId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteRequiredRequesterParticipantIsNotActiveErrorEvtPayload = {
+    conversionRequestId: string | null;
+    requesterFspId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteRequiredRequesterParticipantIsNotActiveErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+
+    payload: FxQuoteRequiredRequesterParticipantIsNotActiveErrorEvtPayload;
+
+    constructor (payload: FxQuoteRequiredRequesterParticipantIsNotActiveErrorEvtPayload) {
+        super();
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.requesterFspId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteOperatorErrorEvtPayload = {
+    conversionRequestId: string | null;
+    fspId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteOperatorErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainErrors;
+    payload: FxQuoteOperatorErrorEvtPayload;
+
+    constructor (payload: FxQuoteOperatorErrorEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.conversionRequestId ?? payload.fspId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteBcQuoteExpiredErrorEvtPayload = {
+    conversionRequestId: string;
+    expirationDate: string;
+    errorDescription: string;
+}
+
+export class FxQuoteBcQuoteExpiredErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    payload: FxQuoteBcQuoteExpiredErrorEvtPayload;
+
+    constructor (payload: FxQuoteBcQuoteExpiredErrorEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.conversionRequestId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteUnableToAddQuoteToDatabaseErrorEvtPayload = {
+    conversionRequestId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteUnableToAddQuoteToDatabaseErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    payload: FxQuoteUnableToAddQuoteToDatabaseErrorEvtPayload;
+
+    constructor (payload: FxQuoteUnableToAddQuoteToDatabaseErrorEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.conversionRequestId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteUnableToUpdateQuoteToDatabaseErrorEvtPayload = {
+    conversionRequestId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteUnableToUpdateQuoteToDatabaseErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    payload: FxQuoteUnableToUpdateQuoteToDatabaseErrorEvtPayload;
+
+    constructor (payload: FxQuoteUnableToUpdateQuoteToDatabaseErrorEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.conversionRequestId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteBCQuoteRuleSchemeViolatedRequestErrorEvtPayload = {
+    conversionRequestId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteBCQuoteRuleSchemeViolatedRequestErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    msgKey: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    payload: FxQuoteBCQuoteRuleSchemeViolatedRequestErrorEvtPayload;
+
+    constructor (payload: FxQuoteBCQuoteRuleSchemeViolatedRequestErrorEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.conversionRequestId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // NOT IMPLEMENTED
+    }
+}
+
+
+export type FxQuoteBCQuoteRuleSchemeViolatedResponseErrorEvtPayload = {
+    conversionRequestId: string;
+    errorDescription: string;
+}
+
+export class FxQuoteBCQuoteRuleSchemeViolatedResponseErrorEvt extends DomainEventMsg {
+    boundedContextName: string = FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    msgKey: string;
+    aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
+    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    payload: FxQuoteBCQuoteRuleSchemeViolatedResponseErrorEvtPayload;
+
+    constructor (payload: FxQuoteBCQuoteRuleSchemeViolatedResponseErrorEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.conversionRequestId;
         this.payload = payload;
     }
 
