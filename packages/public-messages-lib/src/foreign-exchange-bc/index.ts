@@ -41,6 +41,9 @@ enum ForeignExchangeBCTopics {
 
 export {ForeignExchangeBCTopics , FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME};
 
-export * from "./request";
-export * from "./response";
-export * from "./error";
+export * from "./foreign-exchange-svc/requests";
+export * from "./foreign-exchange-svc/responses";
+export * from "./foreign-exchange-svc/errors";
+export * from "./foreign-exchange-quote/requests";
+export * from "./foreign-exchange-quote/responses";
+export * from "./foreign-exchange-quote/errors";

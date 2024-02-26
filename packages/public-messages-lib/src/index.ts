@@ -40,4 +40,4 @@ export * from "./participants-bc/";
 export * from "./security-bc/";
 export * from "./scheduling-bc/";
 export * from "./cert-management-bc/";
-export * from "./foreign-exchange-bc";
+export * from "./foreign-exchange-bc/";
