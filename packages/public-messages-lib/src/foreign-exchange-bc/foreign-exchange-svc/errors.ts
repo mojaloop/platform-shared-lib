@@ -35,7 +35,7 @@
 "use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics } from "..";
+import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCSvcTopics } from "..";
 
 
 export type ForeignExchangeBCInvalidMessagePayloadErrorPayload = {
@@ -48,7 +48,7 @@ export class ForeignExchangeBCInvalidMessagePayloadErrorEvent extends DomainEven
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCSvcTopics.DomainEvents;
     payload: ForeignExchangeBCInvalidMessagePayloadErrorPayload;
 
     constructor (payload: ForeignExchangeBCInvalidMessagePayloadErrorPayload) {
@@ -74,7 +74,7 @@ export class ForeignExchangeBCInvalidMessageTypeErrorEvent extends DomainEventMs
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCSvcTopics.DomainEvents;
     payload: ForeignExchangeBCInvalidMessageTypeErrorPayload;
 
     constructor (payload: ForeignExchangeBCInvalidMessageTypeErrorPayload) {
@@ -100,7 +100,7 @@ export class ForeignExchangeBCInvalidRequesterParticipantErrorEvent extends Doma
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCSvcTopics.DomainEvents;
     payload: ForeignExchangeBCInvalidRequesterParticipantErrorPayload;
 
     constructor (payload: ForeignExchangeBCInvalidRequesterParticipantErrorPayload) {
@@ -128,7 +128,7 @@ export class ForeignExchangeBCUnknownErrorEvent extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCSvcTopics.DomainEvents;
     payload: ForeignExchangeBCUnknownErrorPayload;
 
     constructor (payload: ForeignExchangeBCUnknownErrorPayload) {

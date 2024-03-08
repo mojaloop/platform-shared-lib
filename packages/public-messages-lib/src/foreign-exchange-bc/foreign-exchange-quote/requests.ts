@@ -35,7 +35,7 @@
 "use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics } from "..";
+import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCQuoteTopics } from "..";
 
 export type FxQuoteRequestReceivedEvtPayload = {
     conversionRequestId: string;
@@ -79,7 +79,7 @@ export class FxQuoteRequestReceivedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainRequests;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainRequests;
     payload: FxQuoteRequestReceivedEvtPayload;
 
     constructor(payload: FxQuoteRequestReceivedEvtPayload) {
@@ -145,7 +145,7 @@ export class FxQuoteResponseReceivedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainRequests;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainRequests;
     payload: FxQuoteResponseReceivedEvtPayload;
 
     constructor(payload: FxQuoteResponseReceivedEvtPayload) {
@@ -177,7 +177,7 @@ export class FxQuoteQueryReceivedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainRequests;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainRequests;
     payload: FxQuoteQueryReceivedEvtPayload;
 
     constructor(payload: FxQuoteQueryReceivedEvtPayload) {
@@ -215,7 +215,7 @@ export class FxQuoteRejectReceivedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainRequests;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainRequests;
     payload: FxQuoteRejectReceivedEvtPayload;
 
     constructor(payload: FxQuoteRejectReceivedEvtPayload) {

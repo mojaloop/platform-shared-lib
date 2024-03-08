@@ -33,13 +33,31 @@
 const FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME = "ForeignExchangeBc";
 const FOREIGN_EXCHANGE_AGGREGATE_NAME = "ForeignExchange";
 
-enum ForeignExchangeBCTopics {
-   "DomainEvents" = "ForeignExchangeBcEvents",
-   "DomainRequests" = "ForeignExchangeBcRequests",
-   "DomainErrors" = "ForeignExchangeBcErrors"
+enum ForeignExchangeBCSvcTopics {
+   "DomainEvents" = "ForeignExchangeBcSvcEvents",
+   "DomainRequests" = "ForeignExchangeBcSvcRequests",
+   "DomainErrors" = "ForeignExchangeBcSvcErrors"
 }
 
-export {ForeignExchangeBCTopics , FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME};
+enum ForeignExchangeBCQuoteTopics {
+   "DomainEvents" = "ForeignExchangeBcQuoteEvents",
+   "DomainRequests" = "ForeignExchangeBcQuoteRequests",
+   "DomainErrors" = "ForeignExchangeBcQuoteErrors"
+}
+
+enum ForeignExchangeBCTransferTopics {
+   "DomainEvents" = "ForeignExchangeBcTransferEvents",
+   "DomainRequests" = "ForeignExchangeBcTransferRequests",
+   "DomainErrors" = "ForeignExchangeBcTransferErrors"
+}
+
+export {
+   ForeignExchangeBCSvcTopics, 
+   ForeignExchangeBCQuoteTopics, 
+   ForeignExchangeBCTransferTopics, 
+   FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME,
+   FOREIGN_EXCHANGE_AGGREGATE_NAME
+};
 
 export * from "./foreign-exchange-svc/requests";
 export * from "./foreign-exchange-svc/responses";
