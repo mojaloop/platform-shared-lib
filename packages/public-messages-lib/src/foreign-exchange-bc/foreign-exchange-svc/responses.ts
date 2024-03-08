@@ -35,7 +35,7 @@
 "use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics } from "..";
+import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCSvcTopics } from "..";
 
 
 export type FxQueryResponseEvtPayload = {
@@ -48,7 +48,7 @@ export class FxQueryResponseEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCSvcTopics.DomainEvents;
     payload: FxQueryResponseEvtPayload;
 
     constructor (payload: FxQueryResponseEvtPayload) {

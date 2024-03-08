@@ -35,7 +35,7 @@
 "use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics } from "..";
+import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCQuoteTopics } from "..";
 
 // General
 export type FxQuoteInvalidMessagePayloadErrorPayload = {
@@ -49,7 +49,7 @@ export class FxQuoteInvalidMessagePayloadErrorEvent extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteInvalidMessagePayloadErrorPayload;
 
     constructor (payload: FxQuoteInvalidMessagePayloadErrorPayload) {
@@ -76,7 +76,7 @@ export class FxQuoteInvalidMessageTypeErrorEvent extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteInvalidMessageTypeErrorPayload;
 
     constructor (payload: FxQuoteInvalidMessageTypeErrorPayload) {
@@ -103,7 +103,7 @@ export class FxQuoteInvalidRequesterParticipantErrorEvent extends DomainEventMsg
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteInvalidRequesterParticipantErrorPayload;
 
     constructor (payload: FxQuoteInvalidRequesterParticipantErrorPayload) {
@@ -130,7 +130,7 @@ export class FxQuoteInvalidDestinationParticipantErrorEvent extends DomainEventM
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteInvalidDestinationParticipantErrorPayload;
 
     constructor (payload: FxQuoteInvalidDestinationParticipantErrorPayload) {
@@ -157,7 +157,7 @@ export class FxQuoteUnknownErrorEvent extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteUnknownErrorPayload;
 
     constructor (payload: FxQuoteUnknownErrorPayload) {
@@ -183,7 +183,7 @@ export class FxQuoteBCQuoteNotFoundErrorEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
 
     payload: FxQuoteBCQuoteNotFoundErrorEvtPayload;
 
@@ -210,7 +210,7 @@ export class FxQuoteDestinationParticipantNotFoundErrorEvt extends DomainEventMs
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
 
     payload: FxQuoteDestinationParticipantNotFoundErrorEvtPayload;
 
@@ -237,7 +237,7 @@ export class FxQuoteRequesterParticipantNotFoundErrorEvt extends DomainEventMsg 
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
 
     payload: FxQuoteRequesterParticipantNotFoundErrorEvtPayload;
 
@@ -264,7 +264,7 @@ export class FxQuoteRequiredDestinationParticipantIsNotApprovedErrorEvt extends 
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
 
     payload: FxQuoteRequiredDestinationParticipantIsNotApprovedErrorEvtPayload;
 
@@ -291,7 +291,7 @@ export class FxQuoteRequiredRequesterParticipantIsNotApprovedErrorEvt extends Do
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
 
     payload: FxQuoteRequiredRequesterParticipantIsNotApprovedErrorEvtPayload;
 
@@ -318,7 +318,7 @@ export class FxQuoteRequiredDestinationParticipantIsNotActiveErrorEvt extends Do
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
 
     payload: FxQuoteRequiredDestinationParticipantIsNotActiveErrorEvtPayload;
 
@@ -345,7 +345,7 @@ export class FxQuoteRequiredRequesterParticipantIsNotActiveErrorEvt extends Doma
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
 
     payload: FxQuoteRequiredRequesterParticipantIsNotActiveErrorEvtPayload;
 
@@ -372,7 +372,7 @@ export class FxQuoteOperatorErrorEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainErrors;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainErrors;
     payload: FxQuoteOperatorErrorEvtPayload;
 
     constructor (payload: FxQuoteOperatorErrorEvtPayload) {
@@ -399,7 +399,7 @@ export class FxQuoteBcQuoteExpiredErrorEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteBcQuoteExpiredErrorEvtPayload;
 
     constructor (payload: FxQuoteBcQuoteExpiredErrorEvtPayload) {
@@ -425,7 +425,7 @@ export class FxQuoteUnableToAddQuoteToDatabaseErrorEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteUnableToAddQuoteToDatabaseErrorEvtPayload;
 
     constructor (payload: FxQuoteUnableToAddQuoteToDatabaseErrorEvtPayload) {
@@ -451,7 +451,7 @@ export class FxQuoteUnableToUpdateQuoteToDatabaseErrorEvt extends DomainEventMsg
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteUnableToUpdateQuoteToDatabaseErrorEvtPayload;
 
     constructor (payload: FxQuoteUnableToUpdateQuoteToDatabaseErrorEvtPayload) {
@@ -477,7 +477,7 @@ export class FxQuoteBCQuoteRuleSchemeViolatedRequestErrorEvt extends DomainEvent
     aggregateId: string;
     msgKey: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteBCQuoteRuleSchemeViolatedRequestErrorEvtPayload;
 
     constructor (payload: FxQuoteBCQuoteRuleSchemeViolatedRequestErrorEvtPayload) {
@@ -503,7 +503,7 @@ export class FxQuoteBCQuoteRuleSchemeViolatedResponseErrorEvt extends DomainEven
     aggregateId: string;
     msgKey: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteBCQuoteRuleSchemeViolatedResponseErrorEvtPayload;
 
     constructor (payload: FxQuoteBCQuoteRuleSchemeViolatedResponseErrorEvtPayload) {

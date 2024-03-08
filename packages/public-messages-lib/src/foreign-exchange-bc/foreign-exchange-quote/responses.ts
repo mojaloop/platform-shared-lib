@@ -35,7 +35,7 @@
 "use strict";
 
 import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCTopics } from "..";
+import { FOREIGN_EXCHANGE_BOUNDED_CONTEXT_NAME, FOREIGN_EXCHANGE_AGGREGATE_NAME, ForeignExchangeBCQuoteTopics } from "..";
 
 export type FxQuoteRequestAcceptedEvtPayload = {
     conversionRequestId: string;
@@ -79,7 +79,7 @@ export class FxQuoteRequestAcceptedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteRequestAcceptedEvtPayload;
 
     constructor(payload: FxQuoteRequestAcceptedEvtPayload) {
@@ -145,7 +145,7 @@ export class FxQuoteResponseAcceptedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteResponseAcceptedEvtPayload;
 
     constructor(payload: FxQuoteResponseAcceptedEvtPayload) {
@@ -211,7 +211,7 @@ export class FxQuoteQueryRespondedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteQueryRespondedEvtPayload;
 
     constructor(payload: FxQuoteQueryRespondedEvtPayload) {
@@ -253,7 +253,7 @@ export class FxQuoteRejectRespondedEvt extends DomainEventMsg {
     aggregateId: string;
     aggregateName: string = FOREIGN_EXCHANGE_AGGREGATE_NAME;
     msgKey: string;
-    msgTopic: string = ForeignExchangeBCTopics.DomainEvents;
+    msgTopic: string = ForeignExchangeBCQuoteTopics.DomainEvents;
     payload: FxQuoteRejectRespondedEvtPayload;
 
     constructor(payload: FxQuoteRejectRespondedEvtPayload) {
