@@ -42,7 +42,7 @@ export type QuoteRequestReceivedEvtPayload = {
     quoteId: string;
     transactionId: string;
     transactionRequestId: string | null;
-    payee:  {
+    payee: {
         partyIdInfo: {
             partyIdType: string;
             partyIdentifier: string;
@@ -57,10 +57,12 @@ export type QuoteRequestReceivedEvtPayload = {
                 middleName: string | null;
                 lastName: string | null;
             } | null,
-            dateOfBirth: string | null
-        } | null
+            dateOfBirth: string | null,
+            kycInformation: string | null;
+        } | null,
+        supportedCurrencies: string[] | null;
     };
-    payer:  {
+    payer: {
         partyIdInfo: {
             partyIdType: string;
             partyIdentifier: string;
@@ -75,8 +77,10 @@ export type QuoteRequestReceivedEvtPayload = {
                 middleName: string | null;
                 lastName: string | null;
             } | null,
-            dateOfBirth: string | null
-        } | null
+            dateOfBirth: string | null,
+            kycInformation: string | null;
+        } | null,
+        supportedCurrencies: string[] | null;
     };
     amountType: "SEND" | "RECEIVE";
     amount: {
@@ -94,6 +98,17 @@ export type QuoteRequestReceivedEvtPayload = {
         } | null,
         balanceOfPayments: string | null
     };
+    converter: string | null;
+    currencyConversion: {
+        sourceAmount: {
+            currency: string;
+            amount: string;
+        };
+        targetAmount: {
+            currency: string;
+            amount: string;
+        };
+    } | null;
     fees: {
         currency: string;
         amount: string;
@@ -334,7 +349,7 @@ export class BulkQuoteQueryReceivedEvt extends DomainEventMsg {
 
 export type BulkQuoteRequestedEvtPayload = {
     bulkQuoteId: string;
-    payer:  {
+    payer: {
         partyIdInfo: {
             partyIdType: string;
             partyIdentifier: string;
@@ -349,8 +364,10 @@ export type BulkQuoteRequestedEvtPayload = {
                 middleName: string | null;
                 lastName: string | null;
             } | null,
-            dateOfBirth: string | null
-        } | null
+            dateOfBirth: string | null,
+            kycInformation: string | null;
+        } | null,
+        supportedCurrencies: string[] | null;
     };
     geoCode: {
         latitude: string;
@@ -361,7 +378,7 @@ export type BulkQuoteRequestedEvtPayload = {
         quoteId: string;
         transactionId: string;
         transactionRequestId: string | null;
-        payee:  {
+        payee: {
             partyIdInfo: {
                 partyIdType: string;
                 partyIdentifier: string;
@@ -376,8 +393,10 @@ export type BulkQuoteRequestedEvtPayload = {
                     middleName: string | null;
                     lastName: string | null;
                 } | null,
-                dateOfBirth: string | null
-            } | null
+                dateOfBirth: string | null,
+                kycInformation: string | null;
+            } | null,
+            supportedCurrencies: string[] | null;
         };
         amountType: "SEND" | "RECEIVE";
         amount: {
@@ -456,7 +475,7 @@ export type BulkQuotePendingReceivedEvtPayload = {
     bulkQuoteId: string;
     individualQuoteResults: {
         quoteId: string;
-        payee:  {
+        payee: {
             partyIdInfo: {
                 partyIdType: string;
                 partyIdentifier: string;
@@ -471,8 +490,10 @@ export type BulkQuotePendingReceivedEvtPayload = {
                     middleName: string | null;
                     lastName: string | null;
                 } | null,
-                dateOfBirth: string | null
-            } | null
+                dateOfBirth: string | null,
+                kycInformation: string | null;
+            } | null,
+            supportedCurrencies: string[] | null;
         } | null;
         transferAmount: {
             currency: string;
