@@ -60,7 +60,7 @@ export class FxQuoteInvalidMessagePayloadErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -87,7 +87,7 @@ export class FxQuoteInvalidMessageTypeErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -114,7 +114,7 @@ export class FxQuoteInvalidRequesterParticipantErrorEvent extends DomainEventMsg
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -141,7 +141,7 @@ export class FxQuoteInvalidDestinationParticipantErrorEvent extends DomainEventM
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -168,7 +168,7 @@ export class FxQuoteUnknownErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -194,7 +194,7 @@ export class FxQuoteBCQuoteNotFoundErrorEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -221,7 +221,7 @@ export class FxQuoteDestinationParticipantNotFoundErrorEvt extends DomainEventMs
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -248,7 +248,7 @@ export class FxQuoteRequesterParticipantNotFoundErrorEvt extends DomainEventMsg 
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -275,7 +275,7 @@ export class FxQuoteRequiredDestinationParticipantIsNotApprovedErrorEvt extends 
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -302,7 +302,7 @@ export class FxQuoteRequiredRequesterParticipantIsNotApprovedErrorEvt extends Do
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -329,7 +329,7 @@ export class FxQuoteRequiredDestinationParticipantIsNotActiveErrorEvt extends Do
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -356,7 +356,7 @@ export class FxQuoteRequiredRequesterParticipantIsNotActiveErrorEvt extends Doma
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -383,7 +383,7 @@ export class FxQuoteOperatorErrorEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -410,7 +410,7 @@ export class FxQuoteBcQuoteExpiredErrorEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -436,7 +436,7 @@ export class FxQuoteUnableToAddQuoteToDatabaseErrorEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -462,7 +462,7 @@ export class FxQuoteUnableToUpdateQuoteToDatabaseErrorEvt extends DomainEventMsg
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -488,7 +488,7 @@ export class FxQuoteBCQuoteRuleSchemeViolatedRequestErrorEvt extends DomainEvent
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -514,6 +514,6 @@ export class FxQuoteBCQuoteRuleSchemeViolatedResponseErrorEvt extends DomainEven
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }

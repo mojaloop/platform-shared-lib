@@ -60,7 +60,7 @@ export class QuoteBCDuplicateQuoteErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -85,7 +85,7 @@ export class QuoteBCQuoteNotFoundErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -111,7 +111,7 @@ export class QuoteBCBulkQuoteNotFoundErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -139,7 +139,7 @@ export class QuoteBCInvalidMessagePayloadErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -165,7 +165,7 @@ export class QuoteBCInvalidMessageTypeErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -192,7 +192,7 @@ export class QuoteBCDestinationParticipantNotFoundErrorEvent extends DomainEvent
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -219,7 +219,7 @@ export class QuoteBCRequesterParticipantNotFoundErrorEvent extends DomainEventMs
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -245,7 +245,7 @@ export class QuoteBCRequiredDestinationParticipantIdMismatchErrorEvent extends D
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -271,7 +271,7 @@ export class QuoteBCRequiredRequesterParticipantIdMismatchErrorEvent extends Dom
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -297,7 +297,7 @@ export class QuoteBCRequiredDestinationParticipantIsNotApprovedErrorEvent extend
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -323,7 +323,7 @@ export class QuoteBCRequiredRequesterParticipantIsNotApprovedErrorEvent extends 
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -349,7 +349,7 @@ export class QuoteBCRequiredDestinationParticipantIsNotActiveErrorEvent extends 
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -375,7 +375,7 @@ export class QuoteBCRequiredRequesterParticipantIsNotActiveErrorEvent extends Do
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -402,7 +402,7 @@ export class QuoteBCInvalidRequesterFspIdErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -429,7 +429,7 @@ export class QuoteBCInvalidDestinationFspIdErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -455,7 +455,7 @@ export class QuoteBCUnknownErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -482,7 +482,7 @@ export class QuoteBCOperatorErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -508,7 +508,7 @@ export class QuoteBCQuoteExpiredErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -534,7 +534,7 @@ export class QuoteBCBulkQuoteExpiredErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -559,7 +559,7 @@ export class QuoteBCUnableToAddQuoteToDatabaseErrorEvent extends DomainEventMsg 
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -584,7 +584,7 @@ export class QuoteBCUnableToAddBulkQuoteToDatabaseErrorEvent extends DomainEvent
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -609,7 +609,7 @@ export class QuoteBCUnableToUpdateQuoteInDatabaseErrorEvent extends DomainEventM
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -634,7 +634,7 @@ export class QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorEvent extends DomainEv
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -659,7 +659,7 @@ export class QuoteBCInvalidBulkQuoteLengthErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -684,7 +684,7 @@ export class QuoteBCQuoteRuleSchemeViolatedRequestErrorEvent extends DomainEvent
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -709,6 +709,6 @@ export class QuoteBCQuoteRuleSchemeViolatedResponseErrorEvent extends DomainEven
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
