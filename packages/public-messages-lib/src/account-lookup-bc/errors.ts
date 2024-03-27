@@ -42,7 +42,7 @@ export type AccountLookupBCInvalidMessageErrorPayload = {
     partyType: string;
     partySubType: string | null;
     requesterFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookupBCInvalidMessagePayloadErrorEvent extends DomainEventMsg   {
@@ -70,7 +70,7 @@ export type AccountLookupBCInvalidMessageTypeErrorPayload = {
     partyId: string;
     partyType: string;
     partySubType: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookupBCInvalidMessageTypeErrorEvent extends DomainEventMsg   {
@@ -98,7 +98,7 @@ export type AccountLookupBCUnableToAssociateParticipantErrorPayload = {
     partyType: string | null;
     fspIdToAssociate: string | null;
     currency: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookupBCUnableToAssociateParticipantErrorEvent extends DomainEventMsg   {
@@ -126,7 +126,7 @@ export type AccountLookupBCUnableToDisassociateParticipantErrorPayload = {
     partyType: string | null;
     fspIdToDisassociate: string | null;
     currency: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookupBCUnableToDisassociateParticipantErrorEvent extends DomainEventMsg   {
@@ -154,7 +154,7 @@ export type AccountLookupBCUnableToGetOracleAdapterErrorPayload = {
     partyId: string;
     partyType: string | null;
     currency: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookupBCUnableToGetOracleAdapterErrorEvent extends DomainEventMsg   {
@@ -183,7 +183,7 @@ export type AccountLookUpUnableToGetParticipantFromOracleErrorPayload = {
     partySubType: string | null;
     partyType: string | null;
     currency: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookUpUnableToGetParticipantFromOracleErrorEvent extends DomainEventMsg   {
@@ -212,7 +212,7 @@ export type AccountLookupBCDestinationParticipantNotFoundErrorPayload = {
     partyType: string;
     partySubType: string | null;
     destinationFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookupBCDestinationParticipantNotFoundErrorEvent extends DomainEventMsg   {
@@ -240,7 +240,7 @@ export type AccountLookupBCInvalidDestinationParticipantErrorPayload = {
     partyType: string;
     partySubType: string | null;
     destinationFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookupBCInvalidDestinationParticipantErrorEvent extends DomainEventMsg   {
@@ -268,7 +268,7 @@ export type AccountLookupBCRequesterParticipantNotFoundErrorPayload = {
     partyType: string;
     partySubType: string | null;
     requesterFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookupBCRequesterParticipantNotFoundErrorEvent extends DomainEventMsg   {
@@ -296,7 +296,7 @@ export type AccountLookupBCInvalidRequesterParticipantErrorPayload = {
     partyType: string;
     partySubType: string | null;
     requesterFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookupBCInvalidRequesterParticipantErrorEvent extends DomainEventMsg   {
@@ -325,7 +325,7 @@ export type AccountLookUpUnknownErrorPayload = {
     partyType: string | null;
     requesterFspId: string | null;
     currency: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class AccountLookUpUnknownErrorEvent extends DomainEventMsg {
@@ -354,7 +354,7 @@ export type AccountLookUpBCOperatorErrorPayload = {
     partyType: string | null;
     fspId: string | null;
     currency: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 
@@ -383,7 +383,7 @@ export type AccountLookupBCRequiredDestinationParticipantIdMismatchErrorPayload 
     partyType: string;
     partySubType: string | null;
     destinationFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 
@@ -412,7 +412,7 @@ export type AccountLookupBCRequiredRequesterParticipantIdMismatchErrorPayload = 
     partyType: string;
     partySubType: string | null;
     requesterFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 
@@ -441,7 +441,7 @@ export type AccountLookupBCRequiredDestinationParticipantIsNotActiveErrorPayload
     partyType: string;
     partySubType: string | null;
     destinationFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 
@@ -470,7 +470,7 @@ export type AccountLookupBCRequiredRequesterParticipantIsNotActiveErrorPayload =
     partyType: string;
     partySubType: string | null;
     requesterFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 
@@ -499,7 +499,7 @@ export type AccountLookupBCRequiredDestinationParticipantIsNotApprovedErrorPaylo
     partyType: string;
     partySubType: string | null;
     destinationFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 
@@ -528,7 +528,7 @@ export type AccountLookupBCRequiredRequesterParticipantIsNotApprovedErrorPayload
     partyType: string;
     partySubType: string | null;
     requesterFspId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 

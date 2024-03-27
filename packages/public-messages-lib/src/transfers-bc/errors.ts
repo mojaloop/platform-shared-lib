@@ -41,7 +41,7 @@ import { TransfersBCTopics, TRANSFERS_AGGREGATE_NAME, TRANSFERS_BOUNDED_CONTEXT_
 export type TransferInvalidMessagePayloadEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferInvalidMessagePayloadEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -66,7 +66,7 @@ export class TransferInvalidMessagePayloadEvt extends DomainErrorEventMsg {
 export type TransferInvalidMessageTypeEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferInvalidMessageTypeEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -91,7 +91,7 @@ export class TransferInvalidMessageTypeEvt extends DomainErrorEventMsg {
 export type TransferDuplicateCheckFailedEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class TransferDuplicateCheckFailedEvt extends DomainErrorEventMsg {
@@ -120,7 +120,7 @@ export type TransferPrepareLiquidityCheckFailedPayload = {
     transferId: string;
     amount: string;
     currency: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class TransferPrepareLiquidityCheckFailedEvt extends DomainErrorEventMsg {
@@ -148,7 +148,7 @@ export type TransferUnableToGetParticipantsInfoEvtPayload = {
     payerFspId: string;
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class TransferUnableToGetParticipantsInfoEvt extends DomainErrorEventMsg {
@@ -175,7 +175,7 @@ export class TransferUnableToGetParticipantsInfoEvt extends DomainErrorEventMsg 
 export type TransferInvalidPayerCheckFailedEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainErrorEventMsg {
@@ -202,7 +202,7 @@ export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainErrorEventM
 export type TransferPrepareInvalidPayeeCheckFailedEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainErrorEventMsg {
@@ -229,7 +229,7 @@ export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainErrorEventM
 export type TransferPrepareRequestTimedoutEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class TransferPrepareRequestTimedoutEvt extends DomainErrorEventMsg {
@@ -256,7 +256,7 @@ export class TransferPrepareRequestTimedoutEvt extends DomainErrorEventMsg {
 export type TransferQueryInvalidPayerCheckFailedEvtPayload = {
     payerFspId: string | null;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferQueryInvalidPayerCheckFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -281,7 +281,7 @@ export class TransferQueryInvalidPayerCheckFailedEvt extends DomainErrorEventMsg
 export type TransferQueryPayerNotFoundFailedEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferQueryPayerNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -306,7 +306,7 @@ export class TransferQueryPayerNotFoundFailedEvt extends DomainErrorEventMsg {
 export type TransferQueryPayeeNotFoundFailedEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferQueryPayeeNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -331,7 +331,7 @@ export class TransferQueryPayeeNotFoundFailedEvt extends DomainErrorEventMsg {
 export type TransferQueryInvalidPayeeCheckFailedEvtPayload = {
     payeeFspId: string | null;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferQueryInvalidPayeeCheckFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -356,7 +356,7 @@ export class TransferQueryInvalidPayeeCheckFailedEvt extends DomainErrorEventMsg
 export type TransferQueryInvalidPayerParticipantIdEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferQueryInvalidPayerParticipantIdEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -381,7 +381,7 @@ export class TransferQueryInvalidPayerParticipantIdEvt extends DomainErrorEventM
 export type TransferQueryInvalidPayeeParticipantIdEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferQueryInvalidPayeeParticipantIdEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -405,7 +405,7 @@ export class TransferQueryInvalidPayeeParticipantIdEvt extends DomainErrorEventM
 
 export type TransferUnableToGetTransferByIdEvtPayload = {
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferUnableToGetTransferByIdEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -430,7 +430,7 @@ export class TransferUnableToGetTransferByIdEvt extends DomainErrorEventMsg {
 
 export type TransferNotFoundEvtPayload = {
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferNotFoundEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -455,7 +455,7 @@ export class TransferNotFoundEvt extends DomainErrorEventMsg {
 export type TransferUnableToAddEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferUnableToAddEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -480,7 +480,7 @@ export class TransferUnableToAddEvt extends DomainErrorEventMsg {
 export type TransferUnableToUpdateEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferUnableToUpdateEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -506,7 +506,7 @@ export type TransferFulfilCommittedRequestedTimedoutEvtPayload = {
     payerFspId: string;
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferFulfilCommittedRequestedTimedoutEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -532,7 +532,7 @@ export type TransferFulfilPostCommittedRequestedTimedoutEvtPayload = {
     payerFspId: string;
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferFulfilPostCommittedRequestedTimedoutEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -556,7 +556,7 @@ export class TransferFulfilPostCommittedRequestedTimedoutEvt extends DomainError
 
 export type TransferCancelReservationFailedEvtPayload = {
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferCancelReservationFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -580,7 +580,7 @@ export class TransferCancelReservationFailedEvt extends DomainErrorEventMsg {
 
 export type TransferCancelReservationAndCommitFailedEvtPayload = {
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferCancelReservationAndCommitFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -605,7 +605,7 @@ export class TransferCancelReservationAndCommitFailedEvt extends DomainErrorEven
 export type TransferPayerParticipantNotFoundFailedEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayerParticipantNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -630,7 +630,7 @@ export class TransferPayerParticipantNotFoundFailedEvt extends DomainErrorEventM
 export type TransferPayeeParticipantNotFoundFailedEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayeeParticipantNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -654,7 +654,7 @@ export class TransferPayeeParticipantNotFoundFailedEvt extends DomainErrorEventM
 
 export type TransferHubParticipantNotFoundFailedEvtPayload = {
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferHubParticipantNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -679,7 +679,7 @@ export class TransferHubParticipantNotFoundFailedEvt extends DomainErrorEventMsg
 export type TransferPayerNotFoundFailedEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayerNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -704,7 +704,7 @@ export class TransferPayerNotFoundFailedEvt extends DomainErrorEventMsg {
 export type TransferPayeeNotFoundFailedEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayeeNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -728,7 +728,7 @@ export class TransferPayeeNotFoundFailedEvt extends DomainErrorEventMsg {
 
 export type TransferHubNotFoundFailedEvtPayload = {
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferHubNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -753,7 +753,7 @@ export class TransferHubNotFoundFailedEvt extends DomainErrorEventMsg {
 export type TransferHubIdMismatchEvtPayload = {
     hubId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferHubIdMismatchEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -778,7 +778,7 @@ export class TransferHubIdMismatchEvt extends DomainErrorEventMsg {
 export type TransferHubNotActiveEvtPayload = {
     hubId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferHubNotActiveEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -803,7 +803,7 @@ export class TransferHubNotActiveEvt extends DomainErrorEventMsg {
 export type TransferHubNotApprovedEvtPayload = {
     hubId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferHubNotApprovedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -827,7 +827,7 @@ export class TransferHubNotApprovedEvt extends DomainErrorEventMsg {
 
 export type TransferHubAccountNotFoundFailedEvtPayload = {
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferHubAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -852,7 +852,7 @@ export class TransferHubAccountNotFoundFailedEvt extends DomainErrorEventMsg {
 export type TransferPayerPositionAccountNotFoundFailedEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayerPositionAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -877,7 +877,7 @@ export class TransferPayerPositionAccountNotFoundFailedEvt extends DomainErrorEv
 export type TransferPayerLiquidityAccountNotFoundFailedEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayerLiquidityAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -902,7 +902,7 @@ export class TransferPayerLiquidityAccountNotFoundFailedEvt extends DomainErrorE
 export type TransferPayeePositionAccountNotFoundFailedEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayeePositionAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -927,7 +927,7 @@ export class TransferPayeePositionAccountNotFoundFailedEvt extends DomainErrorEv
 export type TransferPayeeLiquidityAccountNotFoundFailedEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayeeLiquidityAccountNotFoundFailedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -952,7 +952,7 @@ export class TransferPayeeLiquidityAccountNotFoundFailedEvt extends DomainErrorE
 export type TransferPayerIdMismatchEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayerIdMismatchEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -977,7 +977,7 @@ export class TransferPayerIdMismatchEvt extends DomainErrorEventMsg {
 export type TransferPayerNotActiveEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayerNotActiveEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1002,7 +1002,7 @@ export class TransferPayerNotActiveEvt extends DomainErrorEventMsg {
 export type TransferPayerNotApprovedEvtPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayerNotApprovedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1027,7 +1027,7 @@ export class TransferPayerNotApprovedEvt extends DomainErrorEventMsg {
 export type TransferPayeeIdMismatchEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayeeIdMismatchEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1052,7 +1052,7 @@ export class TransferPayeeIdMismatchEvt extends DomainErrorEventMsg {
 export type TransferPayeeNotActiveEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayeeNotActiveEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1077,7 +1077,7 @@ export class TransferPayeeNotActiveEvt extends DomainErrorEventMsg {
 export type TransferPayeeNotApprovedEvtPayload = {
     payeeFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferPayeeNotApprovedEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1105,7 +1105,7 @@ export type TransferUnableToGetSettlementModelEvtPayload = {
     payerCurrency: string;
     payeeCurrency: string;
     extensionList: string | null;
-    errorDescription: string
+    errorCode: string
 }
 export class TransferUnableToGetSettlementModelEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1133,7 +1133,7 @@ export type TransferSettlementModelNotFoundEvtPayload = {
     payerCurrency: string;
     payeeCurrency: string;
     extensionList: string | null;
-    errorDescription: string
+    errorCode: string
 }
 export class TransferSettlementModelNotFoundEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1159,7 +1159,7 @@ export type TransferPayerNetDebitCapCurrencyNotFoundEvtPayload = {
     transferId: string;
     payerFspId: string;
     currencyCode: string;
-    errorDescription: string
+    errorCode: string
 }
 export class TransferPayerNetDebitCapCurrencyNotFoundEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1183,7 +1183,7 @@ export class TransferPayerNetDebitCapCurrencyNotFoundEvt extends DomainErrorEven
 
 export type TransferUnableToDeleteTransferReminderEvtPayload = {
     transferId: string;
-    errorDescription: string
+    errorCode: string
 }
 export class TransferUnableToDeleteTransferReminderEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1208,7 +1208,7 @@ export class TransferUnableToDeleteTransferReminderEvt extends DomainErrorEventM
 
 export type TransferUnableCreateReminderEvtPayload = {
     transferId: string;
-    errorDescription: string
+    errorCode: string
 }
 export class TransferUnableCreateReminderEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1232,7 +1232,7 @@ export class TransferUnableCreateReminderEvt extends DomainErrorEventMsg {
 
 export type TransferBCUnableToAddBulkTransferToDatabaseEvtPayload = {
     bulkTransferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferBCUnableToAddBulkTransferToDatabaseEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1256,7 +1256,7 @@ export class TransferBCUnableToAddBulkTransferToDatabaseEvt extends DomainErrorE
 
 export type TransferUnableToGetBulkTransferByIdEvtPayload = {
     bulkTransferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransferUnableToGetBulkTransferByIdEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1280,7 +1280,7 @@ export class TransferUnableToGetBulkTransferByIdEvt extends DomainErrorEventMsg 
 
 export type BulkTransferNotFoundEvtPayload = {
     bulkTransferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class BulkTransferNotFoundEvt extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1305,7 +1305,7 @@ export class BulkTransferNotFoundEvt extends DomainErrorEventMsg {
 export type TransfersBCUnknownErrorPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class TransfersBCUnknownErrorEvent extends DomainErrorEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
@@ -1330,7 +1330,7 @@ export class TransfersBCUnknownErrorEvent extends DomainErrorEventMsg {
 export type TransfersBCOperatorErrorPayload = {
     payerFspId: string;
     transferId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class TransfersBCOperatorErrorEvent extends DomainErrorEventMsg {
