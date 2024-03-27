@@ -61,6 +61,7 @@ export class CertListQueryResponseEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -85,6 +86,7 @@ export class CertQueryResponseEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
+        // TODO: NOT IMPLEMENTED
     }
 }
 

@@ -41,7 +41,7 @@ import { QuotingBCTopics, QUOTING_AGGREGATE_NAME, QUOTING_BOUNDED_CONTEXT_NAME }
 
 export type QuoteBCDuplicateQuoteErrorPayload = {
     quoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCDuplicateQuoteErrorEvent extends DomainEventMsg {
@@ -60,13 +60,13 @@ export class QuoteBCDuplicateQuoteErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCQuoteNotFoundErrorPayload = {
     quoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCQuoteNotFoundErrorEvent extends DomainEventMsg {
@@ -85,14 +85,14 @@ export class QuoteBCQuoteNotFoundErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 // BulkQuotes
 export type QuoteBCBulkQuoteNotFoundErrorPayload = {
     bulkQuoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCBulkQuoteNotFoundErrorEvent extends DomainEventMsg {
@@ -111,7 +111,7 @@ export class QuoteBCBulkQuoteNotFoundErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -119,7 +119,7 @@ export class QuoteBCBulkQuoteNotFoundErrorEvent extends DomainEventMsg {
 export type QuoteBCInvalidMessagePayloadErrorPayload = {
     quoteId: string | null;
     bulkQuoteId: string | null;
-    errorDescription: string;
+    errorCode: string;
     requesterFspId: string;
 }
 
@@ -139,7 +139,7 @@ export class QuoteBCInvalidMessagePayloadErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -147,7 +147,7 @@ export type QuoteBCInvalidMessageTypeErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 export class QuoteBCInvalidMessageTypeErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
@@ -165,7 +165,7 @@ export class QuoteBCInvalidMessageTypeErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -173,7 +173,7 @@ export type QuoteBCDestinationParticipantNotFoundErrorPayload = {
     destinationFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCDestinationParticipantNotFoundErrorEvent extends DomainEventMsg {
@@ -192,7 +192,7 @@ export class QuoteBCDestinationParticipantNotFoundErrorEvent extends DomainEvent
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -200,7 +200,7 @@ export type QuoteBCRequesterParticipantNotFoundErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCRequesterParticipantNotFoundErrorEvent extends DomainEventMsg {
@@ -219,13 +219,13 @@ export class QuoteBCRequesterParticipantNotFoundErrorEvent extends DomainEventMs
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCRequiredDestinationParticipantIdMismatchErrorPayload = {
     destinationFspId: string;
-    errorDescription: string;
+    errorCode: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
 }
@@ -245,13 +245,13 @@ export class QuoteBCRequiredDestinationParticipantIdMismatchErrorEvent extends D
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCRequiredRequesterParticipantIdMismatchErrorPayload = {
     requesterFspId: string;
-    errorDescription: string;
+    errorCode: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
 }
@@ -271,13 +271,13 @@ export class QuoteBCRequiredRequesterParticipantIdMismatchErrorEvent extends Dom
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCRequiredDestinationParticipantIsNotApprovedErrorPayload = {
     destinationFspId: string;
-    errorDescription: string;
+    errorCode: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
 }
@@ -297,13 +297,13 @@ export class QuoteBCRequiredDestinationParticipantIsNotApprovedErrorEvent extend
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCRequiredRequesterParticipantIsNotApprovedErrorPayload = {
     requesterFspId: string;
-    errorDescription: string;
+    errorCode: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
 }
@@ -323,13 +323,13 @@ export class QuoteBCRequiredRequesterParticipantIsNotApprovedErrorEvent extends 
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCRequiredDestinationParticipantIsNotActiveErrorPayload = {
     destinationFspId: string;
-    errorDescription: string;
+    errorCode: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
 }
@@ -349,13 +349,13 @@ export class QuoteBCRequiredDestinationParticipantIsNotActiveErrorEvent extends 
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCRequiredRequesterParticipantIsNotActiveErrorPayload = {
     requesterFspId: string;
-    errorDescription: string;
+    errorCode: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
 }
@@ -375,7 +375,7 @@ export class QuoteBCRequiredRequesterParticipantIsNotActiveErrorEvent extends Do
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -383,7 +383,7 @@ export type QuoteBCInvalidRequesterFspIdErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCInvalidRequesterFspIdErrorEvent extends DomainEventMsg {
@@ -402,7 +402,7 @@ export class QuoteBCInvalidRequesterFspIdErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -410,7 +410,7 @@ export type QuoteBCInvalidDestinationFspIdErrorPayload = {
     destinationFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCInvalidDestinationFspIdErrorEvent extends DomainEventMsg {
@@ -429,7 +429,7 @@ export class QuoteBCInvalidDestinationFspIdErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -437,7 +437,7 @@ export type QuoteBCUnknownErrorPayload = {
     requesterFspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 export class QuoteBCUnknownErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
@@ -455,7 +455,7 @@ export class QuoteBCUnknownErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -463,7 +463,7 @@ export type QuoteBCOperatorErrorPayload = {
     fspId: string;
     quoteId: string | null;
     bulkQuoteId: string | null;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCOperatorErrorEvent extends DomainEventMsg {
@@ -482,14 +482,14 @@ export class QuoteBCOperatorErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCQuoteExpiredErrorPayload = {
     quoteId: string;
     expirationDate: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCQuoteExpiredErrorEvent extends DomainEventMsg {
@@ -508,14 +508,14 @@ export class QuoteBCQuoteExpiredErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCBulkQuoteExpiredErrorPayload = {
     bulkQuoteId: string;
     expirationDate: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCBulkQuoteExpiredErrorEvent extends DomainEventMsg {
@@ -534,13 +534,13 @@ export class QuoteBCBulkQuoteExpiredErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCUnableToAddQuoteToDatabaseErrorPayload = {
     quoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCUnableToAddQuoteToDatabaseErrorEvent extends DomainEventMsg {
@@ -559,14 +559,14 @@ export class QuoteBCUnableToAddQuoteToDatabaseErrorEvent extends DomainEventMsg 
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 
 export type QuoteBCUnableToAddBulkQuoteToDatabaseErrorPayload = {
     bulkQuoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 export class QuoteBCUnableToAddBulkQuoteToDatabaseErrorEvent extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
@@ -584,13 +584,13 @@ export class QuoteBCUnableToAddBulkQuoteToDatabaseErrorEvent extends DomainEvent
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCUnableToUpdateQuoteInDatabaseErrorPayload = {
     quoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCUnableToUpdateQuoteInDatabaseErrorEvent extends DomainEventMsg {
@@ -609,13 +609,13 @@ export class QuoteBCUnableToUpdateQuoteInDatabaseErrorEvent extends DomainEventM
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorPayload = {
     bulkQuoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorEvent extends DomainEventMsg {
@@ -634,13 +634,13 @@ export class QuoteBCUnableToUpdateBulkQuoteInDatabaseErrorEvent extends DomainEv
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCInvalidBulkQuoteLengthErrorPayload = {
     bulkQuoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCInvalidBulkQuoteLengthErrorEvent extends DomainEventMsg {
@@ -659,13 +659,13 @@ export class QuoteBCInvalidBulkQuoteLengthErrorEvent extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCQuoteRuleSchemeViolatedRequestErrorPayload = {
     quoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCQuoteRuleSchemeViolatedRequestErrorEvent extends DomainEventMsg {
@@ -684,13 +684,13 @@ export class QuoteBCQuoteRuleSchemeViolatedRequestErrorEvent extends DomainEvent
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
 export type QuoteBCQuoteRuleSchemeViolatedResponseErrorPayload = {
     quoteId: string;
-    errorDescription: string;
+    errorCode: string;
 }
 
 export class QuoteBCQuoteRuleSchemeViolatedResponseErrorEvent extends DomainEventMsg {
@@ -709,6 +709,6 @@ export class QuoteBCQuoteRuleSchemeViolatedResponseErrorEvent extends DomainEven
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }

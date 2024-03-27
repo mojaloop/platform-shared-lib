@@ -85,6 +85,7 @@ export class CertListQueryReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
+        // TODO: NOT IMPLEMENTED
     }
 }
 

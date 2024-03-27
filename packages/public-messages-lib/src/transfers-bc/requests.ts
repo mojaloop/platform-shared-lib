@@ -139,7 +139,7 @@ export class TransferRejectRequestedEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -164,7 +164,7 @@ export class TransferQueryReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -189,7 +189,7 @@ export class TransferTimeoutEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
@@ -330,7 +330,7 @@ export class BulkTransferRejectRequestedEvt extends DomainEventMsg {
     }
 
     validatePayload(): void {
-        // NOT IMPLEMENTED
+        // TODO: NOT IMPLEMENTED
     }
 }
 
