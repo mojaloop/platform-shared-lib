@@ -62,6 +62,7 @@ export class MLKafkaRawProducerOptions {
     compressionCodec?: MLKafkaRawProducerCompressionCodecs;
     compressionLevel?: number;
     partitioner?: MLKafkaRawProducerPartitioners;
+    queueBufferingMaxMs?: number;
     // /* return -1 if partitioning failed */
     // partitionerFn?: (key:string, partitionCount:number, opaque?:any)=>number; // if used will ignore the "partitioner" setting above
 }
@@ -155,6 +156,10 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
 
         if (this._options.compressionLevel !== undefined) {
             this._topicConfig["compression.level"] = this._options.compressionLevel;
+        }
+
+        if (this._options.queueBufferingMaxMs !== undefined) {
+            this._globalConfig["queue.buffering.max.ms"] = this._options.queueBufferingMaxMs;
         }
 
         this._globalConfig.dr_cb = true;

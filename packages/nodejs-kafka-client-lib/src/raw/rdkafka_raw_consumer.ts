@@ -65,6 +65,7 @@ export class MLKafkaRawConsumerOptions {
 	sessionTimeoutMs?: number;   //Client group session and failure detection timeout, default is 45 secs
 	batchSize?: number;
 	batchTimeoutMs?: number;
+    fetchErrorBackoffMms?: number;
 }
 
 type MLKafkaRawConsumerEvents =
@@ -190,6 +191,10 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		this._globalConfig["metadata.broker.list"] = this._options.kafkaBrokerList;
 		this._globalConfig["fetch.wait.max.ms"] = this._options.batchTimeoutMs;
 
+        if (this._options.fetchErrorBackoffMms != undefined){
+            this._globalConfig["fetch.error.backoff.ms"] = this._options.fetchErrorBackoffMms;
+        }
+
 		// apply local defaults
 		this._batchSize = this._options.batchSize;
 	}
@@ -274,7 +279,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		if (!this._client.isConnected() || this._consuming) return;
 
 		const callContinue = ()=>{
-			setImmediate(() => {
+            process.nextTick(() => {
 				this._consumeLoop();
 			});
 			this._consuming = false;
@@ -304,14 +309,14 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 					return commitAndContinue(msgs);
 				});
 			}else if(this._handlerCallback){
-				for (const kafkaMessage of kafkaMessages) {
-					const msg = this._toIMessage(kafkaMessage);
-					// call the provided handler and then commit
-					this._handlerCallback(msg).finally(() => {
-						this._commitMsg(kafkaMessage);
-					});
-				}
-				return callContinue();
+                if (kafkaMessages.length>1) throw new Error("MLKafkaRawConsumer single handler callback configured with batchSize > 1 - these two parameters must match");
+
+                const msg = this._toIMessage(kafkaMessages[0]);
+                // call the provided handler and then commit
+                this._handlerCallback(msg).finally(() => {
+                    this._commitMsg(kafkaMessages[0]);
+                    return callContinue();
+                });
 			}else{
 				// maybe no handler was set yet
 				return callContinue();
