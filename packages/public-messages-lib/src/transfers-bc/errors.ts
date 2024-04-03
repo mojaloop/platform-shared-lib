@@ -253,31 +253,6 @@ export class TransferPrepareRequestTimedoutEvt extends DomainErrorEventMsg {
     }
 }
 
-export type TransferQueryInvalidPayerCheckFailedEvtPayload = {
-    payerFspId: string | null;
-    transferId: string;
-    errorCode: string;
-}
-export class TransferQueryInvalidPayerCheckFailedEvt extends DomainErrorEventMsg {
-    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
-    aggregateId: string;
-    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferQueryInvalidPayerCheckFailedEvtPayload;
-
-    constructor (payload: TransferQueryInvalidPayerCheckFailedEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.transferId;
-        this.payload = payload;
-    }
-
-    validatePayload(): void {
-        // TODO: NOT IMPLEMENTED
-    }
-}
-
 export type TransferQueryPayerNotFoundFailedEvtPayload = {
     payerFspId: string;
     transferId: string;
@@ -317,81 +292,6 @@ export class TransferQueryPayeeNotFoundFailedEvt extends DomainErrorEventMsg {
     payload: TransferQueryPayeeNotFoundFailedEvtPayload;
 
     constructor (payload: TransferQueryPayeeNotFoundFailedEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.transferId;
-        this.payload = payload;
-    }
-
-    validatePayload(): void {
-        // TODO: NOT IMPLEMENTED
-    }
-}
-
-export type TransferQueryInvalidPayeeCheckFailedEvtPayload = {
-    payeeFspId: string | null;
-    transferId: string;
-    errorCode: string;
-}
-export class TransferQueryInvalidPayeeCheckFailedEvt extends DomainErrorEventMsg {
-    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
-    aggregateId: string;
-    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferQueryInvalidPayeeCheckFailedEvtPayload;
-
-    constructor (payload: TransferQueryInvalidPayeeCheckFailedEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.transferId;
-        this.payload = payload;
-    }
-
-    validatePayload(): void {
-        // TODO: NOT IMPLEMENTED
-    }
-}
-
-export type TransferQueryInvalidPayerParticipantIdEvtPayload = {
-    payerFspId: string;
-    transferId: string;
-    errorCode: string;
-}
-export class TransferQueryInvalidPayerParticipantIdEvt extends DomainErrorEventMsg {
-    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
-    aggregateId: string;
-    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferQueryInvalidPayerParticipantIdEvtPayload;
-
-    constructor (payload: TransferQueryInvalidPayerParticipantIdEvtPayload) {
-        super();
-
-        this.aggregateId = this.msgKey = payload.transferId;
-        this.payload = payload;
-    }
-
-    validatePayload(): void {
-        // TODO: NOT IMPLEMENTED
-    }
-}
-
-export type TransferQueryInvalidPayeeParticipantIdEvtPayload = {
-    payeeFspId: string;
-    transferId: string;
-    errorCode: string;
-}
-export class TransferQueryInvalidPayeeParticipantIdEvt extends DomainErrorEventMsg {
-    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
-    aggregateId: string;
-    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
-    msgKey: string;
-    msgTopic: string = TransfersBCTopics.DomainEvents;
-    payload: TransferQueryInvalidPayeeParticipantIdEvtPayload;
-
-    constructor (payload: TransferQueryInvalidPayeeParticipantIdEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;
