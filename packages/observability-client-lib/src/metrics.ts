@@ -51,11 +51,12 @@ interface CountersType { [key: string]: PromClient.Counter<string> }
 export class PrometheusMetrics implements IMetrics{
     private _logger:ILogger;
     private _options: PrometheusMetricsOptions = {};
-    private _register: PromClient.Registry = PromClient.register;
+    private _register: PromClient.Registry;
+    private _promClient: typeof PromClient;
     private _histograms: HistogramsType = {};
     private _gauges: GaugesType = {};
     private _summaries: SummariesType = {};
-    private _counter: CountersType = {};
+    private _counters: CountersType = {};
 
     private static _instance:PrometheusMetrics | null = null;
     // eslint-disable-next-line
@@ -65,36 +66,35 @@ export class PrometheusMetrics implements IMetrics{
      * Create the prom client for collecting metrics using the options passed
      * (singleton'ish pattern)
      */
-    static Setup(options: PrometheusMetricsOptions, logger:ILogger):void {
+    static Setup(options: PrometheusMetricsOptions, logger:ILogger, passedPromClient?:typeof PromClient ):void {
         if (this._instance) {
             //silent ignore
             this._instance._logger.warn("Trying to create another instance of the PrometheusMetrics singleton - ignoring silently");
             return;
         }
-        this._instance = new PrometheusMetrics();
 
+        this._instance = new PrometheusMetrics();
         this._instance._logger = logger;
         this._instance._options = options;
+
+        // use optional PromClient if passed
+        this._instance._promClient = passedPromClient || PromClient;
+        this._instance._register = this._instance._promClient.register;
 
         if (this._instance._options.defaultLabels) {
             const labelsObj:any = {};
             this._instance._options.defaultLabels.forEach((value, key) => {
                 labelsObj[key] = value;
             });
-            PromClient.register.setDefaultLabels(labelsObj);
+            this._instance._register.setDefaultLabels(labelsObj);
         }
 
-
-
         // configure default node and process metrics
-        PromClient.collectDefaultMetrics({
+        this._instance._promClient.collectDefaultMetrics({
             prefix: this._instance._options.prefix,
             //labels: this._instance._options.defaultLabels ? this._instance._options.defaultLabels : [],
-            register: PromClient.register
+            register: this._instance._register
         });
-
-        // set default registry
-        this._instance._register = PromClient.register;
     }
 
     static getInstance():PrometheusMetrics{
@@ -117,7 +117,7 @@ export class PrometheusMetrics implements IMetrics{
             if (this._histograms[name] != null) {
                 return this._histograms[name];
             }
-            this._histograms[name] = new PromClient.Histogram({
+            this._histograms[name] = new this._promClient.Histogram({
                 name: `${this._options.prefix}${name}`,
                 help: (help != null ? help : `${name}_histogram`),
                 labelNames,
@@ -138,8 +138,8 @@ export class PrometheusMetrics implements IMetrics{
             if (this._gauges[name] != null) {
                 return this._gauges[name];
             }
-            this._gauges[name] = new PromClient.Gauge({
-                name: `${this.getOptions().prefix}${name}`,
+            this._gauges[name] = new this._promClient.Gauge({
+                name: `${this._options.prefix}${name}`,
                 help: (help != null ? help : `${name}_summary`),
                 labelNames
             });
@@ -158,8 +158,8 @@ export class PrometheusMetrics implements IMetrics{
             if (this._summaries[name] != null) {
                 return this._summaries[name];
             }
-            this._summaries[name] = new PromClient.Summary({
-                name: `${this.getOptions().prefix}${name}`,
+            this._summaries[name] = new this._promClient.Summary({
+                name: `${this._options.prefix}${name}`,
                 help: (help != null ? help : `${name}_summary`),
                 labelNames,
                 maxAgeSeconds,
@@ -178,16 +178,16 @@ export class PrometheusMetrics implements IMetrics{
      */
     getCounter(name: string, help?: string, labelNames: string[] = []): ICounter{ // <-- required for Prom-Client v11.x
         try {
-            if (this._counter[name] != null) {
-                return this._counter[name];
+            if (this._counters[name] != null) {
+                return this._counters[name];
             }
 
-            this._counter[name] = new PromClient.Counter({
-                name: `${this.getOptions().prefix}${name}`,
+            this._counters[name] = new this._promClient.Counter({
+                name: `${this._options.prefix}${name}`,
                 help: (help != null ? help : `${name}_counter`),
                 labelNames
             });
-            return this._counter[name];
+            return this._counters[name];
         } catch (e) {
             this._logger.error(e);
             throw new Error(`Couldn't get counter for ${name}`);
@@ -198,7 +198,7 @@ export class PrometheusMetrics implements IMetrics{
      * Get string representation for all prometheus metrics - to be collected by prometheus scrappers
      */
     async getMetricsForPrometheusScrapper(): Promise<string>{
-        return PromClient.register.metrics();
+        return this._register.metrics();
     }
 
     /**
@@ -208,4 +208,11 @@ export class PrometheusMetrics implements IMetrics{
         return this._options;
     }
 
+    getPromClient():typeof PromClient{
+        return this._promClient;
+    }
+
+    getPromRegister():PromClient.Registry{
+        return this._register;
+    }
 }

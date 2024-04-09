@@ -47,9 +47,9 @@ export class SummaryMock implements ISummary{
 }
 
 export class GaugeMock implements IGauge{
-    set(value:number):void{}
-    inc(amount?:number):void{}
-    dec(value?:number):void{}
+    set(arg1: number |LabelValues<string>, value?:number):void{}
+    inc(arg1?: number |LabelValues<string>, amount?:number):void{}
+    dec(arg1?: number |LabelValues<string>, value?:number):void{}
 }
 
 export class CounterMock implements ICounter{

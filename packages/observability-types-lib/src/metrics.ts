@@ -47,8 +47,11 @@ export interface ISummary{
 
 export interface IGauge{
     set(value:number):void;
+    set(labels: LabelValues<string>, value:number):void;
     inc(amount?:number):void;
+    inc(labels: LabelValues<string>, amount?:number):void;
     dec(value?:number):void;
+    dec(labels: LabelValues<string>, value?:number):void;
 }
 
 export interface ICounter{
