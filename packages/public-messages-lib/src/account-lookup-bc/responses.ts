@@ -244,7 +244,7 @@ export class PartyQueryResponseEvt extends DomainEventMsg {
 }
 
 
-export type GetPartyQueryRejectedResponseEvtPayload = {
+export type PartyRejectedResponseEvtPayload = {
     partyId: string;
     partyType: string;
     partySubType: string | null;
@@ -254,15 +254,45 @@ export type GetPartyQueryRejectedResponseEvtPayload = {
 		errorDescription: string;
 	}
 }
-export class GetPartyQueryRejectedResponseEvt extends DomainEventMsg {
+export class PartyRejectedResponseEvt extends DomainEventMsg {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainEvents;
-	payload: GetPartyQueryRejectedResponseEvtPayload;
+	payload: PartyRejectedResponseEvtPayload;
 
-	constructor(payload: GetPartyQueryRejectedResponseEvtPayload) {
+	constructor(payload: PartyRejectedResponseEvtPayload) {
+		super();
+
+		this.aggregateId = this.msgKey = payload.partyId;
+		this.payload = payload;
+	}
+
+	validatePayload(): void {
+		// TODO
+	}
+}
+
+export type ParticipantRejectedResponseEvtPayload = {
+    partyId: string;
+    partyType: string;
+    partySubType: string | null;
+    currency: string | null;
+	errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+	}
+}
+export class ParticipantRejectedResponseEvt extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainEvents;
+	payload: ParticipantRejectedResponseEvtPayload;
+
+	constructor(payload: ParticipantRejectedResponseEvtPayload) {
 		super();
 
 		this.aggregateId = this.msgKey = payload.partyId;

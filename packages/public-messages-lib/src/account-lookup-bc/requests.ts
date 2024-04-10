@@ -253,7 +253,7 @@ export class PartyInfoAvailableEvt extends DomainEventMsg {
     }
 }
 
-export type GetPartyQueryRejectedEvtPayload = {
+export type PartyRejectedEvtPayload = {
     requesterFspId: string;
     destinationFspId: string | null;
     partyId: string;
@@ -272,16 +272,63 @@ export type GetPartyQueryRejectedEvtPayload = {
 	}
 }
 
-export class GetPartyQueryRejectedEvt extends DomainEventMsg {
+export class PartyRejectedEvt extends DomainEventMsg {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = AccountLookupBCTopics.DomainRequests;
 
-    payload: GetPartyQueryRejectedEvtPayload;
+    payload: PartyRejectedEvtPayload;
 
-    constructor (payload: GetPartyQueryRejectedEvtPayload) {
+    constructor (payload: PartyRejectedEvtPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.partyId;
+        this.payload = payload;
+    }
+
+    validatePayload (): void {
+        const { partyId, partyType } = this.payload;
+
+		if (!partyId) {
+            throw new Error("partyId is required.");
+		}
+        if (!partyType) {
+            throw new Error("partyType is required.");
+		}
+    }
+}
+
+export type ParticipantRejectedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string | null;
+    partyId: string;
+    partyType: string;
+    partySubType: string | null;
+    currency: string | null;
+    errorInformation: {
+		errorCode: string;
+		errorDescription: string;
+        extensionList: {
+            extension: {
+                key: string;
+                value: string;
+            }[]
+        } | null;
+	}
+}
+
+export class ParticipantRejectedEvt extends DomainEventMsg {
+    boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = ACCOUNT_LOOKUP_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = AccountLookupBCTopics.DomainRequests;
+
+    payload: ParticipantRejectedEvtPayload;
+
+    constructor (payload: ParticipantRejectedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.partyId;
