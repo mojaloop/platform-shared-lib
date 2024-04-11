@@ -323,22 +323,22 @@ export class QuoteQueryResponseEvt extends DomainEventMsg {
     }
 }
 
-export type GetQuoteQueryRejectedResponseEvtPayload = {
+export type QuoteRejectedResponseEvtPayload = {
     quoteId: string;
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
 	}
 }
-export class GetQuoteQueryRejectedResponseEvt extends DomainEventMsg {
+export class QuoteRejectedResponseEvt extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainEvents;
-	payload: GetQuoteQueryRejectedResponseEvtPayload;
+	payload: QuoteRejectedResponseEvtPayload;
 
-	constructor(payload: GetQuoteQueryRejectedResponseEvtPayload) {
+	constructor(payload: QuoteRejectedResponseEvtPayload) {
 		super();
 
 		this.aggregateId = this.msgKey = payload.quoteId;
@@ -683,22 +683,22 @@ export class BulkQuoteQueryResponseEvt extends DomainEventMsg {
     }
 }
 
-export type GetBulkQuoteQueryRejectedResponseEvtPayload = {
+export type BulkQuoteRejectedResponseEvtPayload = {
     bulkQuoteId: string;
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
 	}
 }
-export class GetBulkQuoteQueryRejectedResponseEvt extends DomainEventMsg {
+export class BulkQuoteRejectedResponseEvt extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainEvents;
-	payload: GetBulkQuoteQueryRejectedResponseEvtPayload;
+	payload: BulkQuoteRejectedResponseEvtPayload;
 
-	constructor(payload: GetBulkQuoteQueryRejectedResponseEvtPayload) {
+	constructor(payload: BulkQuoteRejectedResponseEvtPayload) {
 		super();
 
 		this.aggregateId = this.msgKey = payload.bulkQuoteId;
@@ -709,4 +709,6 @@ export class GetBulkQuoteQueryRejectedResponseEvt extends DomainEventMsg {
 		// TODO
 	}
 }
+
 //#endregion BulkQuote
+

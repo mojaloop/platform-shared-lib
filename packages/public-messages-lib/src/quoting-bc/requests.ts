@@ -278,7 +278,7 @@ export class QuoteQueryReceivedEvt extends DomainEventMsg {
     }
 }
 
-export type GetQuoteQueryRejectedEvtPayload = {
+export type QuoteRejectedEvtPayload = {
     quoteId: string,
     errorInformation: {
 		errorCode: string;
@@ -292,16 +292,16 @@ export type GetQuoteQueryRejectedEvtPayload = {
 	}
 }
 
-export class GetQuoteQueryRejectedEvt extends DomainEventMsg {
+export class QuoteRejectedEvt extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainRequests;
 
-    payload: GetQuoteQueryRejectedEvtPayload;
+    payload: QuoteRejectedEvtPayload;
 
-    constructor (payload: GetQuoteQueryRejectedEvtPayload) {
+    constructor (payload: QuoteRejectedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.quoteId;
@@ -576,7 +576,7 @@ export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
     }
 }
 
-export type GetBulkQuoteQueryRejectedEvtPayload = {
+export type BulkQuoteRejectedEvtPayload = {
     bulkQuoteId: string,
     errorInformation: {
 		errorCode: string;
@@ -590,16 +590,16 @@ export type GetBulkQuoteQueryRejectedEvtPayload = {
 	}
 }
 
-export class GetBulkQuoteQueryRejectedEvt extends DomainEventMsg {
+export class BulkQuoteRejectedEvt extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = QuotingBCTopics.DomainRequests;
 
-    payload: GetBulkQuoteQueryRejectedEvtPayload;
+    payload: BulkQuoteRejectedEvtPayload;
 
-    constructor (payload: GetBulkQuoteQueryRejectedEvtPayload) {
+    constructor (payload: BulkQuoteRejectedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.bulkQuoteId;
