@@ -279,7 +279,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 		if (!this._client.isConnected() || this._consuming) return;
 
 		const callContinue = ()=>{
-            process.nextTick(() => {
+            setImmediate(() => {
 				this._consumeLoop();
 			});
 			this._consuming = false;
