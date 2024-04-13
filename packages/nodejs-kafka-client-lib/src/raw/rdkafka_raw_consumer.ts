@@ -293,6 +293,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 				return callContinue();
 			}
 
+            // Shouldn't happen, but if it does we don't hang the consume loop
 			if(kafkaMessages.length<=0) return callContinue();
 
 			// use the batch handler if we have a batchHandlerCallback
