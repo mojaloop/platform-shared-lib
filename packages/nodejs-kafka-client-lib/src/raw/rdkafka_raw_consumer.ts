@@ -280,14 +280,13 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 
 		const callContinue = ()=>{
             setImmediate(() => {
+                this._consuming = false;
 				this._consumeLoop();
 			});
-			this._consuming = false;
 		};
 
+        this._consuming = true;
 		this._client.consume(this._batchSize, (err: RDKafka.LibrdKafkaError, kafkaMessages: RDKafka.Message[]) => {
-			this._consuming = true;
-
 			if (err) {
 				if (!this._client.isConnected() || err.code == -172 /* not connected or wrong state */ || err.code == 3 /* Broker: Unknown topic or partition */) return;
 				this._logger?.error(err, `MLKafkaRawConsumer got callback with err: ${err.message}`);
@@ -298,20 +297,17 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 
 			// use the batch handler if we have a batchHandlerCallback
 			if(this._batchHandlerCallback){
-				const commitAndContinue = (msgs: IRawMessage[])=>{
-					this._commitMsg(kafkaMessages);
-					return callContinue();
-				};
-
 				const msgs = kafkaMessages.map(this._toIMessage.bind(this));
 
+                // call the provided handler and then commit
 				this._batchHandlerCallback(msgs).finally(()=>{
-					return commitAndContinue(msgs);
+                    this._commitMsg(kafkaMessages);
+                    return callContinue();
 				});
 			}else if(this._handlerCallback){
                 if (kafkaMessages.length>1) throw new Error("MLKafkaRawConsumer single handler callback configured with batchSize > 1 - these two parameters must match");
-
                 const msg = this._toIMessage(kafkaMessages[0]);
+
                 // call the provided handler and then commit
                 this._handlerCallback(msg).finally(() => {
                     this._commitMsg(kafkaMessages[0]);
