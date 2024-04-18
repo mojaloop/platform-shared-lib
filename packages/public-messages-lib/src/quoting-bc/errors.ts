@@ -563,6 +563,31 @@ export class QuoteBCUnableToAddQuoteToDatabaseErrorEvent extends DomainEventMsg 
     }
 }
 
+export type QuoteBCUnableToGetQuoteFromDatabaseErrorPayload = {
+    quoteId: string;
+    errorCode: string;
+}
+
+export class QuoteBCUnableToGetQuoteFromDatabaseErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+    payload: QuoteBCUnableToGetQuoteFromDatabaseErrorPayload;
+
+    constructor (payload: QuoteBCUnableToGetQuoteFromDatabaseErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = (payload.quoteId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO: NOT IMPLEMENTED
+    }
+}
+
 
 export type QuoteBCUnableToAddBulkQuoteToDatabaseErrorPayload = {
     bulkQuoteId: string;
@@ -577,6 +602,30 @@ export class QuoteBCUnableToAddBulkQuoteToDatabaseErrorEvent extends DomainEvent
     payload: QuoteBCUnableToAddBulkQuoteToDatabaseErrorPayload;
 
     constructor (payload: QuoteBCUnableToAddBulkQuoteToDatabaseErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = (payload.bulkQuoteId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO: NOT IMPLEMENTED
+    }
+}
+
+export type QuoteBCUnableToGetBulkQuoteFromDatabaseErrorPayload = {
+    bulkQuoteId: string;
+    errorCode: string;
+}
+export class QuoteBCUnableToGetBulkQuoteFromDatabaseErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+    payload: QuoteBCUnableToGetBulkQuoteFromDatabaseErrorPayload;
+
+    constructor (payload: QuoteBCUnableToGetBulkQuoteFromDatabaseErrorPayload) {
         super();
 
         this.aggregateId = this.msgKey = (payload.bulkQuoteId) as string;
