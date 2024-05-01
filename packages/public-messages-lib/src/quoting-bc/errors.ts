@@ -117,10 +117,7 @@ export class QuoteBCBulkQuoteNotFoundErrorEvent extends DomainEventMsg {
 
 // General
 export type QuoteBCInvalidMessagePayloadErrorPayload = {
-    quoteId: string | null;
-    bulkQuoteId: string | null;
     errorCode: string;
-    requesterFspId: string;
 }
 
 export class QuoteBCInvalidMessagePayloadErrorEvent extends DomainEventMsg {
@@ -134,7 +131,53 @@ export class QuoteBCInvalidMessagePayloadErrorEvent extends DomainEventMsg {
 
     constructor (payload: QuoteBCInvalidMessagePayloadErrorPayload) {
         super();
-        this.aggregateId = this.msgKey = (payload.bulkQuoteId ?? payload.quoteId) as string;
+        this.aggregateId = this.msgKey;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO: NOT IMPLEMENTED
+    }
+}
+
+export type QuoteBCMissingMessageNameErrorEventPayload = {
+    errorCode: string;
+}
+export class QuoteBCMissingMessageNameErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+
+    payload: QuoteBCMissingMessageNameErrorEventPayload;
+
+    constructor (payload: QuoteBCMissingMessageNameErrorEventPayload) {
+        super();
+        this.aggregateId = this.msgKey;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO: NOT IMPLEMENTED
+    }
+}
+
+export type QuoteBCMessageNotCommandTypeErrorPayload = {
+    errorCode: string;
+}
+export class QuoteBCMessageNotCommandTypeErrorEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+
+    payload: QuoteBCMessageNotCommandTypeErrorPayload;
+
+    constructor (payload: QuoteBCMessageNotCommandTypeErrorPayload) {
+        super();
+        this.aggregateId = this.msgKey;
         this.payload = payload;
     }
 
@@ -144,9 +187,6 @@ export class QuoteBCInvalidMessagePayloadErrorEvent extends DomainEventMsg {
 }
 
 export type QuoteBCInvalidMessageTypeErrorPayload = {
-    requesterFspId: string;
-    quoteId: string | null;
-    bulkQuoteId: string | null;
     errorCode: string;
 }
 export class QuoteBCInvalidMessageTypeErrorEvent extends DomainEventMsg {
@@ -160,7 +200,7 @@ export class QuoteBCInvalidMessageTypeErrorEvent extends DomainEventMsg {
 
     constructor (payload: QuoteBCInvalidMessageTypeErrorPayload) {
         super();
-        this.aggregateId = this.msgKey = (payload.requesterFspId ?? payload.requesterFspId) as string;
+        this.aggregateId = this.msgKey;
         this.payload = payload;
     }
 
@@ -754,6 +794,30 @@ export class QuoteBCQuoteRuleSchemeViolatedResponseErrorEvent extends DomainEven
         super();
 
         this.aggregateId = this.msgKey = (payload.quoteId) as string;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO: NOT IMPLEMENTED
+    }
+}
+
+export type QuoteBCUnableToStoreQuotesInDatabasePayload = {
+    errorCode: string;
+}
+
+export class QuoteBCUnableToStoreQuotesInDatabaseEvent extends DomainEventMsg {
+    boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = QUOTING_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = QuotingBCTopics.DomainEvents;
+    payload: QuoteBCUnableToStoreQuotesInDatabasePayload;
+
+    constructor (payload: QuoteBCUnableToStoreQuotesInDatabasePayload) {
+        super();
+
+        this.aggregateId = this.msgKey;
         this.payload = payload;
     }
 
