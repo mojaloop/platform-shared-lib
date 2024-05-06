@@ -19,20 +19,28 @@
  their names indented and be marked with a '-'. Email address can be added
  optionally within square brackets <email>.
 
- * Gates Foundation
- - Name Surname <name.surname@gatesfoundation.com>
-
- * Crosslake
- - Pedro Sousa Barreto <pedrob@crosslaketech.com>
+ * Interledger Foundation
+ - Pedro Sousa Barreto <pedrosousabarreto@gmail.com>
 
  --------------
  ******/
+
 "use strict";
 
-/*
-* This is inspired by the original implementation of https://github.com/mojaloop/central-services-metrics
-* Split in two libs: one for types/declarations and another for the implementation
-* */
+import {Span, Tracer, Context} from "@opentelemetry/api";
 
-export * from "./metrics";
-export * from "./tracing";
+// @opentelemetry/api is a types only library that
+// contains no implementations, we can safely use it in domain code
+export {Span, Tracer, Context, SpanStatusCode} from "@opentelemetry/api";
+
+
+export interface ITracing {
+    readonly context: Context;
+
+    getTracer(tracerName: string): Tracer;
+    startSpanWithPropagationInput(tracer: Tracer, spanName: string, input: any): Span;
+    startChildSpan(tracer: Tracer, spanName: string, parentSpan: Span): Span;
+    startSpan(tracer: Tracer, spanName: string, context?: Context): Span;
+    propagationInject(currentSpan: Span, output: any): void;
+    propagationExtract(input: any): Context;
+}

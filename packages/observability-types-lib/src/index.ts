@@ -36,3 +36,4 @@
 
 export * from "./metrics";
 export * from "./metrics-mock";
+export * from "./tracing";
