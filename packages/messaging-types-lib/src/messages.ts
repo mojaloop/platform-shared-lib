@@ -85,6 +85,7 @@ export abstract class DomainMsg implements IDomainMessage {
     abstract payload: any
 
     abstract fspiopOpaqueState: any;
+    abstract tracingInfo?: any;
 
     abstract validatePayload(): void
 
@@ -102,12 +103,15 @@ export abstract class DomainMsg implements IDomainMessage {
 export abstract class StateEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.STATE_EVENT;
     fspiopOpaqueState:any = null;
+    tracingInfo:any = undefined;
+
     abstract validatePayload(): void
 }
 
 export abstract class DomainEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.DOMAIN_EVENT;
     fspiopOpaqueState:any = null;
+    tracingInfo:any = undefined;
 
     abstract validatePayload(): void
 }
@@ -115,6 +119,7 @@ export abstract class DomainEventMsg extends DomainMsg {
 export abstract class DomainErrorEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.DOMAIN_ERROR_EVENT;
     fspiopOpaqueState:any = null;
+    tracingInfo:any = undefined;
 
     sourceMessageName: string; // this should include the name of the message being processed when the error happened
 
@@ -125,6 +130,7 @@ export abstract class DomainErrorEventMsg extends DomainMsg {
 export abstract class CommandMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.COMMAND;
     fspiopOpaqueState:any = null;
+    tracingInfo:any = undefined;
 
     abstract validatePayload(): void
 }
