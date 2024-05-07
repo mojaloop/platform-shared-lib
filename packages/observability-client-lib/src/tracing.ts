@@ -45,7 +45,7 @@ import {OTLPTraceExporter} from "@opentelemetry/exporter-trace-otlp-grpc";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {ITracing} from "@mojaloop/platform-shared-lib-observability-types-lib";
 import {OTLPGRPCExporterConfigNode} from "@opentelemetry/otlp-grpc-exporter-base";
-import {AlwaysOnSampler, ParentBasedSampler, TraceIdRatioBasedSampler, Sampler} from "@opentelemetry/sdk-trace-base";
+import {AlwaysOnSampler, AlwaysOffSampler, ParentBasedSampler, TraceIdRatioBasedSampler, Sampler} from "@opentelemetry/sdk-trace-base";
 import * as process from "process";
 
 //OpentelemetryApi.diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
@@ -104,12 +104,14 @@ export class OpenTelemetryClient implements ITracing {
 
 
         let sampler: Sampler;
-        if(process.env["PRODUCTION_MODE"]){
+        if(process.env["TRACING_SAMPLE_ALL"] && process.env["TRACING_SAMPLE_ALL"].toUpperCase() === "TRUE") {
+            sampler = new AlwaysOnSampler();
+        }else if(process.env["TRACING_SAMPLE_NONE"] && process.env["TRACING_SAMPLE_NONE"].toUpperCase() === "TRUE"){
+            sampler = new AlwaysOffSampler();
+        }else{
             sampler = new ParentBasedSampler({
                 root: new TraceIdRatioBasedSampler(0.05)
             });
-        }else{
-            sampler = new AlwaysOnSampler();
         }
 
         this._instance._provider = new NodeTracerProvider({
