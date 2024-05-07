@@ -27,7 +27,7 @@
 
 "use strict";
 
-import {Span, Tracer, Context} from "@opentelemetry/api";
+import {Span, Tracer, Context, SpanKind} from "@opentelemetry/api";
 
 // @opentelemetry/api is a types only library that
 // contains no implementations, we can safely use it in domain code
@@ -38,9 +38,10 @@ export interface ITracing {
     readonly context: Context;
 
     getTracer(tracerName: string): Tracer;
+    getActiveSpan():Span | undefined;
     startSpanWithPropagationInput(tracer: Tracer, spanName: string, input: any): Span;
-    startChildSpan(tracer: Tracer, spanName: string, parentSpan: Span): Span;
-    startSpan(tracer: Tracer, spanName: string, context?: Context): Span;
+    startChildSpan(tracer: Tracer, spanName: string, parentSpan: Span, spanKind?:SpanKind): Span;
+    startSpan(tracer: Tracer, spanName: string, context?: Context, spanKind?:SpanKind): Span;
     propagationInject(currentSpan: Span, output: any): void;
     propagationExtract(input: any): Context;
 }

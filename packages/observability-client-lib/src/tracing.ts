@@ -29,7 +29,7 @@
 
 
 import * as OpentelemetryApi from "@opentelemetry/api";
-import {Context, Span, trace, Tracer} from "@opentelemetry/api";
+import {Context, Span, SpanKind, TextMapPropagator, trace, Tracer} from "@opentelemetry/api";
 import {NodeTracerProvider} from "@opentelemetry/node";
 import {BatchSpanProcessor} from "@opentelemetry/tracing";
 import {Resource, detectResourcesSync} from "@opentelemetry/resources";
@@ -87,7 +87,7 @@ export class OpenTelemetryClient implements ITracing {
         throw new Error("Called OpenTelemetryClient.getInstance() before OpenTelemetryClient.Start()");
     }
 
-    static Start(bcName:string, appName:string, appVersion:string, instanceId:string, logger:ILogger, collectorUrl?:string){
+    static Start(bcName:string, appName:string, appVersion:string, instanceId:string, logger:ILogger, collectorUrl?:string, propagator?: TextMapPropagator<any>){
         if (this._instance) {
             throw new Error("Called OpenTelemetryClient.start() a second time - already started");
         }
@@ -118,7 +118,10 @@ export class OpenTelemetryClient implements ITracing {
             resource: resource,
             sampler: sampler
         });
-        this._instance._provider.register();
+
+        this._instance._provider.register({
+            propagator: propagator || undefined
+        });
 
         // OTLPTraceExporter - will use OTEL_EXPORTER_OTLP_ENDPOINT if no url is set
         const collectorOptions: OTLPGRPCExporterConfigNode = {};
@@ -146,28 +149,37 @@ export class OpenTelemetryClient implements ITracing {
         return trace.getTracer(tracerName);
     }
 
+    getActiveSpan():Span | undefined {
+        OpenTelemetryClient._checkInitialised();
+
+        return trace.getActiveSpan();
+    }
+
     startSpanWithPropagationInput(tracer: Tracer, spanName: string, input: any): Span {
         OpenTelemetryClient._checkInitialised();
 
         const ctx = this.propagationExtract(input);
-        return this.startSpan(tracer, spanName, ctx);
+        const span= this.startSpan(tracer, spanName, ctx);
+
+        trace.setSpan(OpentelemetryApi.context.active(), span);
+        return span;
     }
 
-    startChildSpan(tracer: Tracer, spanName: string, parentSpan: Span): Span {
+    startChildSpan(tracer: Tracer, spanName: string, parentSpan: Span, spanKind?:SpanKind): Span {
         OpenTelemetryClient._checkInitialised();
 
         const ctx = OpentelemetryApi.trace.setSpan(OpentelemetryApi.context.active(), parentSpan);
         //const childSpan = OpenTelemetryClient.getInstance().startSpan(tracer, spanName, ctx);
-        const childSpan = tracer.startSpan(spanName, undefined, ctx);
+        const childSpan = tracer.startSpan(spanName, {kind: spanKind}, ctx);
         return childSpan;
     }
 
-    startSpan(tracer: Tracer, spanName: string, context?: Context): Span {
+    startSpan(tracer: Tracer, spanName: string, context?: Context, spanKind?:SpanKind): Span {
         OpenTelemetryClient._checkInitialised();
 
         const ctx = context || OpentelemetryApi.context.active();
 
-        const span = tracer.startSpan(spanName, undefined, ctx);
+        const span = tracer.startSpan(spanName, {kind: spanKind}, ctx);
 
         // Set the created span as active in the deserialized context.
         //trace.setSpan(ctx, span);
