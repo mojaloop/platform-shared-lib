@@ -38,7 +38,7 @@
     },
     "dependencies": {
         "@mojaloop/logging-bc-public-types-lib": "~0.5.4",
-        "@mojaloop/platform-shared-lib-messaging-types-lib": "~0.5.6",
+        "@mojaloop/platform-shared-lib-messaging-types-lib": "~0.6.1",
         "node-rdkafka": "~2.18.0"
     },
     "devDependencies": {
