@@ -35,7 +35,7 @@
         "dep:update": "ncu -u"
     },
     "dependencies": {
-        "@mojaloop/platform-shared-lib-messaging-types-lib": "~0.6.1"
+        "@mojaloop/platform-shared-lib-messaging-types-lib": "~0.6.2"
     },
     "devDependencies": {
         "eslint": "^8.57.0",
