@@ -56,6 +56,8 @@ export interface IMessage{
 
     fspiopOpaqueState: any;            // FSPIOP Interop API opaque state token - all messages produced as response to this should copy it if present
     // iso20022OpaqueState: any;      // future place for ISO 20022 Interop API opaque state token - all messages produced as response to this should copy it if present
+
+    tracingInfo?:any;               // optional tracing information, should be propagated between calls
 }
 
 export interface IDomainMessage extends IMessage{
