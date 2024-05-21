@@ -74,6 +74,7 @@ import {MLKafkaJsonProducer, MLKafkaJsonProducerOptions} from "@mojaloop/platfor
 const logger: ConsoleLogger = new ConsoleLogger();
 
 const authOptions:  IRawAuthenticationOptions = {
+    protocol: "sasl_plaintext",
     mechanism: "SCRAM-SHA-256",
     username: "kafka",
     password: "password"
