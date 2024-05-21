@@ -38,7 +38,7 @@ import {TopicPartition} from "node-rdkafka";
 import * as RDKafka from "node-rdkafka";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {LibrdKafkaError, Metadata} from "node-rdkafka/index";
-import {IRawMessage, IRawMessageConsumer} from "./raw_types";
+import {IRawAuthenticationOptions, IRawMessage, IRawMessageConsumer} from "./raw_types";
 import * as crypto from "crypto";
 
 export enum MLKafkaRawConsumerOutputType {
@@ -66,6 +66,7 @@ export class MLKafkaRawConsumerOptions {
 	batchSize?: number;
 	batchTimeoutMs?: number;
     fetchErrorBackoffMms?: number;
+    authentication?: IRawAuthenticationOptions;
 }
 
 type MLKafkaRawConsumerEvents =
@@ -193,6 +194,13 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 
         if (this._options.fetchErrorBackoffMms != undefined){
             this._globalConfig["fetch.error.backoff.ms"] = this._options.fetchErrorBackoffMms;
+        }
+
+        // authentication options
+        if(this._options.authentication != undefined) {
+            this._globalConfig["sasl.mechanism"] = this._options.authentication.mechanism;
+            this._globalConfig["sasl.username"] = this._options.authentication.username;
+            this._globalConfig["sasl.password"] = this._options.authentication.password;
         }
 
 		// apply local defaults

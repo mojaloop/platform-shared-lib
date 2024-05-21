@@ -40,7 +40,7 @@ import {
     MLKafkaRawConsumerOutputType,
     MLKafkaRawConsumerOptions
 } from "./raw/rdkafka_raw_consumer";
-import {IRawMessage} from "./raw/raw_types";
+import {IRawAuthenticationOptions, IRawMessage} from "./raw/raw_types";
 
 
 type MLKafkaJsonConsumerEvents = "rebalance";
@@ -58,6 +58,7 @@ export class MLKafkaJsonConsumerOptions {
     sessionTimeoutMs?: number;   //Client group session and failure detection timeout, default is 45 secs
     batchSize?: number;
     batchTimeoutMs?: number;
+    authentication?: IRawAuthenticationOptions;
 }
 
 export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsumer {
