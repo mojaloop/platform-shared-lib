@@ -189,6 +189,8 @@ export class OpenTelemetryClient implements ITracing {
     propagationInject(currentSpan: Span, output: any) {
         OpenTelemetryClient._checkInitialised();
 
+        if(!output) output = {};
+
         const ctx = OpentelemetryApi.trace.setSpan(OpentelemetryApi.context.active(), currentSpan);
         OpentelemetryApi.propagation.inject(ctx, output);
     }
