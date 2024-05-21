@@ -198,6 +198,7 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 
         // authentication options
         if(this._options.authentication != undefined) {
+            this._globalConfig["security.protocol"] = this._options.authentication.protocol;
             this._globalConfig["sasl.mechanism"] = this._options.authentication.mechanism;
             this._globalConfig["sasl.username"] = this._options.authentication.username;
             this._globalConfig["sasl.password"] = this._options.authentication.password;
