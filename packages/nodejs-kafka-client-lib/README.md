@@ -5,10 +5,10 @@
 [![NPM Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/@mojaloop/platform-shared-lib.svg?style=flat)](https://www.npmjs.com/package/@mojaloop/platform-shared-lib)
 [![CircleCI](https://circleci.com/gh/mojaloop/platform-shared-lib.svg?style=svg)](https://circleci.com/gh/mojaloop/platform-shared-lib)
 
-This is the kafka library implementation of the general messaging consumer and publisher interfaces found in [here](https://www.npmjs.com/package/@mojaloop/platform-shared-lib-messaging-types-lib)  
+This is the kafka library implementation of the general messaging consumer and publisher interfaces found in [here](https://www.npmjs.com/package/@mojaloop/platform-shared-lib-messaging-types-lib)
 
 It includes two a set of producer and consumer classes:
-- **RAW or low-level message consumer and producer implementations** - this is a wrapper around node-rdkafka lib to that makes most of its features available, its consumer can be configured to parse output messages as JSON objects, strings of leave it as the original binary format 
+- **RAW or low-level message consumer and producer implementations** - this is a wrapper around node-rdkafka lib to that makes most of its features available, its consumer can be configured to parse output messages as JSON objects, strings of leave it as the original binary format
 - **JSON or high-level message consumer and producer implementations** - simpler to use with the consumer automatically parsing messages to JSON (makes use of the raw implementation)
 
 # Note on dependening/using this library
@@ -24,12 +24,20 @@ Only application layer implementations should use these classes directly (or tes
 import {ConsoleLogger} from "@mojaloop/logging-bc-public-types-lib";
 import {IMessage, MessageTypes} from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import {MLKafkaJsonConsumer, MLKafkaJsonConsumerOptions} from "@mojaloop/platform-shared-lib-nodejs-kafka-client-lib";
-	
+
 const logger: ConsoleLogger = new ConsoleLogger();
+
+const authOptions:  IRawAuthenticationOptions = {
+    mechanism: "SCRAM-SHA-256",
+    username: "kafka",
+    password: "password"
+}
 
 const consumerOptions: MLKafkaJsonConsumerOptions = {
     kafkaBrokerList: "localhost:9092",
     kafkaGroupId: "test_consumer_group",
+    // optional authentication
+    authentication: authOptions
 };
 
 const kafkaConsumer: MLKafkaJsonConsumer = new MLKafkaJsonConsumer(consumerOptions, logger);
@@ -65,9 +73,17 @@ import {MLKafkaJsonProducer, MLKafkaJsonProducerOptions} from "@mojaloop/platfor
 
 const logger: ConsoleLogger = new ConsoleLogger();
 
+const authOptions:  IRawAuthenticationOptions = {
+    mechanism: "SCRAM-SHA-256",
+    username: "kafka",
+    password: "password"
+}
+
 const producerOptions: MLKafkaJsonProducerOptions = {
     kafkaBrokerList: "localhost:9092",
-    producerClientId: "test_producer"
+    producerClientId: "test_producer",
+    // optional authentication
+    authentication: authOptions
 };
 
 const kafkaProducer: MLKafkaJsonProducer =  new MLKafkaJsonProducer(producerOptions, logger);

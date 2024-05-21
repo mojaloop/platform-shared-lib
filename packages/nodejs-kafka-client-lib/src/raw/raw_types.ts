@@ -70,3 +70,9 @@ export declare interface IRawMessageProducer {
 
   send: (message: IRawMessage | IRawMessage[] | any) => Promise<void>;
 }
+
+export declare interface IRawAuthenticationOptions {
+    mechanism: "PLAIN" | "GSSAPI" | "SCRAM-SHA-256" | "SCRAM-SHA-512",
+    username: string,
+    password: string
+}
