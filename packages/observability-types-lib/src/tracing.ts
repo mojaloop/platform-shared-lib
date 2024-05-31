@@ -24,24 +24,35 @@
 
  --------------
  ******/
-
 "use strict";
 
-import {Span, Tracer, Context, SpanKind} from "@opentelemetry/api";
+import {
+    ContextAPI, TraceAPI, PropagationAPI,
+    Span, Tracer, Context, SpanKind
+} from "@opentelemetry/api";
 
 // @opentelemetry/api is a types only library that
 // contains no implementations, we can safely use it in domain code
-export {Span, Tracer, Context, SpanStatusCode} from "@opentelemetry/api";
+export {
+    ContextAPI, TraceAPI, PropagationAPI,
+    Span, Tracer, Context, SpanStatusCode, Baggage
+} from "@opentelemetry/api";
 
 
 export interface ITracing {
-    readonly context: Context;
+    readonly context: ContextAPI;
+    readonly trace: TraceAPI;
+    readonly propagation: PropagationAPI;
 
-    getTracer(tracerName: string): Tracer;
-    getActiveSpan():Span | undefined;
-    startSpanWithPropagationInput(tracer: Tracer, spanName: string, input: any): Span;
+    // tracing / spans
     startChildSpan(tracer: Tracer, spanName: string, parentSpan: Span, spanKind?:SpanKind): Span;
-    startSpan(tracer: Tracer, spanName: string, context?: Context, spanKind?:SpanKind): Span;
-    propagationInject(currentSpan: Span, output: any): void;
+
+    // propagation
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    propagationInject(output: any): void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    propagationInjectFromSpan(span: Span, output: any): void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     propagationExtract(input: any): Context;
+
 }
