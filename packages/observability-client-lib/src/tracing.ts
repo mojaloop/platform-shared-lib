@@ -27,13 +27,13 @@
 
 "use strict";
 
-
+import * as process from "process";
 import * as OpentelemetryApi from "@opentelemetry/api";
-import {Context, Span, SpanKind, TextMapPropagator, trace, Tracer} from "@opentelemetry/api";
+import {Context, Span, SpanKind, TextMapPropagator, Tracer} from "@opentelemetry/api";
 import {NodeTracerProvider} from "@opentelemetry/node";
 import {BatchSpanProcessor} from "@opentelemetry/tracing";
 import {Resource, detectResourcesSync} from "@opentelemetry/resources";
-// import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
+const { W3CTraceContextPropagator, W3CBaggagePropagator, CompositePropagator} = require("@opentelemetry/core");
 import {
     SEMRESATTRS_SERVICE_INSTANCE_ID,
     SEMRESATTRS_SERVICE_NAME,
@@ -41,35 +41,15 @@ import {
     SEMRESATTRS_SERVICE_VERSION
 } from "@opentelemetry/semantic-conventions";
 import {OTLPTraceExporter} from "@opentelemetry/exporter-trace-otlp-grpc";
+import {OTLPGRPCExporterConfigNode} from "@opentelemetry/otlp-grpc-exporter-base";
+import {
+    AlwaysOnSampler, AlwaysOffSampler, ParentBasedSampler, TraceIdRatioBasedSampler, Sampler
+} from "@opentelemetry/sdk-trace-base";
 
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {ITracing} from "@mojaloop/platform-shared-lib-observability-types-lib";
-import {OTLPGRPCExporterConfigNode} from "@opentelemetry/otlp-grpc-exporter-base";
-import {AlwaysOnSampler, AlwaysOffSampler, ParentBasedSampler, TraceIdRatioBasedSampler, Sampler} from "@opentelemetry/sdk-trace-base";
-import * as process from "process";
-
-//OpentelemetryApi.diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
-
-// registerInstrumentations({
-//     instrumentations: [
-//         new HttpInstrumentation(),
-//         new FastifyInstrumentation({
-//             // requestHook: function (span: Span, info: FastifyRequestInfo) {
-//             //     span.setAttribute(
-//             //         "PEDRO",
-//             //         info.request.method,
-//             //     )
-//             // }
-//         }),
-//     ],
-//     // traceExporter: new OTLPTraceExporter(),
-//     // metricReader: new metrics.PeriodicExportingMetricReader({
-//     //     exporter: new OTLPMetricExporter(),
-//     // }),
-// });
 
 
-// export class OpenTelemetryClient extends Tracing implements ITracing {
 export class OpenTelemetryClient implements ITracing {
     private _logger:ILogger;
     private _provider:NodeTracerProvider;
@@ -78,7 +58,29 @@ export class OpenTelemetryClient implements ITracing {
 
     private constructor() {
         // intentionally empty
-        //super();
+    }
+
+    // wrappers of the OTEL apis, developers should use these
+    // The wapper is just to ensure the client was initialised
+    get context(): OpentelemetryApi.ContextAPI {
+        OpenTelemetryClient._checkInitialised();
+        return OpentelemetryApi.context;
+    }
+
+    get trace(): OpentelemetryApi.TraceAPI {
+        OpenTelemetryClient._checkInitialised();
+        return OpentelemetryApi.trace;
+    }
+
+    get propagation(): OpentelemetryApi.PropagationAPI {
+        OpenTelemetryClient._checkInitialised();
+        return OpentelemetryApi.propagation;
+    }
+
+    private static _checkInitialised(){
+        if (!this._instance) {
+            throw new Error("Called OpenTelemetryClient.getInstance() before OpenTelemetryClient.Start()");
+        }
     }
 
     static getInstance():ITracing{
@@ -91,6 +93,8 @@ export class OpenTelemetryClient implements ITracing {
         if (this._instance) {
             throw new Error("Called OpenTelemetryClient.start() a second time - already started");
         }
+
+        //OpentelemetryApi.diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
         this._instance = new OpenTelemetryClient();
         this._instance._logger = logger;
@@ -113,6 +117,13 @@ export class OpenTelemetryClient implements ITracing {
                 root: new TraceIdRatioBasedSampler(0.05)
             });
         }
+
+        const propagators:TextMapPropagator[] = [new W3CTraceContextPropagator(), new W3CBaggagePropagator()];
+        if(propagator) propagators.push(propagator);
+
+        const prop = new CompositePropagator({
+            propagators: propagators,
+        });
 
         this._instance._provider = new NodeTracerProvider({
             resource: resource,
@@ -143,35 +154,49 @@ export class OpenTelemetryClient implements ITracing {
         this._instance._logger.info(`OpenTelemetryClient Started with - collector url: "${otlpExporter.getDefaultUrl(collectorOptions)}"`);
     }
 
-    getTracer(tracerName: string): Tracer {
+    /*
+    Facilitator methods below - syntactic sugar code only, because
+    all of this can be achieved using the OTEL APIs exposed above
+    */
+
+    // ok
+    startChildSpan(tracer: Tracer, spanName: string, parentSpan: Span, spanKind?:SpanKind): Span {
         OpenTelemetryClient._checkInitialised();
 
-        return trace.getTracer(tracerName);
+        const ctx = OpentelemetryApi.trace.setSpan(OpentelemetryApi.context.active(), parentSpan);
+        const childSpan = tracer.startSpan(spanName, {kind: spanKind}, ctx);
+        return childSpan;
     }
 
-    getActiveSpan():Span | undefined {
+    // ok
+    propagationInject(output: any) {
         OpenTelemetryClient._checkInitialised();
-
-        return trace.getActiveSpan();
+        OpentelemetryApi.propagation.inject(OpentelemetryApi.context.active(), output);
     }
 
+    // ok
+    propagationInjectFromSpan(span: Span, output: any) {
+        OpenTelemetryClient._checkInitialised();
+        const activeCtx = OpentelemetryApi.context.active();
+        OpentelemetryApi.trace.setSpan(activeCtx, span);
+        OpentelemetryApi.propagation.inject(activeCtx, output);
+    }
+
+    // ok
+    propagationExtract(input: any): Context {
+        OpenTelemetryClient._checkInitialised();
+        const newContext = OpentelemetryApi.propagation.extract(OpentelemetryApi.context.active(), input);
+        return newContext;
+    }
+
+    /* // OLD to remove
     startSpanWithPropagationInput(tracer: Tracer, spanName: string, input: any): Span {
         OpenTelemetryClient._checkInitialised();
 
         const ctx = this.propagationExtract(input);
         const span= this.startSpan(tracer, spanName, ctx);
 
-        trace.setSpan(OpentelemetryApi.context.active(), span);
         return span;
-    }
-
-    startChildSpan(tracer: Tracer, spanName: string, parentSpan: Span, spanKind?:SpanKind): Span {
-        OpenTelemetryClient._checkInitialised();
-
-        const ctx = OpentelemetryApi.trace.setSpan(OpentelemetryApi.context.active(), parentSpan);
-        //const childSpan = OpenTelemetryClient.getInstance().startSpan(tracer, spanName, ctx);
-        const childSpan = tracer.startSpan(spanName, {kind: spanKind}, ctx);
-        return childSpan;
     }
 
     startSpan(tracer: Tracer, spanName: string, context?: Context, spanKind?:SpanKind): Span {
@@ -179,38 +204,13 @@ export class OpenTelemetryClient implements ITracing {
 
         const ctx = context || OpentelemetryApi.context.active();
 
-        const span = tracer.startSpan(spanName, {kind: spanKind}, ctx);
 
+        const span = tracer.startSpan(spanName, {kind: spanKind}, ctx);
         // Set the created span as active in the deserialized context.
         //trace.setSpan(ctx, span);
         return span;
     }
+    */
 
-    propagationInject(currentSpan: Span, output: any) {
-        OpenTelemetryClient._checkInitialised();
 
-        if(!output) output = {};
-
-        const ctx = OpentelemetryApi.trace.setSpan(OpentelemetryApi.context.active(), currentSpan);
-        OpentelemetryApi.propagation.inject(ctx, output);
-    }
-
-    propagationExtract(input: any): Context {
-        OpenTelemetryClient._checkInitialised();
-
-        const newContext = OpentelemetryApi.propagation.extract(OpentelemetryApi.context.active(), input);
-        return newContext;
-    }
-
-    get context(): Context {
-        OpenTelemetryClient._checkInitialised();
-
-        return OpentelemetryApi.context.active();
-    }
-
-    private static _checkInitialised(){
-        if (!this._instance) {
-            throw new Error("Called OpenTelemetryClient.getInstance() before OpenTelemetryClient.Start()");
-        }
-    }
 }
