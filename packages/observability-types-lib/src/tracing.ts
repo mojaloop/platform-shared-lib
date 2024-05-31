@@ -48,8 +48,11 @@ export interface ITracing {
     startChildSpan(tracer: Tracer, spanName: string, parentSpan: Span, spanKind?:SpanKind): Span;
 
     // propagation
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     propagationInject(output: any): void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     propagationInjectFromSpan(span: Span, output: any): void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     propagationExtract(input: any): Context;
 
 }

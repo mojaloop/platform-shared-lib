@@ -33,7 +33,7 @@ import {Context, Span, SpanKind, TextMapPropagator, Tracer} from "@opentelemetry
 import {NodeTracerProvider} from "@opentelemetry/node";
 import {BatchSpanProcessor} from "@opentelemetry/tracing";
 import {Resource, detectResourcesSync} from "@opentelemetry/resources";
-const { W3CTraceContextPropagator, W3CBaggagePropagator, CompositePropagator} = require("@opentelemetry/core");
+import {W3CTraceContextPropagator, W3CBaggagePropagator, CompositePropagator} from "@opentelemetry/core";
 import {
     SEMRESATTRS_SERVICE_INSTANCE_ID,
     SEMRESATTRS_SERVICE_NAME,
@@ -89,7 +89,8 @@ export class OpenTelemetryClient implements ITracing {
         throw new Error("Called OpenTelemetryClient.getInstance() before OpenTelemetryClient.Start()");
     }
 
-    static Start(bcName:string, appName:string, appVersion:string, instanceId:string, logger:ILogger, collectorUrl?:string, propagator?: TextMapPropagator<any>){
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    static Start(bcName:string, appName:string, appVersion:string, instanceId:string, logger:ILogger, collectorUrl?:string, userPropagator?: TextMapPropagator<any>){
         if (this._instance) {
             throw new Error("Called OpenTelemetryClient.start() a second time - already started");
         }
@@ -119,11 +120,7 @@ export class OpenTelemetryClient implements ITracing {
         }
 
         const propagators:TextMapPropagator[] = [new W3CTraceContextPropagator(), new W3CBaggagePropagator()];
-        if(propagator) propagators.push(propagator);
-
-        const prop = new CompositePropagator({
-            propagators: propagators,
-        });
+        if(userPropagator) propagators.push(userPropagator);
 
         this._instance._provider = new NodeTracerProvider({
             resource: resource,
@@ -131,7 +128,7 @@ export class OpenTelemetryClient implements ITracing {
         });
 
         this._instance._provider.register({
-            propagator: propagator || undefined
+            propagator: new CompositePropagator({ propagators: propagators})
         });
 
         // OTLPTraceExporter - will use OTEL_EXPORTER_OTLP_ENDPOINT if no url is set
@@ -168,13 +165,13 @@ export class OpenTelemetryClient implements ITracing {
         return childSpan;
     }
 
-    // ok
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     propagationInject(output: any) {
         OpenTelemetryClient._checkInitialised();
         OpentelemetryApi.propagation.inject(OpentelemetryApi.context.active(), output);
     }
 
-    // ok
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     propagationInjectFromSpan(span: Span, output: any) {
         OpenTelemetryClient._checkInitialised();
         const activeCtx = OpentelemetryApi.context.active();
@@ -182,7 +179,7 @@ export class OpenTelemetryClient implements ITracing {
         OpentelemetryApi.propagation.inject(activeCtx, output);
     }
 
-    // ok
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     propagationExtract(input: any): Context {
         OpenTelemetryClient._checkInitialised();
         const newContext = OpentelemetryApi.propagation.extract(OpentelemetryApi.context.active(), input);
