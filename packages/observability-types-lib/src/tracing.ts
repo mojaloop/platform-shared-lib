@@ -34,10 +34,9 @@ import {
 // @opentelemetry/api is a types only library that
 // contains no implementations, we can safely use it in domain code
 export {
-    ContextAPI, TraceAPI, PropagationAPI,
+    ContextAPI, TraceAPI, PropagationAPI, SpanKind,
     Span, Tracer, Context, SpanStatusCode, Baggage
 } from "@opentelemetry/api";
-
 
 export interface ITracing {
     readonly context: ContextAPI;
@@ -56,3 +55,4 @@ export interface ITracing {
     propagationExtract(input: any): Context;
 
 }
+
