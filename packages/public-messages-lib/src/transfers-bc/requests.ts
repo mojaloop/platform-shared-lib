@@ -42,7 +42,7 @@ export type TransferPrepareRequestedEvtPayload = {
 	currencyCode: string;
 	ilpPacket: string;
 	condition: string;
-	expiration: number | null;
+	expiration: number;
 	extensionList: {
         extension: {
             key: string;
@@ -216,7 +216,7 @@ export type BulkTransferPrepareRequestedEvtPayload = {
         payeeIdType: string;
         transferType: string;
     }[];
-    expiration: number | null;
+    expiration: number;
     extensionList: {
         extension: {
             key: string;
