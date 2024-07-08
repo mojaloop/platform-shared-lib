@@ -40,15 +40,7 @@ export type TransferPrepareRequestedEvtPayload = {
 	payerFsp: string;
 	amount: string;
 	currencyCode: string;
-	ilpPacket: string;
-	condition: string;
 	expiration: number;
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
     payerIdType: string;
     payeeIdType: string;
     transferType: string;
@@ -79,12 +71,6 @@ export type TransferFulfilRequestedEvtPayload = {
 	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
 	fulfilment: string | null,
 	completedTimestamp: number,
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 	notifyPayee: boolean;
 }
 
@@ -113,12 +99,6 @@ export type TransferRejectRequestedEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
 	}
 }
 
@@ -204,25 +184,11 @@ export type BulkTransferPrepareRequestedEvtPayload = {
             currency: string;
             amount: string;
         };
-        ilpPacket: string;
-        condition: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
         payerIdType: string;
         payeeIdType: string;
         transferType: string;
     }[];
     expiration: number;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkTransferPrepareRequestedEvt extends DomainEventMsg {
@@ -256,26 +222,8 @@ export type BulkTransferFulfilRequestedEvtPayload = {
         errorInformation: {
             errorCode: string;
             errorDescription: string;
-            extensionList: {
-                extension: {
-                    key: string;
-                    value: string;
-                }[]
-            } | null;
         }
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
     }[];
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkTransferFulfilRequestedEvt extends DomainEventMsg {
@@ -304,12 +252,6 @@ export type BulkTransferRejectRequestedEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
 	}
 }
 

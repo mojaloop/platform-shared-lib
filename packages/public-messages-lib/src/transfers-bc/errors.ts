@@ -1004,7 +1004,6 @@ export type TransferUnableToGetSettlementModelEvtPayload = {
     amount: string;
     payerCurrency: string;
     payeeCurrency: string;
-    extensionList: string | null;
     errorCode: string
 }
 export class TransferUnableToGetSettlementModelEvt extends DomainErrorEventMsg {
@@ -1032,7 +1031,6 @@ export type TransferSettlementModelNotFoundEvtPayload = {
     amount: string;
     payerCurrency: string;
     payeeCurrency: string;
-    extensionList: string | null;
     errorCode: string
 }
 export class TransferSettlementModelNotFoundEvt extends DomainErrorEventMsg {

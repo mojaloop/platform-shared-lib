@@ -40,17 +40,9 @@ export type TransferPreparedEvtPayload = {
 	payerFsp: string;
 	amount: string;
 	currencyCode: string;
-	ilpPacket: string;
-	condition: string;
 	expiration: number;
     settlementModel: string;
     preparedAt: number;
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class TransferPreparedEvt extends DomainEventMsg {
@@ -77,12 +69,6 @@ export type TransferFulfiledEvtPayload = {
 	transferId: string;
 	fulfilment: string | null,
 	completedTimestamp: number,
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 	// for settlements
 	payeeFspId: string;
 	payerFspId: string;
@@ -117,12 +103,6 @@ export type TransferReserveFulfiledEvtPayload = {
 	transferId: string;
 	fulfilment: string | null,
 	completedTimestamp: number,
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 	// for settlements
 	payeeFspId: string;
 	payerFspId: string;
@@ -184,12 +164,6 @@ export type TransferQueryResponseEvtPayload = {
 	transferState: string;
 	fulfilment: string | null;
 	completedTimestamp: number | null;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class TransferQueryResponseEvt extends DomainEventMsg {
@@ -222,21 +196,7 @@ export type BulkTransferPreparedEvtPayload = {
         transferId: string;
         amount: string;
         currencyCode: string;
-        ilpPacket: string;
-        condition: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
     }[];
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkTransferPreparedEvt extends DomainEventMsg {
@@ -270,26 +230,8 @@ export type BulkTransferFulfiledEvtPayload = {
         errorInformation: {
             errorCode: string;
             errorDescription: string;
-            extensionList: {
-                extension: {
-                    key: string;
-                    value: string;
-                }[]
-            } | null;
         }
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
     }[];
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkTransferFulfiledEvt extends DomainEventMsg {
@@ -319,12 +261,6 @@ export type BulkTransferRejectRequestProcessedEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
 	}
 }
 
@@ -358,26 +294,8 @@ export type BulkTransferQueryResponseEvtPayload = {
         errorInformation: {
             errorCode: string;
             errorDescription: string;
-            extensionList: {
-                extension: {
-                    key: string;
-                    value: string;
-                }[]
-            } | null;
         }
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
     }[];
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkTransferQueryResponseEvt extends DomainEventMsg {
