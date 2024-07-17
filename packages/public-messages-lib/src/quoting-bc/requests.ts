@@ -119,12 +119,6 @@ export type QuoteRequestReceivedEvtPayload = {
     } | null;
     note: string | null;
     expiration: string | null;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class QuoteRequestReceivedEvt extends DomainEventMsg {
@@ -177,14 +171,14 @@ export class QuoteRequestReceivedEvt extends DomainEventMsg {
 }
 
 export type QuoteResponseReceivedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string | null;
     quoteId: string;
     transferAmount: {
         currency: string;
         amount: string;
     };
     expiration: string;
-    ilpPacket: string;
-    condition: string;
     payeeReceiveAmount: {
         currency: string;
         amount: string;
@@ -200,12 +194,6 @@ export type QuoteResponseReceivedEvtPayload = {
     geoCode: {
         latitude: string;
         longitude: string;
-    } | null;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
     } | null;
 }
 
@@ -225,7 +213,7 @@ export class QuoteResponseReceivedEvt extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        const { quoteId, transferAmount, expiration, ilpPacket, condition } = this.payload;
+        const { quoteId, transferAmount, expiration } = this.payload;
 
     if (!quoteId) {
             throw new Error("quoteId is required.");
@@ -238,18 +226,12 @@ export class QuoteResponseReceivedEvt extends DomainEventMsg {
         if (!expiration) {
             throw new Error("expiration is required.");
 		}
-
-        if (!ilpPacket) {
-            throw new Error("ilpPacket is required.");
-		}
-
-        if (!condition) {
-            throw new Error("condition is required.");
-		}
     }
 }
 
 export type QuoteQueryReceivedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string | null;
     quoteId: string;
 }
 
@@ -279,16 +261,12 @@ export class QuoteQueryReceivedEvt extends DomainEventMsg {
 }
 
 export type QuoteRejectedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string | null;
     quoteId: string,
     errorInformation: {
 		errorCode: string;
 		errorDescription: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
 	}
 }
 
@@ -319,6 +297,8 @@ export class QuoteRejectedEvt extends DomainEventMsg {
 
 
 export type BulkQuoteQueryReceivedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string | null;
     bulkQuoteId: string;
 }
 
@@ -348,6 +328,8 @@ export class BulkQuoteQueryReceivedEvt extends DomainEventMsg {
 }
 
 export type BulkQuoteRequestedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string | null;
     bulkQuoteId: string;
     payer: {
         partyIdInfo: {
@@ -419,19 +401,7 @@ export type BulkQuoteRequestedEvtPayload = {
             balanceOfPayments: string | null
         };
         note: string | null;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
     }[];
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkQuoteRequestedEvt extends DomainEventMsg {
@@ -472,6 +442,8 @@ export class BulkQuoteRequestedEvt extends DomainEventMsg {
 }
 
 export type BulkQuotePendingReceivedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string | null;
     bulkQuoteId: string;
     individualQuoteResults: {
         quoteId: string;
@@ -511,32 +483,12 @@ export type BulkQuotePendingReceivedEvtPayload = {
             currency: string;
             amount: string;
         } | null;
-        ilpPacket: string;
-        condition: string;
         errorInformation: {
             errorCode: string,
             errorDescription: string,
-            extensionList: {
-                extension: {
-                    key: string;
-                    value: string;
-                }[]
-            };
-        } | null;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
         } | null;
     }[];
     expiration: string | null;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
@@ -577,16 +529,12 @@ export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
 }
 
 export type BulkQuoteRejectedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string | null;
     bulkQuoteId: string,
     errorInformation: {
 		errorCode: string;
 		errorDescription: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
 	}
 }
 

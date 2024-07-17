@@ -1004,7 +1004,6 @@ export type TransferUnableToGetSettlementModelEvtPayload = {
     amount: string;
     payerCurrency: string;
     payeeCurrency: string;
-    extensionList: string | null;
     errorCode: string
 }
 export class TransferUnableToGetSettlementModelEvt extends DomainErrorEventMsg {
@@ -1032,7 +1031,6 @@ export type TransferSettlementModelNotFoundEvtPayload = {
     amount: string;
     payerCurrency: string;
     payeeCurrency: string;
-    extensionList: string | null;
     errorCode: string
 }
 export class TransferSettlementModelNotFoundEvt extends DomainErrorEventMsg {
@@ -1242,6 +1240,31 @@ export class TransfersBCOperatorErrorEvent extends DomainErrorEventMsg {
     payload: TransfersBCOperatorErrorPayload;
 
     constructor (payload: TransfersBCOperatorErrorPayload) {
+        super();
+
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
+
+    validatePayload(): void {
+        // TODO: NOT IMPLEMENTED
+    }
+}
+
+export type TransferFulfilmentValidationFailedEvtPayload = {
+    payerFspId: string;
+    transferId: string;
+    errorCode: string;
+}
+export class TransferFulfilmentValidationFailedEvt extends DomainErrorEventMsg {
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainEvents;
+    payload: TransferFulfilmentValidationFailedEvtPayload;
+
+    constructor (payload: TransferFulfilmentValidationFailedEvtPayload) {
         super();
 
         this.aggregateId = this.msgKey = payload.transferId;

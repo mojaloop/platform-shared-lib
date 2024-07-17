@@ -119,12 +119,6 @@ export type QuoteRequestAcceptedEvtPayload = {
     } | null;
     note: string | null;
     expiration: string | null;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class QuoteRequestAcceptedEvt extends DomainEventMsg {
@@ -184,8 +178,6 @@ export type QuoteResponseAcceptedEvtPayload = {
         amount: string;
     };
     expiration: string;
-    ilpPacket: string;
-    condition: string;
     payeeReceiveAmount: {
         currency: string;
         amount: string;
@@ -201,12 +193,6 @@ export type QuoteResponseAcceptedEvtPayload = {
     geoCode: {
         latitude: string;
         longitude: string;
-    } | null;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
     } | null;
 }
 
@@ -226,7 +212,7 @@ export class QuoteResponseAccepted extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        const { quoteId, transferAmount, expiration, ilpPacket, condition } = this.payload;
+        const { quoteId, transferAmount, expiration } = this.payload;
 
 		if (!quoteId) {
             throw new Error("quoteId is required.");
@@ -239,14 +225,6 @@ export class QuoteResponseAccepted extends DomainEventMsg {
         if (!expiration) {
             throw new Error("expiration is required.");
 		}
-
-        if (!ilpPacket) {
-            throw new Error("ilpPacket is required.");
-		}
-
-        if (!condition) {
-            throw new Error("condition is required.");
-		}
     }
 }
 
@@ -257,8 +235,6 @@ export type QuoteQueryResponseEvtPayload = {
         amount: string;
     };
     expiration: string;
-    ilpPacket: string;
-    condition: string;
     payeeReceiveAmount: {
         currency: string;
         amount: string;
@@ -274,12 +250,6 @@ export type QuoteQueryResponseEvtPayload = {
     geoCode: {
         latitude: string;
         longitude: string;
-    } | null;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
     } | null;
 }
 
@@ -299,7 +269,7 @@ export class QuoteQueryResponseEvt extends DomainEventMsg {
     }
 
     validatePayload (): void {
-        const { quoteId, transferAmount, expiration, ilpPacket, condition } = this.payload;
+        const { quoteId, transferAmount, expiration } = this.payload;
 
 		if (!quoteId) {
             throw new Error("quoteId is required.");
@@ -311,14 +281,6 @@ export class QuoteQueryResponseEvt extends DomainEventMsg {
 
         if (!expiration) {
             throw new Error("expiration is required.");
-		}
-
-        if (!ilpPacket) {
-            throw new Error("ilpPacket is required.");
-		}
-
-        if (!condition) {
-            throw new Error("condition is required.");
 		}
     }
 }
@@ -425,19 +387,7 @@ export type BulkQuoteReceivedEvtPayload = {
             balanceOfPayments: string | null
         };
         note: string | null;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
     }[];
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkQuoteReceivedEvt extends DomainEventMsg {
@@ -517,32 +467,12 @@ export type BulkQuoteAcceptedEvtPayload = {
             currency: string;
             amount: string;
         } | null;
-        ilpPacket: string | null;
-        condition: string | null;
         errorInformation: {
             errorCode: string,
             errorDescription: string,
-            extensionList: {
-                extension: {
-                    key: string;
-                    value: string;
-                }[]
-            };
-        } | null;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
         } | null;
     }[];
     expiration: string | null;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkQuoteAcceptedEvt extends DomainEventMsg {
@@ -622,32 +552,12 @@ export type BulkQuoteQueryResponseEvtPayload = {
             currency: string;
             amount: string;
         } | null;
-        ilpPacket: string | null;
-        condition: string | null;
         errorInformation: {
             errorCode: string,
             errorDescription: string,
-            extensionList: {
-                extension: {
-                    key: string;
-                    value: string;
-                }[]
-            };
-        } | null;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
         } | null;
     }[];
     expiration: string | null;
-    extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkQuoteQueryResponseEvt extends DomainEventMsg {

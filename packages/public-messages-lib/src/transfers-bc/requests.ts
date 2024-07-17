@@ -35,23 +35,21 @@ import { TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME, TransfersBCTo
 
 
 export type TransferPrepareRequestedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string;
 	transferId: string;
 	payeeFsp: string;
 	payerFsp: string;
 	amount: string;
 	currencyCode: string;
-	ilpPacket: string;
-	condition: string;
 	expiration: number;
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
     payerIdType: string;
     payeeIdType: string;
     transferType: string;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class TransferPrepareRequestedEvt extends DomainEventMsg {
@@ -75,16 +73,11 @@ export class TransferPrepareRequestedEvt extends DomainEventMsg {
 }
 
 export type TransferFulfilRequestedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string;
 	transferId: string;
 	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
-	fulfilment: string | null,
 	completedTimestamp: number,
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 	notifyPayee: boolean;
 }
 
@@ -109,16 +102,12 @@ export class TransferFulfilRequestedEvt extends DomainEventMsg {
 }
 
 export type TransferRejectRequestedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string;
 	transferId: string;
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
 	}
 }
 
@@ -198,31 +187,21 @@ export type BulkTransferPrepareRequestedEvtPayload = {
     bulkQuoteId: string;
     payeeFsp: string;
     payerFsp: string;
+    expiration: number;
     individualTransfers: {
         transferId: string;
         transferAmount: {
             currency: string;
             amount: string;
         };
-        ilpPacket: string;
-        condition: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
         payerIdType: string;
         payeeIdType: string;
         transferType: string;
-    }[];
-    expiration: number;
-    extensionList: {
-        extension: {
+        extensions: {
             key: string;
             value: string;
-        }[]
-    } | null;
+        }[];
+    }[];
 }
 
 export class BulkTransferPrepareRequestedEvt extends DomainEventMsg {
@@ -256,26 +235,8 @@ export type BulkTransferFulfilRequestedEvtPayload = {
         errorInformation: {
             errorCode: string;
             errorDescription: string;
-            extensionList: {
-                extension: {
-                    key: string;
-                    value: string;
-                }[]
-            } | null;
         }
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
     }[];
-	extensionList: {
-        extension: {
-            key: string;
-            value: string;
-        }[]
-    } | null;
 }
 
 export class BulkTransferFulfilRequestedEvt extends DomainEventMsg {
@@ -304,12 +265,6 @@ export type BulkTransferRejectRequestedEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
-        extensionList: {
-            extension: {
-                key: string;
-                value: string;
-            }[]
-        } | null;
 	}
 }
 
