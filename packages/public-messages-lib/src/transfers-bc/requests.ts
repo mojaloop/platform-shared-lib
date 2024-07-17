@@ -35,6 +35,8 @@ import { TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME, TransfersBCTo
 
 
 export type TransferPrepareRequestedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string;
 	transferId: string;
 	payeeFsp: string;
 	payerFsp: string;
@@ -44,6 +46,10 @@ export type TransferPrepareRequestedEvtPayload = {
     payerIdType: string;
     payeeIdType: string;
     transferType: string;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class TransferPrepareRequestedEvt extends DomainEventMsg {
@@ -67,9 +73,10 @@ export class TransferPrepareRequestedEvt extends DomainEventMsg {
 }
 
 export type TransferFulfilRequestedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string;
 	transferId: string;
 	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
-	fulfilment: string | null,
 	completedTimestamp: number,
 	notifyPayee: boolean;
 }
@@ -95,6 +102,8 @@ export class TransferFulfilRequestedEvt extends DomainEventMsg {
 }
 
 export type TransferRejectRequestedEvtPayload = {
+    requesterFspId: string;
+    destinationFspId: string;
 	transferId: string;
 	errorInformation: {
 		errorCode: string;
@@ -178,6 +187,7 @@ export type BulkTransferPrepareRequestedEvtPayload = {
     bulkQuoteId: string;
     payeeFsp: string;
     payerFsp: string;
+    expiration: number;
     individualTransfers: {
         transferId: string;
         transferAmount: {
@@ -187,8 +197,11 @@ export type BulkTransferPrepareRequestedEvtPayload = {
         payerIdType: string;
         payeeIdType: string;
         transferType: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
     }[];
-    expiration: number;
 }
 
 export class BulkTransferPrepareRequestedEvt extends DomainEventMsg {

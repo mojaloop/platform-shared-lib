@@ -67,7 +67,6 @@ export class TransferPreparedEvt extends DomainEventMsg {
 
 export type TransferFulfiledEvtPayload = {
 	transferId: string;
-	fulfilment: string | null,
 	completedTimestamp: number,
 	// for settlements
 	payeeFspId: string;
@@ -162,7 +161,6 @@ export class TransferRejectRequestProcessedEvt extends DomainEventMsg {
 export type TransferQueryResponseEvtPayload = {
 	transferId: string;
 	transferState: string;
-	fulfilment: string | null;
 	completedTimestamp: number | null;
 }
 
@@ -290,7 +288,6 @@ export type BulkTransferQueryResponseEvtPayload = {
     bulkTransferState: string;
     individualTransferResults: {
         transferId: string;
-        fulfilment: string | null;
         errorInformation: {
             errorCode: string;
             errorDescription: string;
