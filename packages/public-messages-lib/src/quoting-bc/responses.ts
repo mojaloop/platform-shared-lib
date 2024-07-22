@@ -178,6 +178,7 @@ export type QuoteResponseAcceptedEvtPayload = {
         amount: string;
     };
     expiration: string;
+    note: string | null;
     payeeReceiveAmount: {
         currency: string;
         amount: string;
