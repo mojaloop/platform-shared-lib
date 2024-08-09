@@ -37,6 +37,8 @@ import * as RDKafka from "node-rdkafka";
 import {ILogger} from "@mojaloop/logging-bc-public-types-lib";
 import {NumberNullUndefined} from "node-rdkafka/index";
 import {IRawAuthenticationOptions, IRawMessage, IRawMessageHeader, IRawMessageProducer} from "./raw_types";
+import { Envelope, } from "@mojaloop/platform-shared-lib-public-messages-lib";
+import * as googleProtoBuf from "google-protobuf";
 
 export enum MLKafkaRawProducerCompressionCodecs {
     NONE = "none",
@@ -222,44 +224,62 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
         }
     }
 
-    private _toRDKafkaProduceParams(msg: IRawMessage): { topic: string, partition: NumberNullUndefined, message: Buffer, key: Buffer, timestamp: NumberNullUndefined, headers: IRawMessageHeader[] } {
+    private _toRDKafkaProduceParams(msg: IRawMessage): { topic: string, partition: NumberNullUndefined, message: Buffer | Uint8Array, key: Buffer, timestamp: NumberNullUndefined, headers: IRawMessageHeader[] } {
         const topic: string = msg.topic;
         const partition = msg.partition;// ?? -1; // use default from rdkafka
         const timestamp = msg.timestamp;
-
-        let message: Buffer = Buffer.alloc(0); // default
-        if (typeof (msg.value)==="string") {
+    
+        let message: Buffer | Uint8Array;
+        if (msg.value instanceof Buffer) {
+            message = msg.value;
+        } else if (msg.topic === 'TransfersBcRequests') {
+            const protoMessage = msg.value as any;
+            const eventSerialized = (msg.value as any).serialize();
+            const envelope = new Envelope({
+                type: protoMessage.msgName ,
+                event: eventSerialized
+            });
+            message = envelope.serializeBinary()
+        } else if (typeof msg.value === "string") {
             message = Buffer.from(msg.value, "utf-8");
-        } else if (typeof (msg.value)==="object") {
+        } else if (typeof msg.value === "object" && msg.value !== null) {
             try {
                 message = Buffer.from(JSON.stringify(msg.value), "utf-8");
             } catch (err) {
-                /* istanbul ignore next */
                 this._logger?.isErrorEnabled() && this._logger.error(err, "MLRawKafkaProducer - error parsing message value - JSON.stringify() error");
+                message = Buffer.alloc(0);
             }
+        } else {
+            message = Buffer.alloc(0); // default
         }
-
-        let key: Buffer = Buffer.alloc(0); // default
-        if (typeof (msg.key)==="string") {
+    
+        let key: Buffer;
+        if (msg.key instanceof Buffer) {
+            key = msg.key;
+        // } else if (msg.key instanceof Uint8Array) {
+        //     key = Buffer.from(msg.key);
+        } else if (typeof msg.key === "string") {
             key = Buffer.from(msg.key, "utf-8");
-        } else if (typeof (msg.key)==="object") {
+        } else if (typeof msg.key === "object" && msg.key !== null) {
             try {
                 key = Buffer.from(JSON.stringify(msg.key), "utf-8");
             } catch (err) {
-                /* istanbul ignore next */
                 this._logger?.isErrorEnabled() && this._logger.error(err, "MLRawKafkaProducer - error parsing key value - JSON.stringify() error");
+                key = Buffer.alloc(0);
             }
+        } else {
+            key = Buffer.alloc(0); // default
         }
-
+    
         const headers: IRawMessageHeader[] = [];
         msg.headers?.forEach((header) => {
             // NOTE: kafka headers are key/value pairs, only one pair will ever exist per header rec
             for (const key in header) {
                 if (!Object.prototype.hasOwnProperty.call(header, key)) continue;
-                headers.push({[key]: header[key]});
+                headers.push({ [key]: header[key] });
             }
         });
-
+    
         return {
             topic,
             partition,
@@ -269,43 +289,42 @@ export class MLKafkaRawProducer extends EventEmitter implements IRawMessageProdu
             headers
         };
     }
+    
+    
 
-    async send(message: IRawMessage | IRawMessage[] | any): Promise<void> {
-        if(!message || (message instanceof Array && message.length<=0)) return Promise.resolve();
-
+    async send(message: IRawMessage | IRawMessage[]): Promise<void> {
+        if (!message || (Array.isArray(message) && message.length <= 0)) return Promise.resolve();
+    
         return new Promise((resolve, reject) => {
-            const messages: IRawMessage[] = Array.isArray(message) ? message:[message] as IRawMessage[];
-
+            const messages: IRawMessage[] = Array.isArray(message) ? message : [message];
+    
             let rejected = false;
             let acksRemaining: number = messages.length;
-
+    
             messages.forEach((msg: IRawMessage) => {
                 try {
                     const produceParams = this._toRDKafkaProduceParams(msg);
                     this._client.produce(
-                            produceParams.topic,
-                            produceParams.partition,
-                            produceParams.message,
-                            produceParams.key || undefined,
-                            produceParams.timestamp || undefined,
-                            produceParams.headers,
-                            (err: any, offset?: RDKafka.NumberNullUndefined) => {
-                                /* istanbul ignore if */
-                                if (err!==null) {
-                                    this._logger?.isErrorEnabled() && this._logger.error(err, "MLRawKafkaProducer - send - Error getting aks from publisher");
-                                    if (!rejected) {
-                                        rejected = true;
-                                        reject(err);
-                                    }
-                                } else {
-                                    //this.emit("deliveryReport", produceParams.topic, produceParams.partition || null, offset || null);
-
-                                    acksRemaining--;
-                                    if (acksRemaining <= 0) {
-                                        resolve();
-                                    }
+                        produceParams.topic,
+                        produceParams.partition,
+                        produceParams.message,
+                        produceParams.key || undefined,
+                        produceParams.timestamp || undefined,
+                        produceParams.headers,
+                        (err: any, offset?: RDKafka.NumberNullUndefined) => {
+                            if (err !== null) {
+                                this._logger?.isErrorEnabled() && this._logger.error(err, "MLRawKafkaProducer - send - Error getting acks from publisher");
+                                if (!rejected) {
+                                    rejected = true;
+                                    reject(err);
+                                }
+                            } else {
+                                acksRemaining--;
+                                if (acksRemaining <= 0) {
+                                    resolve();
                                 }
                             }
+                        }
                     );
                 } catch (err) {
                     /* istanbul ignore next */

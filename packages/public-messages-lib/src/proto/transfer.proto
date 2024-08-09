@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+enum MessageTypes {
+    STATE_EVENT = 0;
+    STATE_SNAPSHOT = 1;
+    DOMAIN_EVENT = 2;
+    COMMAND = 3;
+    DOMAIN_ERROR_EVENT = 4;
+}
+
+enum TransferState {
+    PENDING = 0;
+    ACCEPTED = 1;
+    PROCESSING = 2;
+    COMPLETED = 3;
+    REJECTED = 4;
+}
+
+message Extension {
+    string key = 1;
+    string value = 2;
+}
+
+message Headers {
+    map<string, string> headers = 1;
+}
+
+message TransferData {
+    Headers headers = 1;
+    string ilpPacket = 2;
+    string condition = 3;
+}
+
+message TransferPrepareRequestedEvtPayloadPB {
+    string requesterFspId = 1;
+    string destinationFspId = 2;
+    string transferId = 3;
+    string payeeFsp = 4;
+    string payerFsp = 5;
+    string amount = 6;
+    string currencyCode = 7;
+    int64 expiration = 8;
+    string payerIdType = 9;
+    string payeeIdType = 10;
+    string transferType = 11;
+    repeated Extension extensions = 12;
+}
+
+message TransferPrepareRequestedEvtPB {
+    string boundedContextName = 1;
+    string aggregateId = 2;
+    string aggregateName = 3;
+    string msgKey = 4;
+    string msgTopic = 5;
+    string msgName = 6;
+    MessageTypes msgType = 7;
+    google.protobuf.Any fspiopOpaqueState = 8;
+    google.protobuf.Any tracingInfo = 9;
+    TransferPrepareRequestedEvtPayloadPB payload = 10;
+}
+
+message TransferFulfilRequestedEvtPayloadPB {
+    string requesterFspId = 1;
+    string destinationFspId = 2;
+    string transferId = 3;
+    TransferState transferState = 4;
+    int64 completedTimestamp = 5;
+    bool notifyPayee = 6;
+}
+
+message TransferFulfilRequestedEvtPB {
+    string boundedContextName = 1;
+    string aggregateId = 2;
+    string aggregateName = 3;
+    string msgKey = 4;
+    string msgTopic = 5;
+    string msgName = 6;
+    MessageTypes msgType = 7;
+    google.protobuf.Any fspiopOpaqueState = 8;
+    google.protobuf.Any tracingInfo = 9;
+    TransferFulfilRequestedEvtPayloadPB payload = 10;
+}
+
+message Envelope {
+    string type = 1;
+    bytes event = 2;
+}

@@ -39,8 +39,8 @@ import {
     MLKafkaRawConsumer,
     MLKafkaRawConsumerOutputType,
     MLKafkaRawConsumerOptions
-} from "./raw/rdkafka_raw_consumer";
-import {IRawAuthenticationOptions, IRawMessage} from "./raw/raw_types";
+} from "../raw/rdkafka_raw_consumer";
+import {IRawAuthenticationOptions, IRawMessage} from "../raw/raw_types";
 
 
 type MLKafkaJsonConsumerEvents = "rebalance";

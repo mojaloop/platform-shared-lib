@@ -30,75 +30,148 @@
 
 "use strict";
 
-import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import { DomainEventMsg, MessageTypes } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { TRANSFERS_BOUNDED_CONTEXT_NAME, TRANSFERS_AGGREGATE_NAME, TransfersBCTopics } from ".";
+import { Extension, TransferFulfilRequestedEvtPayloadPB, TransferFulfilRequestedEvtPB, TransferPrepareRequestedEvtPayloadPB, TransferPrepareRequestedEvtPB, TransferState } from "../proto/transfer";
+import { Any } from 'google-protobuf/google/protobuf/any_pb';
 
 
-export type TransferPrepareRequestedEvtPayload = {
+export interface TransferPrepareRequestedEvtPayload {
     requesterFspId: string;
     destinationFspId: string;
-	transferId: string;
-	payeeFsp: string;
-	payerFsp: string;
-	amount: string;
-	currencyCode: string;
-	expiration: number;
+    transferId: string;
+    payeeFsp: string;
+    payerFsp: string;
+    amount: string;
+    currencyCode: string;
+    expiration: number;
     payerIdType: string;
     payeeIdType: string;
     transferType: string;
-    extensions: {
-        key: string;
-        value: string;
-    }[];
+    extensions: { key: string; value: string }[];
 }
 
 export class TransferPrepareRequestedEvt extends DomainEventMsg {
-	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
-	aggregateId: string;
-	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
-	msgKey: string;
-	msgTopic: string = TransfersBCTopics.DomainRequests;
-	payload: TransferPrepareRequestedEvtPayload;
 
-	constructor(payload: TransferPrepareRequestedEvtPayload) {
-		super();
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+    msgName: string = TransferPrepareRequestedEvt.name;
+    payload: TransferPrepareRequestedEvtPayload;
 
-		this.aggregateId = this.msgKey = payload.transferId;
-		this.payload = payload;
-	}
+    constructor(payload: TransferPrepareRequestedEvtPayload) {
+        super();
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
 
-	validatePayload(): void {
+    validatePayload(): void {
 		// TODO
 	}
+
+    serialize(): Uint8Array {
+        const payload = new TransferPrepareRequestedEvtPayloadPB();
+        payload.requesterFspId = this.payload.requesterFspId;
+        payload.destinationFspId = this.payload.destinationFspId;
+        payload.transferId = this.payload.transferId;
+        payload.payeeFsp = this.payload.payeeFsp;
+        payload.payerFsp = this.payload.payerFsp;
+        payload.amount = this.payload.amount;
+        payload.currencyCode = this.payload.currencyCode;
+        payload.expiration = this.payload.expiration;
+        payload.payerIdType = this.payload.payerIdType;
+        payload.payeeIdType = this.payload.payeeIdType;
+        payload.transferType = this.payload.transferType;
+
+        this.payload.extensions.forEach(ext => {
+            const extension = new Extension();
+            extension.key = ext.key;
+            extension.value = ext.value;
+            payload.extensions.push(extension);
+        });
+
+        const event = new TransferPrepareRequestedEvtPB();
+        event.boundedContextName = this.boundedContextName;
+        event.aggregateId = this.aggregateId;
+        event.aggregateName = this.aggregateName;
+        event.msgKey = this.msgKey;
+        event.msgTopic = this.msgTopic;
+        event.msgName = this.msgName;
+        event.msgType = this.msgType;
+        debugger
+
+        if (this.fspiopOpaqueState) {
+            const opaqueStateAny = new Any();
+            opaqueStateAny.pack(this.fspiopOpaqueState, "type.googleapis.com/google.protobuf.Struct");
+            event.fspiopOpaqueState = opaqueStateAny as any;
+        }
+
+        if (this.tracingInfo) {
+            const opaqueStateAny = new Any();
+            opaqueStateAny.pack(this.tracingInfo, "type.googleapis.com/google.protobuf.Struct");
+            event.tracingInfo = opaqueStateAny as any;
+        }
+        
+        event.payload = payload;
+
+        return event.serializeBinary();
+    }
+    
 }
 
 export type TransferFulfilRequestedEvtPayload = {
     requesterFspId: string;
     destinationFspId: string;
-	transferId: string;
-	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
-	completedTimestamp: number,
-	notifyPayee: boolean;
-}
+    transferId: string;
+    transferState: TransferState;
+    completedTimestamp: number;
+    notifyPayee: boolean;
+};
 
 export class TransferFulfilRequestedEvt extends DomainEventMsg {
-	boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
-	aggregateId: string;
-	aggregateName: string = TRANSFERS_AGGREGATE_NAME;
-	msgKey: string;
-	msgTopic: string = TransfersBCTopics.DomainRequests;
-	payload: TransferFulfilRequestedEvtPayload;
+    boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
+    aggregateId: string;
+    aggregateName: string = TRANSFERS_AGGREGATE_NAME;
+    msgKey: string;
+    msgTopic: string = TransfersBCTopics.DomainRequests;
+    msgName: string = TransferFulfilRequestedEvt.name;
+    payload: TransferFulfilRequestedEvtPayload;
 
-	constructor(payload: TransferFulfilRequestedEvtPayload) {
-		super();
+    constructor(payload: TransferFulfilRequestedEvtPayload) {
+        super();
+        this.aggregateId = this.msgKey = payload.transferId;
+        this.payload = payload;
+    }
 
-		this.aggregateId = this.msgKey = payload.transferId;
-		this.payload = payload;
-	}
+    validatePayload(): void {
+        // TODO: Add validation logic as needed
+    }
 
-	validatePayload(): void {
-		// TODO
-	}
+    serialize(): Uint8Array {
+        const payload = new TransferFulfilRequestedEvtPayloadPB();
+        payload.requesterFspId = this.payload.requesterFspId;
+        payload.destinationFspId = this.payload.destinationFspId;
+        payload.transferId = this.payload.transferId;
+        payload.transferState = this.payload.transferState;
+        payload.completedTimestamp = this.payload.completedTimestamp;
+        payload.notifyPayee = this.payload.notifyPayee;
+
+        const event = new TransferFulfilRequestedEvtPB();
+        event.boundedContextName = this.boundedContextName;
+        event.aggregateId = this.aggregateId;
+        event.aggregateName = this.aggregateName;
+        event.msgKey = this.msgKey;
+        event.msgTopic = this.msgTopic;
+        event.msgName = this.msgName;
+        event.msgType = this.msgType;
+        event.fspiopOpaqueState = this.fspiopOpaqueState;
+        // event.tracingInfo = this.tracingInfo;
+        event.payload = payload;
+
+        return event.serializeBinary();
+    }
 }
 
 export type TransferRejectRequestedEvtPayload = {

@@ -37,7 +37,7 @@ export interface IRawMessageHeader {
 }
 
 export interface IRawMessage {
-  value: Buffer | string | object | null;
+  value: Buffer | Uint8Array | string | object | null;
   topic: string;
   key: Buffer | string | null;
   timestamp: number | null;
