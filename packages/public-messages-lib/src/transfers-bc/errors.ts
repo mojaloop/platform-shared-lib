@@ -34,8 +34,8 @@
 
 "use strict";
 
-import { DomainErrorEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { TransfersBCTopics, TRANSFERS_AGGREGATE_NAME, TRANSFERS_BOUNDED_CONTEXT_NAME } from ".";
+import {DomainEventMsg} from "@mojaloop/platform-shared-lib-messaging-types-lib";
 
 // Transfers
 export type TransferInvalidMessagePayloadEvtPayload = {
@@ -43,13 +43,15 @@ export type TransferInvalidMessagePayloadEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferInvalidMessagePayloadEvt extends DomainErrorEventMsg {
+export class TransferInvalidMessagePayloadEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferInvalidMessagePayloadEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferInvalidMessagePayloadEvtPayload) {
         super();
@@ -68,13 +70,15 @@ export type TransferInvalidMessageTypeEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferInvalidMessageTypeEvt extends DomainErrorEventMsg {
+export class TransferInvalidMessageTypeEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferInvalidMessageTypeEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferInvalidMessageTypeEvtPayload) {
         super();
@@ -94,7 +98,7 @@ export type TransferDuplicateCheckFailedEvtPayload = {
     errorCode: string;
 }
 
-export class TransferDuplicateCheckFailedEvt extends DomainErrorEventMsg {
+export class TransferDuplicateCheckFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -102,6 +106,8 @@ export class TransferDuplicateCheckFailedEvt extends DomainErrorEventMsg {
     msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferDuplicateCheckFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferDuplicateCheckFailedEvtPayload) {
         super();
@@ -123,7 +129,7 @@ export type TransferPrepareLiquidityCheckFailedPayload = {
     errorCode: string;
 }
 
-export class TransferPrepareLiquidityCheckFailedEvt extends DomainErrorEventMsg {
+export class TransferPrepareLiquidityCheckFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -131,6 +137,8 @@ export class TransferPrepareLiquidityCheckFailedEvt extends DomainErrorEventMsg 
     msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferPrepareLiquidityCheckFailedPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPrepareLiquidityCheckFailedPayload) {
         super();
@@ -151,7 +159,7 @@ export type TransferUnableToGetParticipantsInfoEvtPayload = {
     errorCode: string;
 }
 
-export class TransferUnableToGetParticipantsInfoEvt extends DomainErrorEventMsg {
+export class TransferUnableToGetParticipantsInfoEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -159,6 +167,8 @@ export class TransferUnableToGetParticipantsInfoEvt extends DomainErrorEventMsg 
     msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferUnableToGetParticipantsInfoEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferUnableToGetParticipantsInfoEvtPayload) {
         super();
@@ -178,7 +188,7 @@ export type TransferInvalidPayerCheckFailedEvtPayload = {
     errorCode: string;
 }
 
-export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainErrorEventMsg {
+export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -186,6 +196,8 @@ export class TransferPrepareInvalidPayerCheckFailedEvt extends DomainErrorEventM
     msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferInvalidPayerCheckFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferInvalidPayerCheckFailedEvtPayload) {
         super();
@@ -205,7 +217,7 @@ export type TransferPrepareInvalidPayeeCheckFailedEvtPayload = {
     errorCode: string;
 }
 
-export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainErrorEventMsg {
+export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -213,6 +225,8 @@ export class TransferPrepareInvalidPayeeCheckFailedEvt extends DomainErrorEventM
     msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferPrepareInvalidPayeeCheckFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPrepareInvalidPayeeCheckFailedEvtPayload) {
         super();
@@ -232,7 +246,7 @@ export type TransferPrepareRequestTimedoutEvtPayload = {
     errorCode: string;
 }
 
-export class TransferPrepareRequestTimedoutEvt extends DomainErrorEventMsg {
+export class TransferPrepareRequestTimedoutEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
@@ -240,6 +254,8 @@ export class TransferPrepareRequestTimedoutEvt extends DomainErrorEventMsg {
     msgTopic: string = TransfersBCTopics.DomainEvents;
 
     payload: TransferPrepareRequestTimedoutEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPrepareRequestTimedoutEvtPayload) {
         super();
@@ -258,13 +274,15 @@ export type TransferQueryPayerNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferQueryPayerNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferQueryPayerNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferQueryPayerNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferQueryPayerNotFoundFailedEvtPayload) {
         super();
@@ -283,13 +301,15 @@ export type TransferQueryPayeeNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferQueryPayeeNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferQueryPayeeNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferQueryPayeeNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferQueryPayeeNotFoundFailedEvtPayload) {
         super();
@@ -307,13 +327,15 @@ export type TransferUnableToGetTransferByIdEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferUnableToGetTransferByIdEvt extends DomainErrorEventMsg {
+export class TransferUnableToGetTransferByIdEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferUnableToGetTransferByIdEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferUnableToGetTransferByIdEvtPayload) {
         super();
@@ -332,13 +354,15 @@ export type TransferNotFoundEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferNotFoundEvt extends DomainErrorEventMsg {
+export class TransferNotFoundEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferNotFoundEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferNotFoundEvtPayload) {
         super();
@@ -357,13 +381,15 @@ export type TransferUnableToAddEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferUnableToAddEvt extends DomainErrorEventMsg {
+export class TransferUnableToAddEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferUnableToAddEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferUnableToAddEvtPayload) {
         super();
@@ -382,13 +408,15 @@ export type TransferUnableToUpdateEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferUnableToUpdateEvt extends DomainErrorEventMsg {
+export class TransferUnableToUpdateEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferUnableToUpdateEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferUnableToUpdateEvtPayload) {
         super();
@@ -408,13 +436,15 @@ export type TransferFulfilCommittedRequestedTimedoutEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferFulfilCommittedRequestedTimedoutEvt extends DomainErrorEventMsg {
+export class TransferFulfilCommittedRequestedTimedoutEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferFulfilCommittedRequestedTimedoutEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferFulfilCommittedRequestedTimedoutEvtPayload) {
         super();
@@ -434,13 +464,15 @@ export type TransferFulfilPostCommittedRequestedTimedoutEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferFulfilPostCommittedRequestedTimedoutEvt extends DomainErrorEventMsg {
+export class TransferFulfilPostCommittedRequestedTimedoutEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferFulfilPostCommittedRequestedTimedoutEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferFulfilPostCommittedRequestedTimedoutEvtPayload) {
         super();
@@ -458,13 +490,15 @@ export type TransferCancelReservationFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferCancelReservationFailedEvt extends DomainErrorEventMsg {
+export class TransferCancelReservationFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferCancelReservationFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferCancelReservationFailedEvtPayload) {
         super();
@@ -482,13 +516,15 @@ export type TransferCancelReservationAndCommitFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferCancelReservationAndCommitFailedEvt extends DomainErrorEventMsg {
+export class TransferCancelReservationAndCommitFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferCancelReservationAndCommitFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferCancelReservationAndCommitFailedEvtPayload) {
         super();
@@ -507,13 +543,15 @@ export type TransferPayerParticipantNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayerParticipantNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferPayerParticipantNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayerParticipantNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayerParticipantNotFoundFailedEvtPayload) {
         super();
@@ -532,13 +570,15 @@ export type TransferPayeeParticipantNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayeeParticipantNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferPayeeParticipantNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayeeParticipantNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayeeParticipantNotFoundFailedEvtPayload) {
         super();
@@ -556,13 +596,15 @@ export type TransferHubParticipantNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferHubParticipantNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferHubParticipantNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferHubParticipantNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferHubParticipantNotFoundFailedEvtPayload) {
         super();
@@ -581,13 +623,15 @@ export type TransferPayerNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayerNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferPayerNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayerNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayerNotFoundFailedEvtPayload) {
         super();
@@ -606,13 +650,15 @@ export type TransferPayeeNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayeeNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferPayeeNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayeeNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayeeNotFoundFailedEvtPayload) {
         super();
@@ -630,13 +676,15 @@ export type TransferHubNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferHubNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferHubNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferHubNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferHubNotFoundFailedEvtPayload) {
         super();
@@ -655,13 +703,15 @@ export type TransferHubIdMismatchEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferHubIdMismatchEvt extends DomainErrorEventMsg {
+export class TransferHubIdMismatchEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferHubIdMismatchEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferHubIdMismatchEvtPayload) {
         super();
@@ -680,13 +730,15 @@ export type TransferHubNotActiveEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferHubNotActiveEvt extends DomainErrorEventMsg {
+export class TransferHubNotActiveEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferHubNotActiveEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferHubNotActiveEvtPayload) {
         super();
@@ -705,13 +757,15 @@ export type TransferHubNotApprovedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferHubNotApprovedEvt extends DomainErrorEventMsg {
+export class TransferHubNotApprovedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferHubNotApprovedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferHubNotApprovedEvtPayload) {
         super();
@@ -729,13 +783,15 @@ export type TransferHubAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferHubAccountNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferHubAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferHubAccountNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferHubAccountNotFoundFailedEvtPayload) {
         super();
@@ -754,13 +810,15 @@ export type TransferPayerPositionAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayerPositionAccountNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferPayerPositionAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayerPositionAccountNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayerPositionAccountNotFoundFailedEvtPayload) {
         super();
@@ -779,13 +837,15 @@ export type TransferPayerLiquidityAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayerLiquidityAccountNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferPayerLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayerLiquidityAccountNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayerLiquidityAccountNotFoundFailedEvtPayload) {
         super();
@@ -804,13 +864,15 @@ export type TransferPayeePositionAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayeePositionAccountNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferPayeePositionAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayeePositionAccountNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayeePositionAccountNotFoundFailedEvtPayload) {
         super();
@@ -829,13 +891,15 @@ export type TransferPayeeLiquidityAccountNotFoundFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayeeLiquidityAccountNotFoundFailedEvt extends DomainErrorEventMsg {
+export class TransferPayeeLiquidityAccountNotFoundFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayeeLiquidityAccountNotFoundFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayeeLiquidityAccountNotFoundFailedEvtPayload) {
         super();
@@ -854,13 +918,15 @@ export type TransferPayerIdMismatchEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayerIdMismatchEvt extends DomainErrorEventMsg {
+export class TransferPayerIdMismatchEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayerIdMismatchEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayerIdMismatchEvtPayload) {
         super();
@@ -879,13 +945,15 @@ export type TransferPayerNotActiveEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayerNotActiveEvt extends DomainErrorEventMsg {
+export class TransferPayerNotActiveEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayerNotActiveEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayerNotActiveEvtPayload) {
         super();
@@ -904,13 +972,15 @@ export type TransferPayerNotApprovedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayerNotApprovedEvt extends DomainErrorEventMsg {
+export class TransferPayerNotApprovedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayerNotApprovedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayerNotApprovedEvtPayload) {
         super();
@@ -929,13 +999,15 @@ export type TransferPayeeIdMismatchEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayeeIdMismatchEvt extends DomainErrorEventMsg {
+export class TransferPayeeIdMismatchEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayeeIdMismatchEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayeeIdMismatchEvtPayload) {
         super();
@@ -954,13 +1026,15 @@ export type TransferPayeeNotActiveEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayeeNotActiveEvt extends DomainErrorEventMsg {
+export class TransferPayeeNotActiveEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayeeNotActiveEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayeeNotActiveEvtPayload) {
         super();
@@ -979,13 +1053,15 @@ export type TransferPayeeNotApprovedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferPayeeNotApprovedEvt extends DomainErrorEventMsg {
+export class TransferPayeeNotApprovedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayeeNotApprovedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayeeNotApprovedEvtPayload) {
         super();
@@ -1006,13 +1082,15 @@ export type TransferUnableToGetSettlementModelEvtPayload = {
     payeeCurrency: string;
     errorCode: string
 }
-export class TransferUnableToGetSettlementModelEvt extends DomainErrorEventMsg {
+export class TransferUnableToGetSettlementModelEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferUnableToGetSettlementModelEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferUnableToGetSettlementModelEvtPayload) {
         super();
@@ -1033,13 +1111,15 @@ export type TransferSettlementModelNotFoundEvtPayload = {
     payeeCurrency: string;
     errorCode: string
 }
-export class TransferSettlementModelNotFoundEvt extends DomainErrorEventMsg {
+export class TransferSettlementModelNotFoundEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferSettlementModelNotFoundEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferSettlementModelNotFoundEvtPayload) {
         super();
@@ -1059,13 +1139,15 @@ export type TransferPayerNetDebitCapCurrencyNotFoundEvtPayload = {
     currencyCode: string;
     errorCode: string
 }
-export class TransferPayerNetDebitCapCurrencyNotFoundEvt extends DomainErrorEventMsg {
+export class TransferPayerNetDebitCapCurrencyNotFoundEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferPayerNetDebitCapCurrencyNotFoundEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferPayerNetDebitCapCurrencyNotFoundEvtPayload) {
         super();
@@ -1083,13 +1165,15 @@ export type TransferUnableToDeleteTransferReminderEvtPayload = {
     transferId: string;
     errorCode: string
 }
-export class TransferUnableToDeleteTransferReminderEvt extends DomainErrorEventMsg {
+export class TransferUnableToDeleteTransferReminderEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferUnableToDeleteTransferReminderEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferUnableToDeleteTransferReminderEvtPayload) {
         super();
@@ -1108,13 +1192,15 @@ export type TransferUnableCreateReminderEvtPayload = {
     transferId: string;
     errorCode: string
 }
-export class TransferUnableCreateReminderEvt extends DomainErrorEventMsg {
+export class TransferUnableCreateReminderEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferUnableCreateReminderEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferUnableCreateReminderEvtPayload) {
         super();
@@ -1132,13 +1218,15 @@ export type TransferBCUnableToAddBulkTransferToDatabaseEvtPayload = {
     bulkTransferId: string;
     errorCode: string;
 }
-export class TransferBCUnableToAddBulkTransferToDatabaseEvt extends DomainErrorEventMsg {
+export class TransferBCUnableToAddBulkTransferToDatabaseEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferBCUnableToAddBulkTransferToDatabaseEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferBCUnableToAddBulkTransferToDatabaseEvtPayload) {
         super();
@@ -1156,13 +1244,15 @@ export type TransferUnableToGetBulkTransferByIdEvtPayload = {
     bulkTransferId: string;
     errorCode: string;
 }
-export class TransferUnableToGetBulkTransferByIdEvt extends DomainErrorEventMsg {
+export class TransferUnableToGetBulkTransferByIdEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferUnableToGetBulkTransferByIdEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferUnableToGetBulkTransferByIdEvtPayload) {
         super();
@@ -1180,13 +1270,15 @@ export type BulkTransferNotFoundEvtPayload = {
     bulkTransferId: string;
     errorCode: string;
 }
-export class BulkTransferNotFoundEvt extends DomainErrorEventMsg {
+export class BulkTransferNotFoundEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: BulkTransferNotFoundEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: BulkTransferNotFoundEvtPayload) {
         super();
@@ -1205,13 +1297,15 @@ export type TransfersBCUnknownErrorPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransfersBCUnknownErrorEvent extends DomainErrorEventMsg {
+export class TransfersBCUnknownErrorEvent extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransfersBCUnknownErrorPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransfersBCUnknownErrorPayload) {
         super();
@@ -1231,13 +1325,15 @@ export type TransfersBCOperatorErrorPayload = {
     errorCode: string;
 }
 
-export class TransfersBCOperatorErrorEvent extends DomainErrorEventMsg {
+export class TransfersBCOperatorErrorEvent extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainErrors;
     payload: TransfersBCOperatorErrorPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransfersBCOperatorErrorPayload) {
         super();
@@ -1256,13 +1352,15 @@ export type TransferFulfilmentValidationFailedEvtPayload = {
     transferId: string;
     errorCode: string;
 }
-export class TransferFulfilmentValidationFailedEvt extends DomainErrorEventMsg {
+export class TransferFulfilmentValidationFailedEvt extends DomainEventMsg {
     boundedContextName: string = TRANSFERS_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = TRANSFERS_AGGREGATE_NAME;
     msgKey: string;
     msgTopic: string = TransfersBCTopics.DomainEvents;
     payload: TransferFulfilmentValidationFailedEvtPayload;
+
+    isErrorEvent: boolean = true;
 
     constructor (payload: TransferFulfilmentValidationFailedEvtPayload) {
         super();

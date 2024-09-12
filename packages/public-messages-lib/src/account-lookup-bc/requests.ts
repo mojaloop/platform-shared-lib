@@ -34,7 +34,7 @@
 
 "use strict";
 
-import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import {DomainEventMsg, MessageInboundProtocol} from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, AccountLookupBCTopics } from ".";
 
 export type ParticipantAssociationRequestReceivedEvtPayload = {
@@ -44,6 +44,7 @@ export type ParticipantAssociationRequestReceivedEvtPayload = {
     partySubType: string | null;
     currency: string | null;            // optional currency, ISO format
 }
+
 
 export class ParticipantAssociationRequestReceivedEvt extends DomainEventMsg {
     boundedContextName: string = ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME;

@@ -34,30 +34,41 @@
 
 import * as Crypto from "crypto";
 
-export enum MessageTypes{
-    "STATE_EVENT" = 0,          // for private event-sourcing events
-    "STATE_SNAPSHOT" = 1,       // for private event-sourcing snapshot events
-    "DOMAIN_EVENT" = 2,         // public domain events
-    "COMMAND" = 3,              // for internal/private BC commands
-    "DOMAIN_ERROR_EVENT"    // for domain errors, this includes the source message name being processed when the error happened
-}
+export const MessageTypes = {
+    STATE_EVENT : "STATE_EVENT",                // for private event-sourcing events
+    STATE_SNAPSHOT : "STATE_SNAPSHOT",          // for private event-sourcing snapshot events
+    DOMAIN_EVENT : "DOMAIN_EVENT",              // public domain events
+    COMMAND : "COMMAND"                        // for internal/private BC commands
+} as const;
+export type MessageTypes = keyof typeof MessageTypes;
+
+export const MessageInboundProtocol = {
+    FSPIOP_v1_1 : "FSPIOP v1.1",
+    ISO20022O : "ISO 20022O",
+    GRPC_SYNC : "GRPC_SYNC"
+} as const;
+export type MessageInboundProtocol = keyof typeof MessageInboundProtocol;
 
 export interface IMessage{
     msgType: MessageTypes;
-    msgName: string;                    // name of the event or command
-    msgId: string;                      // unique per message
+    msgName: string;                            // name of the event or command
+    msgId: string;                              // unique per message
     msgTimestamp: number;
     msgTopic: string;
-    msgKey: string | null;              // usually the id of the aggregate (used for partitioning)
+    msgKey: string | null;                      // usually the id of the aggregate (used for partitioning)
     msgPartition: number | null;
     msgOffset: number | null;
 
     payload: any;
 
-    fspiopOpaqueState: any;            // FSPIOP Interop API opaque state token - all messages produced as response to this should copy it if present
-    // iso20022OpaqueState: any;      // future place for ISO 20022 Interop API opaque state token - all messages produced as response to this should copy it if present
+    inboundProtocolType: MessageInboundProtocol; // inbound/initial request protocol
+    inboundProtocolOpaqueState: any;             // protocol opaque state  - all messages produced as response to this should copy it if present
 
-    tracingInfo?:any;               // optional tracing information, should be propagated between calls
+    // MOVED to inside the opaqueState
+    //fspiopOpaqueState: any;                   // FSPIOP Interop API opaque state token - all messages produced as response to this should copy it if present
+    // iso20022OpaqueState: any;                // future place for ISO 20022 Interop API opaque state token - all messages produced as response to this should copy it if present
+
+    tracingInfo?:any;                           // optional tracing information, should be propagated between calls
 }
 
 export interface IDomainMessage extends IMessage{
@@ -84,7 +95,8 @@ export abstract class DomainMsg implements IDomainMessage {
 
     abstract payload: any
 
-    abstract fspiopOpaqueState: any;
+    abstract inboundProtocolType: MessageInboundProtocol;
+    abstract inboundProtocolOpaqueState: any;
     abstract tracingInfo?: any;
 
     abstract validatePayload(): void
@@ -102,7 +114,9 @@ export abstract class DomainMsg implements IDomainMessage {
 
 export abstract class StateEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.STATE_EVENT;
-    fspiopOpaqueState:any = null;
+
+    inboundProtocolType: MessageInboundProtocol;
+    inboundProtocolOpaqueState:any = null;
     tracingInfo:any = undefined;
 
     abstract validatePayload(): void
@@ -110,26 +124,22 @@ export abstract class StateEventMsg extends DomainMsg {
 
 export abstract class DomainEventMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.DOMAIN_EVENT;
-    fspiopOpaqueState:any = null;
+
+    inboundProtocolType: MessageInboundProtocol;
+    inboundProtocolOpaqueState:any = null;
     tracingInfo:any = undefined;
+
+    isErrorEvent:boolean = false;
+    sourceMessageName?:string = undefined;
 
     abstract validatePayload(): void
 }
-
-export abstract class DomainErrorEventMsg extends DomainMsg {
-    msgType: MessageTypes = MessageTypes.DOMAIN_ERROR_EVENT;
-    fspiopOpaqueState:any = null;
-    tracingInfo:any = undefined;
-
-    sourceMessageName: string; // this should include the name of the message being processed when the error happened
-
-    abstract validatePayload(): void
-}
-
 
 export abstract class CommandMsg extends DomainMsg {
     msgType: MessageTypes = MessageTypes.COMMAND;
-    fspiopOpaqueState:any = null;
+
+    inboundProtocolType: MessageInboundProtocol;
+    inboundProtocolOpaqueState:any = null;
     tracingInfo:any = undefined;
 
     abstract validatePayload(): void
