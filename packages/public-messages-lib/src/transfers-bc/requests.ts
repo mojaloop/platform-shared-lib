@@ -134,6 +134,8 @@ export class TransferRejectRequestedEvt extends DomainEventMsg {
 
 export type TransferQueryReceivedEvtPayload = {
 	transferId: string;
+    requesterFspId: string;
+    destinationFspId: string;
 }
 
 export class TransferQueryReceivedEvt extends DomainEventMsg {
@@ -291,6 +293,8 @@ export class BulkTransferRejectRequestedEvt extends DomainEventMsg {
 
 export type BulkTransferQueryReceivedEvtPayload = {
     bulkTransferId: string;
+    requesterFspId: string;
+    destinationFspId: string;
 }
 
 export class BulkTransferQueryReceivedEvt extends DomainEventMsg {
