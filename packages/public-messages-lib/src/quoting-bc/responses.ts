@@ -119,6 +119,10 @@ export type QuoteRequestAcceptedEvtPayload = {
     } | null;
     note: string | null;
     expiration: string | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class QuoteRequestAcceptedEvt extends DomainEventMsg {
@@ -195,9 +199,13 @@ export type QuoteResponseAcceptedEvtPayload = {
         latitude: string;
         longitude: string;
     } | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
-export class QuoteResponseAccepted extends DomainEventMsg {
+export class QuoteResponseAcceptedEvt extends DomainEventMsg {
     boundedContextName: string = QUOTING_BOUNDED_CONTEXT_NAME;
     aggregateId: string;
     aggregateName: string = QUOTING_AGGREGATE_NAME;
@@ -253,6 +261,10 @@ export type QuoteQueryResponseEvtPayload = {
         latitude: string;
         longitude: string;
     } | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class QuoteQueryResponseEvt extends DomainEventMsg {
@@ -292,6 +304,10 @@ export type QuoteRejectedResponseEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 export class QuoteRejectedResponseEvt extends DomainEventMsg {
@@ -389,6 +405,14 @@ export type BulkQuoteReceivedEvtPayload = {
             balanceOfPayments: string | null
         };
         note: string | null;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
+    }[];
+    extensions: {
+        key: string;
+        value: string;
     }[];
 }
 
@@ -469,12 +493,24 @@ export type BulkQuoteAcceptedEvtPayload = {
             currency: string;
             amount: string;
         } | null;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
         errorInformation: {
-            errorCode: string,
-            errorDescription: string,
+            errorCode: string;
+            errorDescription: string;
+            extensions: {
+                key: string;
+                value: string;
+            }[];
         } | null;
     }[];
     expiration: string | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class BulkQuoteAcceptedEvt extends DomainEventMsg {
@@ -554,12 +590,24 @@ export type BulkQuoteQueryResponseEvtPayload = {
             currency: string;
             amount: string;
         } | null;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
         errorInformation: {
-            errorCode: string,
-            errorDescription: string,
+            errorCode: string;
+            errorDescription: string;
+            extensions: {
+                key: string;
+                value: string;
+            }[];
         } | null;
     }[];
     expiration: string | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class BulkQuoteQueryResponseEvt extends DomainEventMsg {
@@ -600,6 +648,10 @@ export type BulkQuoteRejectedResponseEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 export class BulkQuoteRejectedResponseEvt extends DomainEventMsg {

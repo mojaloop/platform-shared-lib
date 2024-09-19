@@ -42,6 +42,10 @@ export type ParticipantAssociationCreatedEvtPayload = {
     partyId: string;
     partyType: string;
     partySubType: string | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class ParticipantAssociationCreatedEvt extends DomainEventMsg {
@@ -202,6 +206,10 @@ export type PartyQueryResponseEvtPayload = {
     partyDoB: Date | null;
     kycInfo: string | null;
     supportedCurrencies: string[] | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class PartyQueryResponseEvt extends DomainEventMsg {
@@ -246,6 +254,10 @@ export type PartyRejectedResponseEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 export class PartyRejectedResponseEvt extends DomainEventMsg {
@@ -276,6 +288,10 @@ export type ParticipantRejectedResponseEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 export class ParticipantRejectedResponseEvt extends DomainEventMsg {

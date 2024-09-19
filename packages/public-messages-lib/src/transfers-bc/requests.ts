@@ -79,6 +79,10 @@ export type TransferFulfilRequestedEvtPayload = {
 	transferState: "PENDING" | "ACCEPTED" | "PROCESSING" | "COMPLETED" | "REJECTED",
 	completedTimestamp: number,
 	notifyPayee: boolean;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class TransferFulfilRequestedEvt extends DomainEventMsg {
@@ -108,6 +112,10 @@ export type TransferRejectRequestedEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 
@@ -204,6 +212,10 @@ export type BulkTransferPrepareRequestedEvtPayload = {
             value: string;
         }[];
     }[];
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class BulkTransferPrepareRequestedEvt extends DomainEventMsg {
@@ -234,10 +246,22 @@ export type BulkTransferFulfilRequestedEvtPayload = {
     individualTransferResults: {
         transferId: string;
         fulfilment: string | null;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
         errorInformation: {
             errorCode: string;
             errorDescription: string;
-        }
+            extensions: {
+                key: string;
+                value: string;
+            }[];
+        } | null;
+    }[];
+    extensions: {
+        key: string;
+        value: string;
     }[];
 }
 
@@ -267,6 +291,10 @@ export type BulkTransferRejectRequestedEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 

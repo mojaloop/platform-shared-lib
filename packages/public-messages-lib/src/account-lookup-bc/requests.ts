@@ -34,7 +34,7 @@
 
 "use strict";
 
-import {DomainEventMsg, MessageInboundProtocol} from "@mojaloop/platform-shared-lib-messaging-types-lib";
+import { DomainEventMsg } from "@mojaloop/platform-shared-lib-messaging-types-lib";
 import { ACCOUNT_LOOKUP_BOUNDED_CONTEXT_NAME, ACCOUNT_LOOKUP_AGGREGATE_NAME, AccountLookupBCTopics } from ".";
 
 export type ParticipantAssociationRequestReceivedEvtPayload = {
@@ -43,6 +43,10 @@ export type ParticipantAssociationRequestReceivedEvtPayload = {
     partyType: string;
     partySubType: string | null;
     currency: string | null;            // optional currency, ISO format
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 
@@ -213,6 +217,10 @@ export type PartyInfoAvailableEvtPayload = {
     partyDoB: Date | null;
     kycInfo: string | null;
     supportedCurrencies: string[] | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class PartyInfoAvailableEvt extends DomainEventMsg {
@@ -258,6 +266,10 @@ export type PartyRejectedEvtPayload = {
     errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 
@@ -299,6 +311,10 @@ export type ParticipantRejectedEvtPayload = {
     errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 
