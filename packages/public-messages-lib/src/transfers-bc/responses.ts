@@ -43,6 +43,10 @@ export type TransferPreparedEvtPayload = {
 	expiration: number;
     settlementModel: string;
     preparedAt: number;
+	extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class TransferPreparedEvt extends DomainEventMsg {
@@ -76,6 +80,10 @@ export type TransferFulfiledEvtPayload = {
 	settlementModel: string;
 	notifyPayee: boolean;
     fulfiledAt: number;
+	extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class TransferFulfiledEvt extends DomainEventMsg {
@@ -135,6 +143,10 @@ export type TransferRejectRequestProcessedEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+		extensions: {
+			key: string;
+			value: string;
+		}[];
 	}
 }
 
@@ -162,6 +174,10 @@ export type TransferQueryResponseEvtPayload = {
 	transferId: string;
 	transferState: string;
 	completedTimestamp: number | null;
+	extensions: {
+		key: string;
+		value: string;
+	}[];
 }
 
 export class TransferQueryResponseEvt extends DomainEventMsg {
@@ -195,6 +211,10 @@ export type BulkTransferPreparedEvtPayload = {
         amount: string;
         currencyCode: string;
     }[];
+	extensions: {
+		key: string;
+		value: string;
+	}[];
 }
 
 export class BulkTransferPreparedEvt extends DomainEventMsg {
@@ -225,11 +245,23 @@ export type BulkTransferFulfiledEvtPayload = {
     individualTransferResults: {
         transferId: string;
         fulfilment: string | null;
-        errorInformation: {
+		extensions: {
+			key: string;
+			value: string;
+		}[];
+		errorInformation: {
             errorCode: string;
             errorDescription: string;
-        }
+            extensions: {
+                key: string;
+                value: string;
+            }[];
+        } | null;
     }[];
+	extensions: {
+		key: string;
+		value: string;
+	}[];
 }
 
 export class BulkTransferFulfiledEvt extends DomainEventMsg {
@@ -259,6 +291,10 @@ export type BulkTransferRejectRequestProcessedEvtPayload = {
 	errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+		extensions: {
+			key: string;
+			value: string;
+		}[];
 	}
 }
 
@@ -291,7 +327,11 @@ export type BulkTransferQueryResponseEvtPayload = {
         errorInformation: {
             errorCode: string;
             errorDescription: string;
-        }
+			extensions: {
+				key: string;
+				value: string;
+			}[];
+        } | null;
     }[];
 }
 

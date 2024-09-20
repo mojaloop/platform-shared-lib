@@ -119,6 +119,10 @@ export type QuoteRequestReceivedEvtPayload = {
     } | null;
     note: string | null;
     expiration: string | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class QuoteRequestReceivedEvt extends DomainEventMsg {
@@ -196,6 +200,10 @@ export type QuoteResponseReceivedEvtPayload = {
         latitude: string;
         longitude: string;
     } | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class QuoteResponseReceivedEvt extends DomainEventMsg {
@@ -268,6 +276,10 @@ export type QuoteRejectedEvtPayload = {
     errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 
@@ -402,6 +414,14 @@ export type BulkQuoteRequestedEvtPayload = {
             balanceOfPayments: string | null
         };
         note: string | null;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
+    }[];
+    extensions: {
+        key: string;
+        value: string;
     }[];
 }
 
@@ -484,12 +504,24 @@ export type BulkQuotePendingReceivedEvtPayload = {
             currency: string;
             amount: string;
         } | null;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
         errorInformation: {
-            errorCode: string,
-            errorDescription: string,
+            errorCode: string;
+            errorDescription: string;
+            extensions: {
+                key: string;
+                value: string;
+            }[];
         } | null;
     }[];
     expiration: string | null;
+    extensions: {
+        key: string;
+        value: string;
+    }[];
 }
 
 export class BulkQuotePendingReceivedEvt extends DomainEventMsg {
@@ -536,6 +568,10 @@ export type BulkQuoteRejectedEvtPayload = {
     errorInformation: {
 		errorCode: string;
 		errorDescription: string;
+        extensions: {
+            key: string;
+            value: string;
+        }[];
 	}
 }
 
