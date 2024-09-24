@@ -5,9 +5,6 @@ const protoDir = path.resolve(__dirname, 'src/protobuff');
 const protoFile = path.resolve(protoDir, 'messages.proto');
 const outDir = path.resolve(protoDir);
 
-const isWin = process.platform === 'win32';
-const protocGenTsPath = path.resolve(__dirname, 'node_modules/.bin/protoc-gen-ts');
-
 const command = `npx protoc --ts_out=service=true:${outDir} --proto_path=${protoDir} ${protoFile}`;
 
 console.log('Running command:', command);
