@@ -30,8 +30,11 @@
 
 "use strict";
 
-export * from "./rdkafka_json_consumer";
-export * from "./rdkafka_json_producer";
+export * from "./json/rdkafka_json_consumer";
+export * from "./json/rdkafka_json_producer";
+
+export * from "./protobuff/rdkafka_proto_buff_consumer";
+export * from "./protobuff/rdkafka_proto_buff_producer";
 
 export * from "./raw/raw_types";
 export * from "./raw/rdkafka_raw_consumer";

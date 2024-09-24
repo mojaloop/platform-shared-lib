@@ -44,7 +44,8 @@ import * as crypto from "crypto";
 export enum MLKafkaRawConsumerOutputType {
 	Raw,
 	String,
-	Json
+	Json,
+	ProtoBuff
 }
 
 const defaultOptions = {
@@ -378,6 +379,8 @@ export class MLKafkaRawConsumer extends EventEmitter implements IRawMessageConsu
 				}
 			} else if (this._options.outputType===MLKafkaRawConsumerOutputType.String) {
 				msg.value = kafkaMsg.value.toString();
+			} else if (this._options.outputType===MLKafkaRawConsumerOutputType.ProtoBuff) {
+				msg.value = kafkaMsg.value;
 			} else {
 				msg.value = kafkaMsg.value;
 			}
