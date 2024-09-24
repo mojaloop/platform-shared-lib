@@ -5,7 +5,7 @@ const protoDir = path.resolve(__dirname, 'src/protobuff');
 const protoFile = path.resolve(protoDir, 'messages.proto');
 const outDir = path.resolve(protoDir);
 
-const command = `npx protoc --ts_out=service=true:${outDir} --proto_path=${protoDir} ${protoFile}`;
+const command = `protoc --ts_out=service=true:${outDir} --proto_path=${protoDir} ${protoFile}`;
 
 console.log('Running command:', command);
 
