@@ -39,18 +39,19 @@ import {
     MLKafkaRawConsumer,
     MLKafkaRawConsumerOutputType,
     MLKafkaRawConsumerOptions
-} from "./raw/rdkafka_raw_consumer";
-import {IRawAuthenticationOptions, IRawMessage} from "./raw/raw_types";
+} from "../raw/rdkafka_raw_consumer";
+import {IRawAuthenticationOptions, IRawMessage} from "../raw/raw_types";
+import { Envelope } from "./messages";
 
 
-type MLKafkaJsonConsumerEvents = "rebalance";
-type MLKafkaJsonConsumerEventListenerMap = {
+type MLKafkaProtoBuffConsumerEvents = "rebalance";
+type MLKafkaProtoBuffConsumerEventListenerMap = {
     "rebalance": (type: "assign" | "revoke", assignments: { topic: string, partition: number }[]) => void;
 }
-type MLKafkaJsonConsumerEventListener<K extends string> = K extends keyof MLKafkaJsonConsumerEventListenerMap ? MLKafkaJsonConsumerEventListenerMap[K]:never;
+type MLKafkaProtoBuffConsumerEventListener<K extends string> = K extends keyof MLKafkaProtoBuffConsumerEventListenerMap ? MLKafkaProtoBuffConsumerEventListenerMap[K]:never;
 
 
-export class MLKafkaJsonConsumerOptions {
+export class MLKafkaProtoBuffConsumerOptions {
     kafkaBrokerList: string;
     kafkaGroupId?: string;
     useSyncCommit?: boolean;
@@ -61,22 +62,22 @@ export class MLKafkaJsonConsumerOptions {
     authentication?: IRawAuthenticationOptions;
 }
 
-export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsumer {
+export class MLKafkaProtoBuffConsumer extends EventEmitter implements IMessageConsumer {
     private readonly _logger: ILogger | null;
     private readonly _kafkaRawConsumer: MLKafkaRawConsumer;
     private _handlerCallback: ((message: IMessage) => Promise<void>) | null = null;
     private _batchHandlerCallback: ((messages: IMessage[]) => Promise<void>) | null = null;
     private _filterFn: (message: IMessage) => boolean;
-    private _options: MLKafkaJsonConsumerOptions;
+    private _options: MLKafkaProtoBuffConsumerOptions;
 
-    constructor(options: MLKafkaJsonConsumerOptions, logger: ILogger | null = null) {
+    constructor(options: MLKafkaProtoBuffConsumerOptions, logger: ILogger | null = null) {
         super();
         this._options = options;
         this._logger = logger;
 
         const rawOptions: MLKafkaRawConsumerOptions = {
             ...options,
-            outputType: MLKafkaRawConsumerOutputType.Json
+            outputType: MLKafkaRawConsumerOutputType.ProtoBuff
         };
 
         this._kafkaRawConsumer = new MLKafkaRawConsumer(rawOptions, logger);
@@ -94,22 +95,26 @@ export class MLKafkaJsonConsumer extends EventEmitter implements IMessageConsume
             this.emit("rebalance", type, assignments);
         });
 
-        this._logger?.isInfoEnabled() && this._logger.info("MLKafkaJsonConsumer - instance created");
+        this._logger?.isInfoEnabled() && this._logger.info("MLKafkaProtoBuffConsumer - instance created");
     }
 
-    on(event: MLKafkaJsonConsumerEvents, listener: MLKafkaJsonConsumerEventListener<MLKafkaJsonConsumerEvents>): this {
+    on(event: MLKafkaProtoBuffConsumerEvents, listener: MLKafkaProtoBuffConsumerEventListener<MLKafkaProtoBuffConsumerEvents>): this {
         return super.on(event, listener);
     }
 
-    once(event: MLKafkaJsonConsumerEvents, listener: MLKafkaJsonConsumerEventListener<MLKafkaJsonConsumerEvents>): this {
+    once(event: MLKafkaProtoBuffConsumerEvents, listener: MLKafkaProtoBuffConsumerEventListener<MLKafkaProtoBuffConsumerEvents>): this {
         return super.once(event, listener);
     }
 
     private _convertMsg(message: IRawMessage): IMessage{
-        const valueObj = message.value as IMessage;
+        const envelope = Envelope.deserializeBinary(message.value as Uint8Array);
+        const envelopeObj = envelope.toObject();
+        
+        const valueObj = envelopeObj as IMessage;
         valueObj.msgPartition = message.partition;
         valueObj.msgOffset = message.offset;
         valueObj.msgTopic = message.topic;
+        valueObj.payload = envelopeObj;
 
         // TODO convert the headers (at least the known ones)
         return valueObj;

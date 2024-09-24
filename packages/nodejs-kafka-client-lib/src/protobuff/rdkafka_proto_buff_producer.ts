@@ -32,21 +32,21 @@
 
 import { ILogger } from "@mojaloop/logging-bc-public-types-lib";
 import { IMessage, IMessageProducer } from "@mojaloop/platform-shared-lib-messaging-types-lib";
-import {MLKafkaRawProducer, MLKafkaRawProducerOptions} from "./raw/rdkafka_raw_producer";
-import {IRawMessage} from "./raw/raw_types";
+import {MLKafkaRawProducer, MLKafkaRawProducerOptions} from "../raw/rdkafka_raw_producer";
+import {IRawMessage} from "../raw/raw_types";
 
-export type MLKafkaJsonProducerOptions = MLKafkaRawProducerOptions;
+export type MLKafkaProtoBuffProducerOptions = MLKafkaRawProducerOptions;
 
-export class MLKafkaJsonProducer implements IMessageProducer {
+export class MLKafkaProtoBuffProducer implements IMessageProducer {
     private readonly _logger: ILogger | null;
     private readonly _rawKafkaProducer:MLKafkaRawProducer;
 
-    constructor (options: MLKafkaJsonProducerOptions, logger: ILogger | null = null) {
+    constructor (options: MLKafkaProtoBuffProducerOptions, logger: ILogger | null = null) {
       this._logger = logger;
 
       this._rawKafkaProducer = new MLKafkaRawProducer(options, logger);
 
-      this._logger?.isInfoEnabled() && this._logger.info("MLKafkaJsonProducer - instance created");
+      this._logger?.isInfoEnabled() && this._logger.info("MLKafkaProtoBuffProducer - instance created");
     }
 
     private _convert(message: IMessage | IMessage[]):IRawMessage[]{
