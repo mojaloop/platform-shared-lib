@@ -59,7 +59,6 @@ export class PrometheusMetrics implements IMetrics{
     private _counters: CountersType = {};
 
     private static _instance:PrometheusMetrics | null = null;
-    // eslint-disable-next-line
     private constructor(){}
 
     /**
