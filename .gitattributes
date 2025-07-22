@@ -1,6 +1,0 @@
-# Exclude ESLint config files from language statistics and analysis
-eslint.config.js linguist-generated=true
-packages/*/eslint.config.js linguist-generated=true
-
-# Mark config files as vendored to exclude from analysis
-*.config.js linguist-vendored=true

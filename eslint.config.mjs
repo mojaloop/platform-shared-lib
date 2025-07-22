@@ -1,8 +1,13 @@
-const js = require("@eslint/js");
-const tseslint = require("typescript-eslint");
-const globals = require("globals");
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import globals from "globals";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
-module.exports = tseslint.config(
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export default tseslint.config(
     {
         ignores: [
             "**/*.d.ts",
