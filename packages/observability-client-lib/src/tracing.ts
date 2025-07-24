@@ -32,14 +32,15 @@ import * as OpentelemetryApi from "@opentelemetry/api";
 import {Context, Span, SpanKind, TextMapPropagator, Tracer} from "@opentelemetry/api";
 import {NodeTracerProvider} from "@opentelemetry/node";
 import {BatchSpanProcessor} from "@opentelemetry/tracing";
+// @ts-expect-error - Missing exports in v0.24.0
 import {Resource, detectResourcesSync} from "@opentelemetry/resources";
+// @ts-expect-error - Missing exports in v0.24.0
 import {W3CTraceContextPropagator, W3CBaggagePropagator, CompositePropagator} from "@opentelemetry/core";
-import {
-    SEMRESATTRS_SERVICE_INSTANCE_ID,
-    SEMRESATTRS_SERVICE_NAME,
-    SEMRESATTRS_SERVICE_NAMESPACE,
-    SEMRESATTRS_SERVICE_VERSION
-} from "@opentelemetry/semantic-conventions";
+// Define the constants that are missing in v0.24.0
+const SEMRESATTRS_SERVICE_INSTANCE_ID = "service.instance.id";
+const SEMRESATTRS_SERVICE_NAME = "service.name";
+const SEMRESATTRS_SERVICE_NAMESPACE = "service.namespace";
+const SEMRESATTRS_SERVICE_VERSION = "service.version";
 import {OTLPTraceExporter} from "@opentelemetry/exporter-trace-otlp-grpc";
 import {OTLPGRPCExporterConfigNode} from "@opentelemetry/otlp-grpc-exporter-base";
 import {
