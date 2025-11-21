@@ -11,12 +11,15 @@ module.exports = {
   coverageReporters: ["json", "lcov"],
   coverageDirectory: `../../coverage/${packageName}/`,
   clearMocks: true,
+  // Note: Coverage thresholds set to 0 - Package not used internally
+  // Has outdated OpenTelemetry dependencies from 2021 causing compilation errors
+  // Tests are skipped until dependencies can be updated or package is removed
   coverageThreshold: {
-    // global: {
-    //   statements: 90,
-    //   functions: 90,
-    //   branches: 90,
-    //   lines: 90
-    // }
+    global: {
+      statements: 0,
+      functions: 0,
+      branches: 0,
+      lines: 0
+    }
   }
 }
